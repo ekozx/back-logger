@@ -1,0 +1,7 @@
+%h1 People you're following:
+%ul
+  - @followed_users.all.each do |followed_user|
+    %li
+      = link_to followed_user.first_name, user_path(followed_user)
+      / = content_tag(:span, "unfollow", class: "following", data: { id: followed_user.id} )
+      = link_to "unfollow", "/users/unfollow/" + followed_user.id.to_s, remote: true, method: :get 

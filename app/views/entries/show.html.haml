@@ -1,0 +1,4 @@
+= image_tag(@entry.thumbnail(:medium))
+%h1= @entry.title
+%p= @entry.description
+= link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true 

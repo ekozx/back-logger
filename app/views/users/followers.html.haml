@@ -1,0 +1,8 @@
+%h1 People followering you
+%ul
+  - if @followers == nil || @followers.count == 0
+    %p No followers:(
+  - else
+    - @followers.all.each do |follower|
+      %li
+        = link_to follower.first_name, user_path(follower)

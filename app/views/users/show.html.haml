@@ -1,0 +1,7 @@
+= image_tag(@user.avatar.url(:medium))
+- if @user_backlog != nil
+  %ul
+    - @user_backlog.entries.all.each do |entry|
+      %li
+        = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
+        = entry.title
