@@ -6,7 +6,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user = User.find_for_oauth(request.env["omniauth.auth"])
 
     logger.debug(user)
-
+    #TODO: ADD SOMETHING THAT CHECKS FOR SSL ERRORS FROM TWITTER BEING BLOCKED
     if user.persisted?
       logger.debug("PERSISTED")
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "twitter"
