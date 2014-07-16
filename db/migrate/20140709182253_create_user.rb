@@ -2,7 +2,7 @@ class CreateUser < ActiveRecord::Migration
   def change
     create_table :users do |t|
       ## Database authenticatable
-      t.string :email, unique: true
+      t.string :email, unique: true, null: true
       t.string :encrypted_password
 
       ## Recoverable

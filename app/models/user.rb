@@ -16,11 +16,19 @@ class User < ActiveRecord::Base
 
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => ":style/missing.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
-  validates :nickname,
-  :uniqueness => {
+  validates :nickname, presence: true,
+  uniqueness: {
     :case_sensitive => false
   }
   #,format { } later
+
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
+  end
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
