@@ -10,12 +10,15 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :registration => 'users', :omniauth_callbacks => "omniauth_callbacks" }
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'entries/remove/:id'    => 'entries#delete'
-  get 'entries/add/:id' => 'entries#add'
-  get 'users/edit'      => 'users#edit'
-  get 'users/followers' => 'users#followers'
-  get 'users/following' => 'users#following'
+  get 'search'               => 'search#index'
+  get 'search/:type/:q'      => 'search#show'
+  get 'entries/remove/:id'   => 'entries#delete'
+  get 'entries/add/:id'      => 'entries#add'
+  get 'users/edit'           => 'users#edit'
+  get 'users/followers'      => 'users#followers'
+  get 'users/following'      => 'users#following'
   get 'users/unfollow/:id'   => 'users#unfollow'
+
   resources :users, only: [:show]
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

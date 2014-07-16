@@ -14,6 +14,7 @@
         = link_to "Add a new entry", new_entry_path
         = link_to "Following", users_following_path
         = link_to "Followers", users_followers_path
+        = link_to "Search", '/search'
       - else
         = link_to "Sign up", '/users/sign_up'
         or #{link_to "Sign in", new_user_session_path}

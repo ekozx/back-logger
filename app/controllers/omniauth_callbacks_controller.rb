@@ -18,10 +18,17 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # logger.debug(session["devise.twitter_data"])
       # logger.debug("NAME")
       # logger.debug(session["devise.twitter_data"]["info"]["name"])
-
       # user_info = session["devise.twitter_data"]["info"]
 
       # User.create(first_name: user_info["name"], email: user_info["email"], avatar: user_info["image"])
+      User.create(
+            name: auth.name,
+            avatar: auth.image,
+            nickname: auth.nickname,
+            provider: auth.provider,
+            uid: auth.uid,
+            email: auth.info.email,
+            password: Devise.friendly_token[0,20])
       user.save!
 
       sign_in_and_redirect user, :event => :authentication

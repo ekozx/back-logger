@@ -1,4 +1,4 @@
-%h2 Add to your backlog
+%h2 Add a new entry
 = form_for(@entry, remote: true) do |f|
   %ul
     %li
@@ -8,4 +8,4 @@
       %p description:
       = f.text_field :description
     %li= f.file_field :thumbnail
-  = f.submit "Create", class: "submit-backlog"
+  = f.submit "Create", class: "submitEntry"
