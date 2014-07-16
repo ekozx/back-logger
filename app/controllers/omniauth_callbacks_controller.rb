@@ -4,7 +4,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     logger.debug("OMNIAUTH DEBUG:")
     # logger.log(request.env["omniauth.auth"].class)
     user = User.find_for_oauth(request.env["omniauth.auth"])
-    
+
     logger.debug(user)
 
     if user.persisted?
@@ -22,8 +22,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # user_info = session["devise.twitter_data"]["info"]
 
       # User.create(first_name: user_info["name"], email: user_info["email"], avatar: user_info["image"])
+      user.save!
 
-      redirect_to new_user_registration_url
+      sign_in_and_redirect user, :event => :authentication
     end
   end
 end

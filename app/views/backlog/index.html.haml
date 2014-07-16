@@ -1,8 +1,10 @@
 - if user_signed_in?
   %p
     Hi,
-    - if current_user.first_name != nil
-      = current_user.first_name
+    - if not current_user.name.blank?
+      = current_user.name
+    - elsif current_user.nickname != nil
+      = current_user.nickname
     - else
       = current_user.email
   %h3 Your backlog:
