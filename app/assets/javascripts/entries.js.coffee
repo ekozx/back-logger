@@ -3,10 +3,9 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
   $("#new_entry").on("ajax:success", (e, data, status, xhr) ->
-    $("#new_entry").append "<p>posted!</p>"
+    $("#new_entry").append "<p>posted! </p>"
   ).on "ajax:error", (e, xhr, status, error) ->
     $("#new_entry").append "<p>ERROR</p>"
   # TODO: clicking submit isn't processed correctly
-  # $('.submitEntry').on 'click', (event) ->
-  #   event.preventDefault()
-  #
+  $("#new_entry").on 'submit', (event) ->
+    $(@).append "<p>posting... </p>"

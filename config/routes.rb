@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'search/:type/:q'      => 'search#show'
   get 'entries/remove/:id'   => 'entries#delete'
   get 'entries/add/:id'      => 'entries#add'
+  get '/entries/'            => 'entries#new'
   get 'users/edit'           => 'users#edit'
   get 'users/followers'      => 'users#followers'
   get 'users/following'      => 'users#following'

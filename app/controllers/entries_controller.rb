@@ -9,10 +9,7 @@ class EntriesController < ApplicationController
     @entry = Entry.new(entry_params)
     logger = Logger.new('log/development.log')
     if @entry.save
-      logger.debug("BACKLOG ID")
-      logger.debug(current_user.backlog.id)
       @entry.add_entry!(current_user.backlog.id, @entry.id)
-      # redirect_to '/'
       render nothing: true
     end
   end
@@ -33,7 +30,7 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
   end
 
-  private 
+  private
   def entry_params
     params.require(:entry).permit(:title, :description, :thumbnail)
   end
