@@ -18,6 +18,7 @@ gem 'devise'
 gem 'activerecord-session_store'
 
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 
 gem 'paperclip',  github: 'thoughtbot/paperclip'
 
