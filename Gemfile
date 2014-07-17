@@ -18,6 +18,7 @@ gem 'devise'
 gem 'activerecord-session_store'
 
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 
 gem 'paperclip',  github: 'thoughtbot/paperclip'
 
@@ -46,4 +47,3 @@ gem 'haml-rails'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-

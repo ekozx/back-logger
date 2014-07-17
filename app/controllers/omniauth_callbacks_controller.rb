@@ -1,37 +1,29 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def twitter
-    logger = Logger.new("log/development.log")
-    logger.debug("OMNIAUTH DEBUG:")
-    # logger.log(request.env["omniauth.auth"].class)
-    user = User.find_for_oauth(request.env["omniauth.auth"])
+  def self.provides_callback_for(provider)
+    class_eval %Q{
+      def #{provider}
+        @user = User.find_for_oauth(env["omniauth.auth"], current_user)
 
-    logger.debug(user)
-    #TODO: ADD SOMETHING THAT CHECKS FOR SSL ERRORS FROM TWITTER BEING BLOCKED
-    if user.persisted?
-      logger.debug("PERSISTED")
-      flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "twitter"
-      sign_in_and_redirect user, :event => :authentication
+        if @user.persisted?
+          sign_in_and_redirect @user, event: :authentication
+          set_flash_message(:notice, :success, kind: "#{provider}".capitalize) if is_navigational_format?
+        else
+          session["devise.#{provider}_data"] = env["omniauth.auth"]
+          redirect_to new_user_registration_url
+        end
+      end
+    }
+  end
+
+  [:twitter, :facebook].each do |provider|
+    provides_callback_for provider
+  end
+
+  def after_sign_in_path_for(resource)
+    if resource.persisted?
+      super resource
     else
-      logger.debug("ELSE")
-      # logger.log(request.env["omniauth.auth"].class)
-      session["devise.twitter_data"] = request.env["omniauth.auth"].except("extra")
-      # logger.debug(session["devise.twitter_data"])
-      # logger.debug("NAME")
-      # logger.debug(session["devise.twitter_data"]["info"]["name"])
-      # user_info = session["devise.twitter_data"]["info"]
-
-      # User.create(first_name: user_info["name"], email: user_info["email"], avatar: user_info["image"])
-      User.create(
-            name: auth.name,
-            avatar: auth.image,
-            nickname: auth.nickname,
-            provider: auth.provider,
-            uid: auth.uid,
-            email: auth.info.email,
-            password: Devise.friendly_token[0,20])
-      user.save!
-
-      sign_in_and_redirect user, :event => :authentication
+      new_user_registration_path
     end
   end
 end
