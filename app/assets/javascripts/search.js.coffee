@@ -5,10 +5,14 @@
 $ ->
   $('#search').on 'input', (event) ->
     url = "search/" + $('#search').val()
-    $.ajax url,
-      type: 'GET',
-      error: (jqXHR, textStatus, errorThrown) ->
-      success: (data, textStatus, jqXHR) ->
-        for k,v of data
-          console.log v['title']
-        $('body').append "#{data}"
+    list = $('#list')
+    entries = list.children()
+
+    if url != 'search/'
+      $.ajax url,
+        type: 'GET',
+        error: (jqXHR, textStatus, errorThrown) ->
+        success: (data, textStatus, jqXHR) ->
+          for k,v of data
+            $('li#' + v['id']).remove()
+            list.append "<li id='" + v['id'] + "'>" + v['title'] + "</li>"

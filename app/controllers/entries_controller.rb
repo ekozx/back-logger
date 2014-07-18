@@ -10,8 +10,8 @@ class EntriesController < ApplicationController
     logger = Logger.new('log/development.log')
     if @entry.save
       @entry.add_entry!(current_user.backlog.id, @entry.id)
-      render nothing: true
     end
+    render nothing: true
   end
 
   def add

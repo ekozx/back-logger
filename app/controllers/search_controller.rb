@@ -1,10 +1,9 @@
 class SearchController < ApplicationController
   def index
-    Entry.reindex
   end
   def query
     @results = Entry.search params[:query]
-    if @results.blank?
+    if @results.blank? && @results.count > 0
       render nothing: true
     else
       render json: @results
