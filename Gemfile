@@ -20,6 +20,8 @@ gem 'activerecord-session_store'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 
+gem 'searchkick'
+
 gem 'paperclip',  github: 'thoughtbot/paperclip'
 
 # Use jquery as the JavaScript library

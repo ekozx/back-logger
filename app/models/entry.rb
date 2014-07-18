@@ -2,7 +2,9 @@ class Entry < ActiveRecord::Base
   has_many :associations, dependent: :destroy
   has_many :backlogs, through: :associations
 
-  #should probably change the medium to large some time soon 
+  searchkick
+
+  #should probably change the medium to large some time soon
   has_attached_file :thumbnail, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => ":style/missing.png"
   validates_attachment_content_type :thumbnail, :content_type => /\Aimage\/.*\Z/
 
