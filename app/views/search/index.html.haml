@@ -1,3 +1,8 @@
 %h1 Search
 
-= @results
+%input#search
+%ul
+  - unless @results.blank?
+    - @results.each do |result|
+      %li
+        = result.title
