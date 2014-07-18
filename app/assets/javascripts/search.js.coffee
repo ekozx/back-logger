@@ -8,11 +8,12 @@ $ ->
     list = $('#list')
     entries = list.children()
 
+    entry.remove() for entry in entries
+
     if url != 'search/'
       $.ajax url,
         type: 'GET',
         error: (jqXHR, textStatus, errorThrown) ->
         success: (data, textStatus, jqXHR) ->
           for k,v of data
-            $('li#' + v['id']).remove()
             list.append "<li id='" + v['id'] + "'>" + v['title'] + "</li>"
