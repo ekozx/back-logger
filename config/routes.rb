@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
   get 'search'               => 'search#index'
-  get 'search/:type/:q'      => 'search#show'
+  get 'search/:query'        => 'search#query'
   get 'entries/remove/:id'   => 'entries#delete'
   get 'entries/add/:id'      => 'entries#add'
   get '/entries/'            => 'entries#new'
