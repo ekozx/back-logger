@@ -3,13 +3,12 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  $('#search').on 'input', (event) ->
+  $('#search').on 'keyup', (event) ->
     url = "search/" + $('#search').val()
     list = $('#list')
     entries = list.children()
 
     entry.remove() for entry in entries
-
     if url != 'search/'
       $.ajax url,
         type: 'GET',
