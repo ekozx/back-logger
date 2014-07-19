@@ -4,15 +4,19 @@
 
 $ ->
   $('#search').on 'keyup', (event) ->
-    url = "search/" + $('#search').val()
+    type = $('input[name=group]:checked').val()
+    url = "search/" + type + "/" + $('#search').val()
     list = $('#list')
     entries = list.children()
-
     entry.remove() for entry in entries
-    if url != 'search/'
+    if url != 'search/users/' or url != 'search/entries/'
       $.ajax url,
         type: 'GET',
         error: (jqXHR, textStatus, errorThrown) ->
         success: (data, textStatus, jqXHR) ->
           for k,v of data
-            list.append "<li id='" + v['id'] + "'>" + v['title'] + "</li>"
+            if type == 'entries'
+              list.append("<li id='" + v['id'] + "'>" + v['title'] + "</li>")
+            else
+              console.log v['name']
+              list.append("<li id='" + v['id'] + "'>" + v['name'] + "</li>")
