@@ -17,8 +17,10 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'devise'
 gem 'activerecord-session_store'
 
+#Stuff involving API's
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'aws-sdk'
 
 gem 'searchkick'
 

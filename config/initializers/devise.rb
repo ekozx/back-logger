@@ -227,6 +227,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
+  #TODO: Set these in heroku
   config.omniauth :twitter, ENV["TWITTER_KEY"], ENV["TWITTER_SECRET"], :scope => 'user,public_repo'
   config.omniauth :facebook, ENV['FACEBOOK_KEY'], ENV['FACEBOOK_SECRET'], secure_image_url: true
   # ==> Warden configuration
