@@ -3,13 +3,19 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  $('#search').on 'keyup', (event) ->
+  $('#search').on 'keypress', (event) ->
+    keycode = event.keyCode
     type = $('input[name=group]:checked').val()
     url = "search/" + type + "/" + $('#search').val()
     list = $('#list')
     entries = list.children()
     entry.remove() for entry in entries
     if url != 'search/users/' or url != 'search/entries/'
+      console.log keycode
+      if keycode == 13
+        url += "/tomatoes"
+      else
+        url += "/none"
       $.ajax url,
         type: 'GET',
         error: (jqXHR, textStatus, errorThrown) ->

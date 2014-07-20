@@ -11,7 +11,7 @@ class Entry < ActiveRecord::Base
   def remove_entry!(backlog_id, entry_id)
     self.associations.find_by(backlog_id: backlog_id, entry_id: entry_id).destroy
   end
-
+  
   def add_entry!(backlog_id, entry_id)
     logger = Logger.new('log/development.log')
     logger.debug("Backlog: " + backlog_id.to_s + " Entry: " + entry_id.to_s)
