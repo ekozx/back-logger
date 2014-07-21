@@ -14,6 +14,8 @@ class SearchController < ApplicationController
       if params[:t] == 'tomatoes'
         has_entry = false
         @results.to_a.each do |result|
+          #TODO: this check needs to be stronger because someone can enter something like "jackas" and it will not
+          #stop the method from querying RT for "jackas", which will in turn return "Jackass" and create the entry again
           if result.title.downcase.gsub(/\s+/, "") == query.downcase.gsub(/\s+/, "")
             has_entry = true
           end
