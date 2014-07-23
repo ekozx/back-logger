@@ -8,10 +8,26 @@ class Entry < ActiveRecord::Base
   has_attached_file :thumbnail, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => ":style/missing.png"
   validates_attachment_content_type :thumbnail, :content_type => /\Aimage\/.*\Z/
 
+  validate do |entry|
+    UniquenessValidator.new(entry).validate
+  end
+
+  class UniquenessValidator
+    def initialize(entry)
+      @entry = entry
+    end
+
+    def validate
+      if Entry.where(title: @entry.title, description: @entry.description).exists?
+        @entry.errors[:base] << "Duplicate title/description"
+      end
+    end
+  end
+
   def remove_entry!(backlog_id, entry_id)
     self.associations.find_by(backlog_id: backlog_id, entry_id: entry_id).destroy
   end
-  
+
   def add_entry!(backlog_id, entry_id)
     logger = Logger.new('log/development.log')
     logger.debug("Backlog: " + backlog_id.to_s + " Entry: " + entry_id.to_s)

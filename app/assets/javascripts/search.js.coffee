@@ -11,7 +11,6 @@ $ ->
     entries = list.children()
     entry.remove() for entry in entries
     if url != 'search/users/' or url != 'search/entries/'
-      console.log keycode
       if keycode == 13
         url += "/tomatoes"
       else
