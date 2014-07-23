@@ -1,0 +1,6 @@
+%ul#list
+  - @results.each do |result|
+    %li
+      = result.title
+
+=paginate @results

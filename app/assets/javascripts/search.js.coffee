@@ -3,19 +3,21 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+  $('.depth').on 'click', (event) ->
+    $('.loading').show()
+    $('.pagination').show()
+
   $('#search').on 'keypress', (event) ->
     #TODO: add some stall-time so that there are fewer queries to amazon
     keycode = event.keyCode
     type = $('input[name=group]:checked').val()
-    url = "search/" + type + "/" + $('#search').val()
+    url = "search/" + type + "/" + $('#search').children().first().val() + "/no"
     list = $('#list')
     entries = list.children()
     entry.remove() for entry in entries
-    if url != 'search/users/' or url != 'search/entries/'
-      if keycode == 13
-        url += "/tomatoes"
-      else
-        url += "/none"
+    $('.pagination').hide()
+    $('.loading').hide()
+    if url != 'search/users/' or url != 'search/entries/' or keycode != 13
       $.ajax url,
         type: 'GET',
         error: (jqXHR, textStatus, errorThrown) ->
@@ -26,3 +28,7 @@ $ ->
             else
               console.log v['name']
               list.append("<li id='" + v['id'] + "'>" + v['name'] + "</li>")
+    else if keycode == 13
+      #TODO: progress bar!
+      $('.loading').show()
+      $('.pagination').show()

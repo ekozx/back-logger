@@ -24,7 +24,7 @@ gem 'aws-sdk'
 
 #Searching, pagination
 gem 'searchkick'
-gem 'will_paginate', '~> 3.0'
+gem 'kaminari'
 
 gem 'paperclip',  github: 'thoughtbot/paperclip'
 

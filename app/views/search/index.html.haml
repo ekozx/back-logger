@@ -1,15 +1,22 @@
 %h1 Search
 
 %p Press Enter for a detailed search, or click the button to search Rotten Tomatoes :)
+=form_tag search_path, method: 'get', id: "searchForm" do
+  -# %input{type: 'radio', name: "group", value: "entries", checked: true}
+  -#   %span Entries
+  -# %input{type: 'radio', name: "group", value: "users"}
+  -#   %span Users
+  = radio_button_tag(:group, "entries", checked: true)
+  = label_tag(:group_type, "Entries")
+  = radio_button_tag(:group, "users")
+  = label_tag(:group_type, "Users")
+  %br
+  %span#search
+    = text_field_tag :query, params[:search]
+  %span
+    = submit_tag "More Results", class: "depth"
 
-%input{type: 'radio', name: "group", value: "entries", checked: true}
-  %span Entries
-%input{type: 'radio', name: "group", value: "users"}
-  %span Users
-%br
-%input#search
-%span
-  %button#depth Search Rotten Tomatoes
-%ul#list
-- if @results
-  =will_paginate @results
+.loading
+  =image_tag src="loading1.gif"
+
+= render 'results'
