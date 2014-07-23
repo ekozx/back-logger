@@ -46,9 +46,9 @@ class SearchController < ApplicationController
     query = params[:query]
 
     if params[:type] == "entries"
-      @results = Entry.search query, page: params[:page], per_page: 10
+      @results = Entry.search query, limit: 10, page: params[:page], per_page: 10
     else
-      @results = User.search query, page: params[:page], per_page: 10
+      @results = User.search query, limit: 10, page: params[:page], per_page: 10
     end
 
     if @results.blank? && @results.count > 0
