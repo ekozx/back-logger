@@ -37,9 +37,8 @@ class SearchController < ApplicationController
             entry = Entry.create(title: movie["title"], description: movie["synopsis"])
           end
         end
-
-        #TODO: there's certainly a better way of doing this... (not DRY, we query twice)
       end
+      #TODO: there's certainly a better way of doing this... (not DRY, we query twice)
       @results = Entry.search query, page: params[:page], per_page: 10
     end
   end
