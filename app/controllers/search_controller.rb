@@ -7,7 +7,6 @@ class SearchController < ApplicationController
     #TODO: Switch this to bisection for speed
     #TODO: handle /search/entries//none
     if query.blank?
-      query = "sky"
       Entry.reindex
       User.reindex
       #TODO: add a message instead
@@ -16,8 +15,7 @@ class SearchController < ApplicationController
       @results = Entry.search query
       has_entry = false
       @results.to_a.each do |result|
-        #Complete: this check needs to be stronger because someone can enter something like "jackas" and it will not
-        #stop the method from querying RT for "jackas", which will in turn return "Jackass" and create the entry again
+        #TODO: this check needs to be stronger to prevent duplicate queries
         if result.title.downcase.gsub(/\s+/, "") == query.downcase.gsub(/\s+/, "")
           has_entry = true
         end
