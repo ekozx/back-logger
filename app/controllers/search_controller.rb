@@ -39,8 +39,8 @@ class SearchController < ApplicationController
         end
 
         #TODO: there's certainly a better way of doing this... (not DRY, we query twice)
-        @results = Entry.search query, page: params[:page], per_page: 10
       end
+      @results = Entry.search query, page: params[:page], per_page: 10
     end
   end
   def query
