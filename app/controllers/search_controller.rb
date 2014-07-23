@@ -2,6 +2,7 @@ class SearchController < ApplicationController
 
   #TODO: WAY too much logic, move this stuff to a model
   def index
+    @results = Entry.search params[:query]
     Entry.reindex
     User.reindex
   end
