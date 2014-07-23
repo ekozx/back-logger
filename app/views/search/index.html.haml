@@ -12,12 +12,8 @@
   = label_tag(:group_type, "Users")
   %br
   %span#search
-    = text_field_tag :query
+    = text_field_tag :query, params[:search]
   %span
-    = submit_tag "Search Rotten Tomatoes", class: "depth"
-%ul#list
-  - if @results
-    - @results.each do |result|
-      %li
-        = result.title
-    =paginate @results, remote: true
+    = submit_tag "More Results", class: "depth"
+
+= render 'results'

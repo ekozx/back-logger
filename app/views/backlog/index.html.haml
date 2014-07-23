@@ -10,11 +10,9 @@
   %h3 Your backlog:
   - if current_user.backlog != nil
     %ul
-      - current_user.backlog.entries.all.each do |entry|
-        -# all is deprecated!
+      - @entries.each do |entry|
         %li
           = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
           = entry.title
-          / = link_to content_tag(:span, "remove", class: "entry", remote: true, data: { id: entry.id} )
           = link_to "Delete", entry, remote: true, method: :delete
-%br/
+      =paginate @entries

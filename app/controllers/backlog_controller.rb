@@ -2,12 +2,14 @@ class BacklogController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @entries = current_user.backlog.entries.page(params[:page]).per(10)
+
     if current_user.backlog.nil?
       Backlog.create(user_id: current_user.id)
     end
   end
 
-  def add_entry 
+  def add_entry
     puts "START PARAMs"
     puts params
     puts "END PARAMS"
