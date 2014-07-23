@@ -1,9 +1,15 @@
 %h1 Search
 
+%p Press Enter for a detailed search, or click the button to search Rotten Tomatoes :)
+
 %input{type: 'radio', name: "group", value: "entries", checked: true}
   %span Entries
 %input{type: 'radio', name: "group", value: "users"}
   %span Users
 %br
 %input#search
+%span
+  %button#depth Search Rotten Tomatoes
 %ul#list
+- if @results
+  =will_paginate @results

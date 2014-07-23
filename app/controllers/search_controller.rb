@@ -37,13 +37,13 @@ class SearchController < ApplicationController
               #TODO: Add pictures!
               entry = Entry.create(title: movie["title"], description: movie["synopsis"])
             end
-            #there's certainly a better way of doing this...
-            @results = Entry.search query
+            #there's certainly a better way of doing this... (not DRY, we query twice)
+            @results = Entry.search query, page: params[:page], per_page: 10
           end
         end
       end
     else
-      @results = User.search query
+      @results = User.search query, page: params[:page], per_page: 10
     end
 
     if @results.blank? && @results.count > 0

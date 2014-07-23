@@ -4,6 +4,7 @@
 
 $ ->
   $('#search').on 'keypress', (event) ->
+    #TODO: add some stall-time so that there are fewer queries to amazon
     keycode = event.keyCode
     type = $('input[name=group]:checked').val()
     url = "search/" + type + "/" + $('#search').val()

@@ -22,7 +22,9 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'aws-sdk'
 
+#Searching, pagination
 gem 'searchkick'
+gem 'will_paginate', '~> 3.0'
 
 gem 'paperclip',  github: 'thoughtbot/paperclip'
 
