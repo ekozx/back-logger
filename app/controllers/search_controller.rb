@@ -27,9 +27,10 @@ class SearchController < ApplicationController
         ENV["ROTTEN_TOMATOES_KEY"] +
         "&q=" +
         query.to_s.gsub(" ", "+") +
-        "&page_limit=20")
+        "&page_limit=5")
         resp = JSON.parse(Net::HTTP.get_response(uri).body)
         unless resp.blank?
+          logger.debug(resp)
           resp["movies"].each do |movie|
             #TODO: Add pictures!
             entry = Entry.create(title: movie["title"], description: movie["synopsis"])
@@ -37,6 +38,8 @@ class SearchController < ApplicationController
         end
       end
       #TODO: there's certainly a better way of doing this... (not DRY, we query twice)
+      #Seems to fix the issue
+      sleep 0.25
       @results = Entry.search query, page: params[:page], per_page: 10
     end
   end

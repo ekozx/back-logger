@@ -2,10 +2,6 @@
 
 %p Press Enter for a detailed search, or click the button to search Rotten Tomatoes :)
 =form_tag search_path, method: 'get', id: "searchForm" do
-  -# %input{type: 'radio', name: "group", value: "entries", checked: true}
-  -#   %span Entries
-  -# %input{type: 'radio', name: "group", value: "users"}
-  -#   %span Users
   = radio_button_tag(:group, "entries", checked: true)
   = label_tag(:group_type, "Entries")
   = radio_button_tag(:group, "users")
