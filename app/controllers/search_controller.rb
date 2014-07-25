@@ -31,12 +31,11 @@ class SearchController < ApplicationController
         resp = JSON.parse(Net::HTTP.get_response(uri).body)
         unless resp.blank?
           resp["movies"].each do |movie|
-            #TODO: Add pictures!
-            entry = Entry.create(
+            if movie["alternate_ids"].blank? then imdb = nil else imdb = movie["alternate_ids"]["imdb"] end
+            Entry.create(
             title: movie["title"],
             description: movie["synopsis"],
-            thumbnail: movie["posters"]["original"],
-            imdb_id: movie["alternate_ids"]["imdb"]
+            imdb_id: imdb
             )
           end
         end

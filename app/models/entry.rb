@@ -28,7 +28,7 @@ class Entry < ActiveRecord::Base
     #update the photo on show
     if self.photo.blank? && !self.imdb_id.blank?
       movie = Tmdb::Find.imdb_id("tt" + self.imdb_id).movie_results.first
-      self.update(photo: movie.poster_path) unless movie.blank? 
+      self.update(photo: movie.poster_path) unless movie.blank?
     end
   end
 
