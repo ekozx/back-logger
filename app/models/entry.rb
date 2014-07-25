@@ -24,13 +24,20 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def update_photo
+    #update the photo on show
+    if self.photo.blank? && !self.imdb_id.blank?
+      movie = Tmdb::Find.imdb_id("tt" + self.imdb_id).movie_results.first
+      self.update(photo: movie.poster_path) unless movie.blank? 
+    end
+  end
+
   def remove_entry!(backlog_id, entry_id)
     self.associations.find_by(backlog_id: backlog_id, entry_id: entry_id).destroy
   end
 
   def add_entry!(backlog_id, entry_id)
     logger = Logger.new('log/development.log')
-    logger.debug("Backlog: " + backlog_id.to_s + " Entry: " + entry_id.to_s)
     self.associations.create!(backlog_id: backlog_id, entry_id: entry_id)
   end
 

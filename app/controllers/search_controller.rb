@@ -32,8 +32,12 @@ class SearchController < ApplicationController
         unless resp.blank?
           resp["movies"].each do |movie|
             #TODO: Add pictures!
-            logger.debug( movie["posters"]["original"])
-            entry = Entry.create(title: movie["title"], description: movie["synopsis"], thumbnail: movie["posters"]["original"])
+            entry = Entry.create(
+            title: movie["title"],
+            description: movie["synopsis"],
+            thumbnail: movie["posters"]["original"],
+            imdb_id: movie["alternate_ids"]["imdb"]
+            )
           end
         end
       end
