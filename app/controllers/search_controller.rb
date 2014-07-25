@@ -30,10 +30,10 @@ class SearchController < ApplicationController
         "&page_limit=5")
         resp = JSON.parse(Net::HTTP.get_response(uri).body)
         unless resp.blank?
-          logger.debug(resp)
           resp["movies"].each do |movie|
             #TODO: Add pictures!
-            entry = Entry.create(title: movie["title"], description: movie["synopsis"])
+            logger.debug( movie["posters"]["original"])
+            entry = Entry.create(title: movie["title"], description: movie["synopsis"], thumbnail: movie["posters"]["original"])
           end
         end
       end
