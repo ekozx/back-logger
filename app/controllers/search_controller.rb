@@ -12,34 +12,29 @@ class SearchController < ApplicationController
       #TODO: add a message instead
       @results = Entry.search query, page: params[:page], per_page: 10
     else
-      @results = Entry.search query
-      has_entry = false
-      @results.to_a.each do |result|
-        #TODO: this check needs to be stronger to prevent duplicate queries
-        if result.title.downcase.gsub(/\s+/, "") == query.downcase.gsub(/\s+/, "")
-          has_entry = true
-        end
-      end
+      # @results = Entry.search query
+      # has_entry = false
+      # @results.to_a.each do |result|
+      #   #TODO: this check needs to be stronger to prevent duplicate queries
+      #   if result.title.downcase.gsub(/\s+/, "") == query.downcase.gsub(/\s+/, "")
+      #     has_entry = true
+      #   end
+      # end
       #TODO: (in progress) finish this method
-      unless has_entry
-        entry = false
-        uri = URI("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" +
-        ENV["ROTTEN_TOMATOES_KEY"] +
-        "&q=" +
-        query.to_s.gsub(" ", "+") +
-        "&page_limit=5")
-        resp = JSON.parse(Net::HTTP.get_response(uri).body)
-        unless resp.blank?
-          resp["movies"].each do |movie|
-            #TODO: Add pictures!
-            logger.debug( movie["posters"]["original"])
-            entry = Entry.create(title: movie["title"], description: movie["synopsis"], thumbnail: movie["posters"]["original"])
-          end
-        end
-      end
+      # unless has_entry
+      # end
       #TODO: there's certainly a better way of doing this... (not DRY, we query twice)
       #Seems to fix the issue
-      sleep 0.25
+      # sleep 0.25
+
+      #TODO: un-hardcode this
+      Tmdb::Api.key("f5297194d2b4b6c7a20c3a88b326c835")
+      @search = Tmdb::Search.new
+      @search.resource('movie')
+      @search.query(query)
+      logger.debug("SEARCH:")
+      logger.debug(@search.fetch)
+
       @results = Entry.search query, page: params[:page], per_page: 10
     end
   end
