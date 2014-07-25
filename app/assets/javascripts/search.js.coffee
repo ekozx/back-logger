@@ -8,7 +8,6 @@ $ ->
     $('.pagination').show()
 
   $('#search').on 'keypress', (event) ->
-    #TODO: add some stall-time so that there are fewer queries to amazon
     keycode = event.keyCode
     type = $('input[name=group]:checked').val()
     url = "search/" + type + "/" + $('#search').children().first().val() + "/no"
@@ -24,7 +23,7 @@ $ ->
         success: (data, textStatus, jqXHR) ->
           for k,v of data
             if type == 'entries'
-              list.append("<li id='" + v['id'] + "'>" + v['title'] + "</li>")
+              list.append("<li id='" + v['id'] + "'><a href='/entries/" + v['id'] + "'>" + v['title'] + "</a></li>")
             else
               console.log v['name']
               list.append("<li id='" + v['id'] + "'>" + v['name'] + "</li>")

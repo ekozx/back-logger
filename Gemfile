@@ -26,6 +26,8 @@ gem 'aws-sdk'
 gem 'searchkick'
 gem 'kaminari'
 
+gem 'themoviedb'
+
 gem 'paperclip',  github: 'thoughtbot/paperclip'
 
 # Use jquery as the JavaScript library
