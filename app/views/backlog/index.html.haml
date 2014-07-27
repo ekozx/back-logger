@@ -7,9 +7,9 @@
       = current_user.nickname
     - else
       = current_user.email
-  %h1 Search
+  %h3 Search
 
-  %p Press Enter for a detailed search, or click the button to search Rotten Tomatoes :)
+  %p Type to find shows, if we don't have what you're looking for press enter to search rotten tomatoes :)
   =form_tag search_path, method: 'get', id: "searchForm" do
     = radio_button_tag(:group, "entries", checked: true)
     = label_tag(:group_type, "Entries")
@@ -24,7 +24,7 @@
   .loading
     =image_tag src="loading1.gif"
 
-  = render 'results'    
+  = render 'results'
 
   %h3 Your backlog:
   - if current_user.backlog != nil

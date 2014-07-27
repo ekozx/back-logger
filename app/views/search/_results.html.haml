@@ -1,6 +1,9 @@
 %ul#list
   - @results.each do |result|
     %li
-      = link_to result.title, entry_path(result.id)
+      - if @group == 'entries'
+        = link_to result.title, entry_path(result.id)
+      - else
+        = link_to result.nickname, user_path(result.id)
 
 =paginate @results
