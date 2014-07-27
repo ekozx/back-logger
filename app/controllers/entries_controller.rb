@@ -31,6 +31,12 @@ class EntriesController < ApplicationController
     @entry.update_photo
   end
 
+  def pull
+  end
+
+  def search
+  end
+
   private
   def entry_params
     params.require(:entry).permit(:title, :description, :thumbnail)

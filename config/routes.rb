@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
   get 'search'               => 'search#index'
   get 'search/:type/:query/:t'  => 'search#query'
+
+  get 'entries/pull/:t/:q'   => 'entries#pull'
+  get 'entries/search/:t/:q' => 'entries#search'
   get 'entries/remove/:id'   => 'entries#delete'
   get 'entries/add/:id'      => 'entries#add'
   get '/entries/'            => 'entries#new'
