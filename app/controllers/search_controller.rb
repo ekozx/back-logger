@@ -54,7 +54,8 @@ class SearchController < ApplicationController
   end
   def query
     query = params[:query]
-
+    logger = Logger.new('log/development.log')
+    #need to test if we're at the backlogs page
     if params[:type] == "entries"
       @results = Entry.search query, limit: 10, page: params[:page], per_page: 10
     else

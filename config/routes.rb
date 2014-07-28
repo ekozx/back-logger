@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
+  #TODO: Refactor these with better namespaces
   # You can have the root of your site routed with "root"
   root 'backlog#index'
   resources :entries

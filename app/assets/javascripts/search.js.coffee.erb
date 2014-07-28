@@ -11,21 +11,25 @@ $ ->
     $('.pagination').hide()
     $('.loading').hide()
   appendControllerData = ( data, type, list ) ->
-    for k,v of data
-      if type == 'entries'
-        list.append("<li id='" + v['id'] + "'><a href='/entries/" + v['id'] + "'>" + v['title'] + "</a></li>")
-      else
-        console.log v['name']
-        list.append("<li id='" + v['id'] + "'>" + v['name'] + "</li>")
-  window.appendRequestData = (data) ->
-    console.log data
+    loaded()
+    if type == 'entries'
+      for k,v of data
+        html = "<img src='" + v['thumbnail_file_name'] + "'><li id='" + v['id'] + "'>" + v['title']
+        html += "</a></li>"
+        list.append(html)
+    else
+      for k,v of data
+        amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
+        #TODO: get the image
+        amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
+        list.append("<img src=' " + amazonPath + " '><li id='" + v['id'] + "'>" + v['name'] + "</li>")
+  window.appendRequestData = ( data ) ->
+    loaded()
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
       html = "<img src='" + movie["posters"]["detailed"] + "'><li id='" + movie['id'] + "'><a href='/entries/"
       html +=  movie['id'] + "'>" + movie['title'] + "</a></li>"
       list.append(html)
-
-    loaded()
 
   $('.depth').on 'click', ( event ) ->
     loading()
@@ -41,21 +45,21 @@ $ ->
     loaded()
     if keycode == 13 && type == 'entries'
       event.preventDefault()
-      entry.remove() for entry in entries
+      # entry.remove() for entry in entries
       loading()
       url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
       url += encodeURI(searchValue)
       url += "&page_limit=5"
       url += "&callback=appendRequestData"
-      console.log url
       $.ajax url,
         type: 'GET',
         crossDomain: true,
         dataType: 'jsonp',
         jsonpCallback: 'appendRequestData',
-        error: (jqXHR, textStatus, errorThrown) ->
+        error: ( jqXHR, textStatus, errorThrown ) ->
           alert "AJAX Error: #{textStatus}"
-    else if url != 'search/users/' or url != 'search/entries/'
+    else if url != 'search/users/' && url != 'search/entries/' && url != 'search/entries//no'
+      loading()
       $.ajax url,
         type: 'GET',
         error: ( jqXHR, textStatus, errorThrown ) ->
