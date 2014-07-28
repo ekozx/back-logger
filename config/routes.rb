@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :registration => 'users', :omniauth_callbacks => "omniauth_callbacks" }
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
+  get 'backlog/unbuilt/:t/:d:i'      => 'backlog#unbuilt'
   get 'search'               => 'search#index'
   get 'search/:type/:query/:t'  => 'search#query'
-
   get 'entries/pull/:t/:q'   => 'entries#pull'
   get 'entries/search/:t/:q' => 'entries#search'
   get 'entries/remove/:id'   => 'entries#delete'

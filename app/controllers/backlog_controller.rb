@@ -9,6 +9,12 @@ class BacklogController < ApplicationController
     end
   end
 
+  def unbuilt
+    entry = Entry.create(title: params[:title], description: params[:description], imdb_id: params[:imdb_id])
+    entry.update_photo
+    render entry_path(entry.id)
+  end
+
   def add_entry
     puts "START PARAMs"
     puts params

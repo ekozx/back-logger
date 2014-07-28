@@ -4,6 +4,10 @@
 
 #TODO: Handle more error cases in AJAX
 $ ->
+  #TODO: Build a new new entry click here!!!
+  $('.unbuilt').on 'click', ( event ) ->
+
+
   loading = () ->
     $('.loading').show()
     $('.pagination').show()
@@ -12,23 +16,31 @@ $ ->
     $('.loading').hide()
   appendControllerData = ( data, type, list ) ->
     loaded()
+    #TODO: fix this in the request, doing it in the javascript is too horrific for words
+    max = 5
     if type == 'entries'
       for k,v of data
-        html = "<img src='" + v['thumbnail_file_name'] + "'><li id='" + v['id'] + "'>" + v['title']
-        html += "</a></li>"
-        list.append(html)
+        if max > 0
+          #TODO: handle null picture
+          html = "<a href='/entries/" + v['id'] + "'>"
+          html += "<img src='" + v['thumbnail_file_name'] + "'><li id='" + v['id'] + "'>" + v['title']
+          html += "</li></a>"
+          list.append(html)
+          max--
     else
+      max = 5
       for k,v of data
         amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
-        #TODO: get the image
         amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
         list.append("<img src=' " + amazonPath + " '><li id='" + v['id'] + "'>" + v['name'] + "</li>")
   window.appendRequestData = ( data ) ->
     loaded()
+    console.log data
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
-      html = "<img src='" + movie["posters"]["detailed"] + "'><li id='" + movie['id'] + "'><a href='/entries/"
-      html +=  movie['id'] + "'>" + movie['title'] + "</a></li>"
+      html = "<div id='unbuilt'><img src='" + movie["posters"]["detailed"] + "'><li id='" + movie['id'] + "'>"
+      html += "<a href='/backlog/unbuilt/"
+      html +=  movie['id'] + "'>" + movie['title'] + "</a></li></div>"
       list.append(html)
 
   $('.depth').on 'click', ( event ) ->
