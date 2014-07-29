@@ -4,10 +4,6 @@
 
 #TODO: Handle more error cases in AJAX
 $ ->
-  #TODO: Build a new new entry click here!!!
-  $('.unbuilt').on 'click', ( event ) ->
-
-
   loading = () ->
     $('.loading').show()
     $('.pagination').show()
@@ -21,9 +17,10 @@ $ ->
     if type == 'entries'
       for k,v of data
         if max > 0
-          #TODO: handle null picture
+          picture = v['thumbnail_file_name']
+          if picture == null then picture = ""
           html = "<a href='/entries/" + v['id'] + "'>"
-          html += "<img src='" + v['thumbnail_file_name'] + "'><li id='" + v['id'] + "'>" + v['title']
+          html += "<img src='" + picture + "'><li id='" + v['id'] + "'>" + v['title']
           html += "</li></a>"
           list.append(html)
           max--
@@ -33,15 +30,34 @@ $ ->
         amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
         amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
         list.append("<img src=' " + amazonPath + " '><li id='" + v['id'] + "'>" + v['name'] + "</li>")
+  handler = ( event ) ->
+    event.preventDefault()
+    loading()
+    console.log @.id
+    values = @.id.split("~~")
+    if values[2] == undefined then values[2] = ""
+    if values[1] == "" then values[1] = "No description"
+    # + values[0] + "/" + values[1] + "/" + values[2]
+    url = "/backlog/unbuilt/"
+    console.log(url)
+    $.get(url,  {movie_info: values} ).done ( data ) ->
+      console.log data
+      loaded()
+      window.location.replace("/entries/" + data['id'])
   window.appendRequestData = ( data ) ->
     loaded()
     console.log data
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
-      html = "<div id='unbuilt'><img src='" + movie["posters"]["detailed"] + "'><li id='" + movie['id'] + "'>"
-      html += "<a href='/backlog/unbuilt/"
-      html +=  movie['id'] + "'>" + movie['title'] + "</a></li></div>"
+      alternate = movie['alternate_ids']
+      if alternate != undefined then imdb = alternate['imdb'] else imdb = "unknown"
+      html = "<a href='#' class='unbuilt' id='"
+      html += movie['title'] + "~~" + movie['synopsis'] + "~~" + imdb + "'>"
+      html += "<img src='" + movie["posters"]["detailed"] + "'><li>"
+      html += movie['title'] + "</li></a>"
+      html = $(html)
       list.append(html)
+      html.click(handler)
 
   $('.depth').on 'click', ( event ) ->
     loading()
@@ -70,7 +86,8 @@ $ ->
         jsonpCallback: 'appendRequestData',
         error: ( jqXHR, textStatus, errorThrown ) ->
           alert "AJAX Error: #{textStatus}"
-    else if url != 'search/users/' && url != 'search/entries/' && url != 'search/entries//no'
+    else if (url != 'search/users/' && url != 'search/entries/' && url != 'search/entries//no' && url != '/null')
+      console.log(url)
       loading()
       $.ajax url,
         type: 'GET',

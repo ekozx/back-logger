@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   searchkick
-
+  #TODO: Adding a blank email causes a duplicate key error!
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
   # Include default devise modules. Others available are:
