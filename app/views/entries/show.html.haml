@@ -1,7 +1,7 @@
 - if @entry.photo.blank?
   = image_tag (@entry.thumbnail(:thumb))
 - else
-  = image_tag(("http://image.tmdb.org/t/p/w500" + @entry.photo))
+  = image_tag(("http://image.tmdb.org/t/p/w500/" + @entry.photo))
 %h1= @entry.title
 %p= @entry.description
 = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true

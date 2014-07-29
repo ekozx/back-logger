@@ -25,10 +25,17 @@ class Entry < ActiveRecord::Base
   end
 
   def update_photo
+    Tmdb::Api.key(ENV["TMDB_KEY"])
     #update the photo on show
     if self.photo.blank? && !self.imdb_id.blank?
+      log = Logger.new('log/development.log')
+      log.debug("TMDB DEBUG:")
+      log.debug(ENV["TMDB_KEY"])
+      log.debug("tt" + self.imdb_id)
       query = Tmdb::Find.imdb_id("tt" + self.imdb_id)
-      unless query.movie_results.blank?
+      log.debug(query)
+      movie_results = query.movie_results
+      unless movie_results.blank?
         movie = movie_results.first
         self.update(photo: movie.poster_path) unless movie.blank?
       end
