@@ -10,6 +10,11 @@ $ ->
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
+  addHandler = ( event ) ->
+    url = '/entries/add/' + @.id
+    event.preventDefault()
+    $.get(url, {id: @.id}).done () ->
+      console.log("finished add handler")
   appendControllerData = ( data, type, list ) ->
     loaded()
     #TODO: fix this in the request, doing it in the javascript is too horrific for words
@@ -22,7 +27,10 @@ $ ->
           html = "<a href='/entries/" + v['id'] + "'>"
           html += "<img src='" + picture + "'><li id='" + v['id'] + "'>" + v['title']
           html += "</li></a>"
+          html += "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
+          html = $(html)
           list.append(html)
+          html.click(addHandler)
           max--
     else
       max = 5

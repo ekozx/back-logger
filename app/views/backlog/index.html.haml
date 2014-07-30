@@ -31,7 +31,10 @@
     %ul
       - @entries.each do |entry|
         %li
-          = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
+          - if entry.photo.blank?
+            = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
+          - else
+            = link_to image_tag("http://image.tmdb.org/t/p/w500/" + entry.photo), entry_path(entry.id)
           = entry.title
           = link_to "Delete", entry, remote: true, method: :delete
       =paginate @entries

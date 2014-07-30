@@ -18,26 +18,32 @@ class Entry < ActiveRecord::Base
     end
 
     def validate
-      if Entry.where(title: @entry.title, description: @entry.description).exists?
-        @entry.errors[:base] << "Duplicate title/description"
+      entries = Entry.where(title: @entry.title)
+      if entries.count > 0
+        if entries.where(description: @entry.description) && !@entry.description.blank?
+          @entry.errors[:base] << "Duplicate title and description"
+        end
       end
     end
   end
 
   def update_photo
     Tmdb::Api.key(ENV["TMDB_KEY"])
+    logger = Logger.new('log/development.log')
+    logger.debug("FILM")
+    logger.debug(self)
     #update the photo on show
     if self.photo.blank? && !self.imdb_id.blank?
-      log = Logger.new('log/development.log')
-      log.debug("TMDB DEBUG:")
-      log.debug(ENV["TMDB_KEY"])
-      log.debug("tt" + self.imdb_id)
       query = Tmdb::Find.imdb_id("tt" + self.imdb_id)
-      log.debug(query)
       movie_results = query.movie_results
       unless movie_results.blank?
         movie = movie_results.first
-        self.update(photo: movie.poster_path) unless movie.blank?
+        unless movie.blank?
+          self.photo = movie.poster_path
+          logger.debug("SAVING:")
+          self.save!(validate: false)
+        end
+        logger.debug(self)
       end
     end
   end
