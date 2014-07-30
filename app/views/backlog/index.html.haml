@@ -28,7 +28,7 @@
 
   %h3 Your backlog:
   - if current_user.backlog != nil
-    %ul
+    %ul.backlog
       - @entries.each do |entry|
         %li
           - if entry.photo.blank?

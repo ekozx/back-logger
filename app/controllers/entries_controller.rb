@@ -17,7 +17,19 @@ class EntriesController < ApplicationController
   def add
     entry_id = params[:id]
     if Entry.pluck(:id).include? entry_id.to_i then Entry.find(entry_id).add_entry!(current_user.backlog.id, entry_id) end
-    render nothing: true
+    logger = Logger.new('log/development.log')
+
+    if params[:append].blank?
+      logger.debug("NOT RENDERING")
+      render nothing: true
+    else
+      logger.debug("RENDERING:")
+      logger.debug()
+      entry = Entry.find(params[:id])
+      entry.update_photo
+      logger.debug(Entry.find(params[:id]))
+      render json: entry
+    end
   end
 
   def destroy

@@ -6,7 +6,13 @@ class BacklogController < ApplicationController
       Backlog.create(user_id: current_user.id)
     end
 
-    @entries = current_user.backlog.entries.page(params[:page]).per(10)
+    #probably a better way of doing this but it'll work for now
+    entry_ids = Association.where(backlog_id: current_user.backlog.id).order(:created_at).pluck(:entry_id)
+    # entries = Entry.find(entry_ids)
+    # sorted_entries = entries.collect { |id| entries.detect { |x| x.id == id } }
+    # @entries = current_user.backlog.entries.page(params[:page]).per(10)
+    # @entries = sorted_entries.page(params[:page]).per(10)
+    @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(10)
   end
 
   def unbuilt

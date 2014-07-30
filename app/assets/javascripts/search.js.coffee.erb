@@ -13,8 +13,20 @@ $ ->
   addHandler = ( event ) ->
     url = '/entries/add/' + @.id
     event.preventDefault()
-    $.get(url, {id: @.id}).done () ->
-      console.log("finished add handler")
+    $.get(url, {id: @.id, append: true}).done ( data ) ->
+      console.log data
+      if data['photo'] != null
+        photo = data['photo']
+      else if data['thumbnail_file_name'] != null
+        photo = data['thumbnail_file_name']
+      else
+        photo = '/assets/thumb/missing.png'
+      html = "<li><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "'>"
+      html += "</a>" + data['title'] + "<a data-method='delete' data-remote='true' href='/entries/"
+      html += data['id'] + "' rel='nofollow'>"
+      html += "Delete</a>"
+      html = $(html)
+      $('.backlog').prepend(html)
   appendControllerData = ( data, type, list ) ->
     loaded()
     #TODO: fix this in the request, doing it in the javascript is too horrific for words
@@ -27,10 +39,12 @@ $ ->
           html = "<a href='/entries/" + v['id'] + "'>"
           html += "<img src='" + picture + "'><li id='" + v['id'] + "'>" + v['title']
           html += "</li></a>"
-          html += "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
+          add = "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
+          add = $(add)
           html = $(html)
           list.append(html)
-          html.click(addHandler)
+          list.append(add)
+          add.click(addHandler)
           max--
     else
       max = 5
