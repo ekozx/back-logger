@@ -4,4 +4,8 @@
   = image_tag(("http://image.tmdb.org/t/p/w500/" + @entry.photo))
 %h1= @entry.title
 %p= @entry.description
-= link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
+-# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
+- if current_user.backlog.entries.include?(@entry)
+  %p This entry is in your backlog
+-else
+  = link_to "Add to your backlog", "add/" + @entry.id.to_s, remote: true, method: :get

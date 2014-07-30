@@ -31,10 +31,12 @@
     %ul.backlog
       - @entries.each do |entry|
         %li
-          - if entry.photo.blank?
-            = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
+          -if entry.thumbnail_file_name.blank? && entry.photo.blank?
+            = link_to image_tag('thumb/missing.png'), entry_path(entry.id)
+          - elsif entry.photo.blank?
+            = link_to image_tag(entry.thumbnail_file_name), entry_path(entry.id)
           - else
             = link_to image_tag("http://image.tmdb.org/t/p/w500/" + entry.photo), entry_path(entry.id)
           = entry.title
-          = link_to "Delete", entry, remote: true, method: :delete
+          = link_to "Delete", entry, remote: true, method: :delete, class: "deleteEntry"
       =paginate @entries
