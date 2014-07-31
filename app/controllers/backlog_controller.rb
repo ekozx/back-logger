@@ -31,13 +31,14 @@ class BacklogController < ApplicationController
     render json: entry
   end
 
-  def add_entry
-    current_user.backlog.add_entry!(params[:id], current_user.backlog.id)
-    render nothing: true
-  end
-
-  def delete_entry
-    current_user.backlog.remove_entry!(params[:id])
-    render nothing: true
-  end
+  #TODO: See if these methods actually do something... Might have been part of the earlier version
+  # def add_entry
+  #   current_user.backlog.add_entry!(params[:id], current_user.backlog.id)
+  #   render nothing: true
+  # end
+  #
+  # def delete_entry
+  #   current_user.backlog.remove_entry!(params[:id])
+  #   render nothing: true
+  # end
 end

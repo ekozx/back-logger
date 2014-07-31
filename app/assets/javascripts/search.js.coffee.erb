@@ -4,29 +4,32 @@
 
 #TODO: Handle more error cases in AJAX
 $ ->
+  #TODO: DRY the handlers
   loading = () ->
     $('.loading').show()
     $('.pagination').show()
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
+  appendEntryHTML = ( data ) ->
+    if data['photo'] != null
+      photo = data['photo']
+    else if data['thumbnail_file_name'] != null
+      photo = data['thumbnail_file_name']
+    else
+      photo = '/assets/thumb/missing.png'
+    html = "<li><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "'>"
+    html += "</a>" + data['title'] + "<a data-method='delete' data-remote='true' href='/entries/"
+    html += data['id'] + "' rel='nofollow'>"
+    html += "Delete</a>"
+    html = $(html)
+    $('.backlog').prepend(html)
   addHandler = ( event ) ->
-    url = '/entries/add/' + @.id
     event.preventDefault()
+    url = '/entries/add/' + @.id
     $.get(url, {id: @.id, append: true}).done ( data ) ->
       console.log data
-      if data['photo'] != null
-        photo = data['photo']
-      else if data['thumbnail_file_name'] != null
-        photo = data['thumbnail_file_name']
-      else
-        photo = '/assets/thumb/missing.png'
-      html = "<li><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "'>"
-      html += "</a>" + data['title'] + "<a data-method='delete' data-remote='true' href='/entries/"
-      html += data['id'] + "' rel='nofollow'>"
-      html += "Delete</a>"
-      html = $(html)
-      $('.backlog').prepend(html)
+      appendEntryHTML(data)
   appendControllerData = ( data, type, list ) ->
     loaded()
     #TODO: fix this in the request, doing it in the javascript is too horrific for words
@@ -52,34 +55,53 @@ $ ->
         amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
         amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
         list.append("<img src=' " + amazonPath + " '><li id='" + v['id'] + "'>" + v['name'] + "</li>")
-  handler = ( event ) ->
+  buildHandler = ( event ) ->
     event.preventDefault()
+    console.log @.class
     loading()
-    console.log @.id
     values = @.id.split("~~")
+    clickedElement = @
     if values[2] == undefined then values[2] = ""
     if values[1] == "" then values[1] = "No description"
-    # + values[0] + "/" + values[1] + "/" + values[2]
     url = "/backlog/unbuilt/"
     console.log(url)
     $.get(url,  {movie_info: values} ).done ( data ) ->
       console.log data
       loaded()
-      window.location.replace("/entries/" + data['id'])
+      console.log @
+      #TODO: Make the class unbuilt more descriptive
+      # console.log @.className('add')
+      if clickedElement.className == 'unbuilt'
+        window.location.replace("/entries/" + data['id'])
+      else if clickedElement.className == 'add'
+        #create a request to add it to the backlog
+        console.log data
+        url = '/entries/add/' + data['id']
+        $.get(url, { id: data['id'], append: true } ).done ( data ) ->
+          #append it on success
+          appendEntryHTML(data)
   window.appendRequestData = ( data ) ->
     loaded()
     console.log data
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
+      #Create the data
       alternate = movie['alternate_ids']
       if alternate != undefined then imdb = alternate['imdb'] else imdb = "unknown"
+      requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "") + "~~" + imdb
+      #Build the html
       html = "<a href='#' class='unbuilt' id='"
-      html += movie['title'] + "~~" + movie['synopsis'] + "~~" + imdb + "'>"
-      html += "<img src='" + movie["posters"]["detailed"] + "'><li>"
+      html += requestData + "'><img src='" + movie["posters"]["detailed"] + "'><li>"
       html += movie['title'] + "</li></a>"
       html = $(html)
+      add = "<a class='add'  id='" + requestData + "' href='#'>Add</a><br>"
+      add = $(add)
+      #Append the html
       list.append(html)
-      html.click(handler)
+      list.append(add)
+      #Add event handlers
+      html.click(buildHandler)
+      add.click(buildHandler)
 
   $('.depth').on 'click', ( event ) ->
     loading()

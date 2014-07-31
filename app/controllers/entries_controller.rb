@@ -1,6 +1,7 @@
 class EntriesController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
 
+  #TODO: ADD METHOD COMMENTS!! My code base is getting to large to remember exactly every method lol
   def new
     @entry = Entry.new
   end
@@ -14,9 +15,12 @@ class EntriesController < ApplicationController
     render nothing: true
   end
 
+  #TODO: Export this shit to the model!
   def add
     entry_id = params[:id]
-    if Entry.pluck(:id).include? entry_id.to_i then Entry.find(entry_id).add_entry!(current_user.backlog.id, entry_id) end
+    if Entry.pluck(:id).include? entry_id.to_i
+      Entry.find(entry_id).add_entry!(current_user.backlog.id, entry_id)
+    end
     logger = Logger.new('log/development.log')
 
     if params[:append].blank?
