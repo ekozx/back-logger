@@ -6,3 +6,4 @@
       %li
         = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
         = entry.title
+        = link_to "Add", "/entries/add/" + entry.id.to_s, remote: true, method: :get
