@@ -15,10 +15,10 @@ $ ->
   #     success: (response) ->
   #       console.log(response)
 
-  $("a[data-remote]").on 'mousedown', (event) ->
+  $("a.deleteEntry[data-remote]").on 'mousedown', (event) ->
     console.log("mousedown")
     $(@).parent().append("deleting...")
-  $("a[data-remote]").on "ajax:success", (e, data, status, xhr) ->
+  $("a.deleteEntry[data-remote]").on "ajax:success", (e, data, status, xhr) ->
     console.log("ajax success")
     $(@).parent().hide()
     $(@).parent().append("deleted!")

@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
   def unfollow
     puts params["id"]
-    current_user.unfollow!(params["id"], current_user.id)
+    current_user.unfollow!(params[:id], current_user.id)
     render nothing: true
   end
 end

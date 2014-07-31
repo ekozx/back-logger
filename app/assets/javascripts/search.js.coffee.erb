@@ -5,7 +5,7 @@
 #TODO: Handle more error cases in AJAX
 #TODO: Try doing this with the helpers from:
 #      http://edgeguides.rubyonrails.org/working_with_javascript_in_rails.html#a-simple-example
-#      
+#
 $ ->
   #TODO: DRY the handlers
   loading = () ->
@@ -33,34 +33,6 @@ $ ->
     $.get(url, {id: @.id, append: true}).done ( data ) ->
       console.log data
       appendEntryHTML(data)
-  appendControllerData = ( data, type, list ) ->
-    loaded()
-    max = 5
-    if type == 'entries'
-      for k,v of data
-        if max > 0
-          picture = v['thumbnail_file_name']
-          if picture == null then picture = ""
-          html = "<a href='/entries/" + v['id'] + "'>"
-          html += "<img src='" + picture + "'><li id='" + v['id'] + "'>" + v['title']
-          html += "</li></a>"
-          add = "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
-          add = $(add)
-          html = $(html)
-          list.append(html)
-          list.append(add)
-          add.click(addHandler)
-          max--
-    else
-      max = 5
-      for k,v of data
-        amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
-        #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
-        amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-        add = "<a href='" + "#" + "'>Follow</a>"
-        html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "'></a><li id='" + v['id'] + "'>" + v['name']
-        html += add + "</li>"
-        list.append(html)
   buildHandler = ( event ) ->
     event.preventDefault()
     console.log @.class
@@ -86,6 +58,42 @@ $ ->
         $.get(url, { id: data['id'], append: true } ).done ( data ) ->
           #append it on success
           appendEntryHTML(data)
+  followHandler = ( event ) ->
+    event.preventDefault()
+    console.log @.id
+    url = '/users/follow/' + @.id
+    $.get(url, { id: @.id }).done ( data ) ->
+      console.log("done!")
+  appendControllerData = ( data, type, list ) ->
+    loaded()
+    max = 5
+    if type == 'entries'
+      for k,v of data
+        if max > 0
+          picture = v['thumbnail_file_name']
+          if picture == null then picture = ""
+          html = "<a href='/entries/" + v['id'] + "'>"
+          html += "<img src='" + picture + "'><li id='" + v['id'] + "'>" + v['title']
+          html += "</li></a>"
+          add = "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
+          add = $(add)
+          html = $(html)
+          list.append(html)
+          list.append(add)
+          add.click(addHandler)
+          max--
+    else
+      max = 5
+      for k,v of data
+        amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
+        #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
+        amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
+        add = "<a href='#' class='follow' id='" + v['id'] + "'>Follow</a><br>"
+        html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "'></a><li id='" + v['id'] + "'>" + v['name'] + "</li>"
+        add = $(add)
+        list.append(html)
+        list.append(add)
+        add.click(followHandler)
   window.appendRequestData = ( data ) ->
     loaded()
     console.log data
