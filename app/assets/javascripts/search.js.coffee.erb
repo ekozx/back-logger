@@ -52,8 +52,12 @@ $ ->
       max = 5
       for k,v of data
         amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
+        #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
         amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-        list.append("<img src=' " + amazonPath + " '><li id='" + v['id'] + "'>" + v['name'] + "</li>")
+        add = "<a href='" + "#" + "'>Follow</a>"
+        html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "'></a><li id='" + v['id'] + "'>" + v['name']
+        html += add + "</li>"
+        list.append(html)
   buildHandler = ( event ) ->
     event.preventDefault()
     console.log @.class
@@ -119,9 +123,11 @@ $ ->
       event.preventDefault()
       # entry.remove() for entry in entries
       loading()
+      pageLimit = "&page_limit=5"
+      if window.location.pathname == '/search' then pageLimit = "&page_limit=10"
       url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
       url += encodeURI(searchValue)
-      url += "&page_limit=5"
+      url += pageLimit
       url += "&callback=appendRequestData"
       $.ajax url,
         type: 'GET',
@@ -138,3 +144,5 @@ $ ->
         error: ( jqXHR, textStatus, errorThrown ) ->
         success: ( data ) ->
           appendControllerData(data, type, list)
+    else if list.children().length <= 0
+      list.prepend("<p>If we don't have what you're looking for press enter to query rotten tomatoes</p>")
