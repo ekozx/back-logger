@@ -13,7 +13,7 @@ $ ->
     $('.loading').hide()
   appendEntryHTML = ( data ) ->
     if data['photo'] != null
-      photo = data['photo']
+      photo = "http://image.tmdb.org/t/p/w500/" + data['photo']
     else if data['thumbnail_file_name'] != null
       photo = data['thumbnail_file_name']
     else
@@ -32,7 +32,6 @@ $ ->
       appendEntryHTML(data)
   appendControllerData = ( data, type, list ) ->
     loaded()
-    #TODO: fix this in the request, doing it in the javascript is too horrific for words
     max = 5
     if type == 'entries'
       for k,v of data
@@ -88,7 +87,8 @@ $ ->
       #Create the data
       alternate = movie['alternate_ids']
       if alternate != undefined then imdb = alternate['imdb'] else imdb = "unknown"
-      requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "") + "~~" + imdb
+      requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "")
+      requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
       #Build the html
       html = "<a href='#' class='unbuilt' id='"
       html += requestData + "'><img src='" + movie["posters"]["detailed"] + "'><li>"

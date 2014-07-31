@@ -21,7 +21,7 @@ class Entry < ActiveRecord::Base
       entries = Entry.where(title: @entry.title)
       if entries.count > 0
         if entries.where(description: @entry.description) && !@entry.description.blank?
-          @entry.errors[:base] << "Duplicate title and description"
+          @entry.errors[:base] << "Duplicate title/description pair"
         end
       end
     end

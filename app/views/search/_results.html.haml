@@ -2,7 +2,7 @@
   - @results.each do |result|
     %li
       - if @group == 'entries'
-        = link_to image_tag(result.thumbnail(:thumb)), entry_path(result.id)
+        = link_to image_tag(result.thumbnail_file_name), entry_path(result.id)
         = link_to result.title, entry_path(result.id)
       - else
         = link_to image_tag(result.avatar.url(:thumb)), entry_path(result.id)

@@ -19,10 +19,11 @@ class BacklogController < ApplicationController
     description = params["movie_info"][1]
     logger.debug(params["movie_info"][2])
     imdb = params["movie_info"][2]
+    thumb = params["movie_info"][3]
     if Entry.exists?(title: title, description: description)
       entry = Entry.where(title: title, description: description).take
     else
-      entry = Entry.create(title: title, description: description, imdb_id: imdb)
+      entry = Entry.create(title: title, description: description, imdb_id: imdb, thumbnail_file_name: thumb)
     end
     entry.update_photo
     logger.debug("ID:")
