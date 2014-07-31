@@ -3,5 +3,4 @@
   - @followed_users.all.each do |followed_user|
     %li
       = link_to (followed_user.name || followed_user.nickname), user_path(followed_user)
-      / = content_tag(:span, "unfollow", class: "following", data: { id: followed_user.id} )
-      = link_to "unfollow", "/users/unfollow/" + followed_user.id.to_s, remote: true, method: :get
+      = link_to "unfollow", "/users/unfollow/" + followed_user.id.to_s, id: "unfollow", remote: true, method: :get

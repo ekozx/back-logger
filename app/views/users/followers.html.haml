@@ -6,3 +6,4 @@
     - @followers.all.each do |follower|
       %li
         = link_to follower.first_name, user_path(follower)
+        = link_to "follow", "/users/follow/" + follower.id.to_s, remote: true, method: :get

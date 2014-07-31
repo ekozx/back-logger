@@ -104,11 +104,11 @@ class User < ActiveRecord::Base
     self.relationships.find_by(followed_id: other_user.id)
   end
 
-  def follow!(other_user)
-    self.relationships.create!(followed_id: other_user.id)
+  def follow!(followed_id, follower_id)
+    self.relationships.create!(followed_id: followed_id, follower_id: followed_id)
   end
 
-  def unfollow!(id)
-    self.relationships.find_by(followed_id: id).destroy
+  def unfollow!(followed_id, follower_id)
+    self.relationships.find_by(followed_id: followed_id, follower_id: follower_id).destroy
   end
 end

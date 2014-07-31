@@ -1,4 +1,5 @@
 = image_tag(@user.avatar.url(:medium))
+= link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get
 - if @user_backlog != nil
   %ul
     - @user_backlog.entries.all.each do |entry|

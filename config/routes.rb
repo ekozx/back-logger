@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'users/edit'           => 'users#edit'
   get 'users/followers'      => 'users#followers'
   get 'users/following'      => 'users#following'
+  get 'users/follow/:id'     => 'users#follow'
   get 'users/unfollow/:id'   => 'users#unfollow'
 
   resources :users, only: [:show]
