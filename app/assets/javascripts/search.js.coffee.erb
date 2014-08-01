@@ -21,7 +21,7 @@ $ ->
       photo = data['thumbnail_file_name']
     else
       photo = '/assets/thumb/missing.png'
-    html = "<li><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "'>"
+    html = "<li><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + " class='img-circle''>"
     html += "</a>" + data['title'] + "<a data-method='delete' data-remote='true' href='/entries/"
     html += data['id'] + "' rel='nofollow'>"
     html += "Delete</a>"
@@ -73,7 +73,7 @@ $ ->
           picture = v['thumbnail_file_name']
           if picture == null then picture = ""
           html = "<a href='/entries/" + v['id'] + "'>"
-          html += "<img src='" + picture + "'><li id='" + v['id'] + "'>" + v['title']
+          html += "<img src='" + picture + "' class='img-circle'><li id='" + v['id'] + "'>" + v['title']
           html += "</li></a>"
           add = "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
           add = $(add)
@@ -89,7 +89,8 @@ $ ->
         #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
         amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
         add = "<a href='#' class='follow' id='" + v['id'] + "'>Follow</a><br>"
-        html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "'></a><li id='" + v['id'] + "'>" + v['name'] + "</li>"
+        html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a><li id='"
+        html += v['id'] + "'>" + v['name'] + "</li>"
         add = $(add)
         console.log html
         list.append(html)
@@ -107,7 +108,7 @@ $ ->
       requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
       #Build the html
       html = "<a href='#' class='unbuilt' id='"
-      html += requestData + "'><img src='" + movie["posters"]["detailed"] + "'><li>"
+      html += requestData + "'><img src='" + movie["posters"]["detailed"] + "' class='img-circle'><li>"
       html += movie['title'] + "</li></a>"
       html = $(html)
       add = "<a class='add'  id='" + requestData + "' href='#'>Add</a><br>"
@@ -125,7 +126,7 @@ $ ->
   $('#search').on 'keypress', ( event ) ->
     keycode = event.keyCode
     # type = $('input[name=group]:checked').val()
-    type = 'entries'
+    type = "entries"
     if window.location.pathname == "/users/following" then type = "users"
     searchValue = $('#search').children().first().val()
     url = "/search/" + type + "/" + searchValue + "/no"
