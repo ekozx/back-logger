@@ -4,9 +4,10 @@ class BacklogController < ApplicationController
   def index
     if current_user.backlog.nil?
       Backlog.create(user_id: current_user.id)
+      @entries = []
+    else
+      @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(10)
     end
-
-    @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(10)
   end
 
   def unbuilt

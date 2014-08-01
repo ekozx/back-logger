@@ -1,7 +1,9 @@
-- if @entry.photo.blank?
-  = image_tag (@entry.thumbnail(:thumb))
+- if not @entry.photo.blank?
+  = image_tag("http://image.tmdb.org/t/p/w500/" + @entry.photo)
+- elsif not @entry.thumbnail_file_name.blank?
+  = image_tag (@entry.thumbnail_file_name)
 - else
-  = image_tag(("http://image.tmdb.org/t/p/w500/" + @entry.photo))
+  = image_tag ('thumb/missing.png')
 %h1= @entry.title
 %p= @entry.description
 -# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
