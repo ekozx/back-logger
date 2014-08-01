@@ -91,6 +91,7 @@ $ ->
         add = "<a href='#' class='follow' id='" + v['id'] + "'>Follow</a><br>"
         html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "'></a><li id='" + v['id'] + "'>" + v['name'] + "</li>"
         add = $(add)
+        console.log html
         list.append(html)
         list.append(add)
         add.click(followHandler)
@@ -123,9 +124,11 @@ $ ->
 
   $('#search').on 'keypress', ( event ) ->
     keycode = event.keyCode
-    type = $('input[name=group]:checked').val()
+    # type = $('input[name=group]:checked').val()
+    type = 'entries'
+    if window.location.pathname == "/users/following" then type = "users"
     searchValue = $('#search').children().first().val()
-    url = "search/" + type + "/" + searchValue + "/no"
+    url = "/search/" + type + "/" + searchValue + "/no"
     list = $('#list')
     entries = list.children()
     entry.remove() for entry in entries
@@ -154,6 +157,7 @@ $ ->
         type: 'GET',
         error: ( jqXHR, textStatus, errorThrown ) ->
         success: ( data ) ->
+          console.log data
           appendControllerData(data, type, list)
     else if list.children().length <= 0
       list.prepend("<p>If we don't have what you're looking for press enter to query rotten tomatoes</p>")
