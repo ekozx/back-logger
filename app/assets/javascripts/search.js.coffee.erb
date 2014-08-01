@@ -124,6 +124,7 @@ $ ->
     loading()
 
   $('#search').on 'keypress', ( event ) ->
+    console.log "hello"
     keycode = event.keyCode
     # type = $('input[name=group]:checked').val()
     type = "entries"

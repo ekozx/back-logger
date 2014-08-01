@@ -12,20 +12,20 @@ ul {
 }
 
 @media screen and (max-width: 1500px) {
-  .btn-warning {
+  .fa-trash-o {
     float: right;
     margin-top: 10px;
   }
 }
 
 @media screen and (max-width: 1000px) {
-  .btn-warning {
+  .fa-trash-o {
     display: none !important;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .btn-warning {
+  .fa-trash-o {
     margin-left: auto;
     margin-right: auto;
     display: block !important;
