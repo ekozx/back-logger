@@ -22,3 +22,4 @@ $ ->
     console.log("ajax success")
     $(@).parent().hide()
     $(@).parent().append("deleted!")
+    

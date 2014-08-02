@@ -21,11 +21,15 @@ $ ->
     else
       photo = '/assets/thumb/missing.png'
     html = "<li class='well well-sm'><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
-    html += "</a>" + data['title'] + "<a class='deleteEntry' data-method='delete' data-remote='true' href='/entries/"
+    html += "</a>" + data['title'] + "<a class='deleteEntry' id='deleteTmp" + data['id'] + "' data-method='delete' data-remote='true' href='/entries/"
     html += data['id'] + "' rel='nofollow'>"
     html += "<i class='fa fa-trash-o fa-2x'></i></a>"
     html = $(html)
     $('.backlog').prepend(html)
+    del = $('#deleteTmp' + data['id'])
+    console.log del
+    del.click(() ->
+      html.hide())
   addHandler = ( event ) ->
     console.log(@)
     event.preventDefault()
@@ -72,7 +76,6 @@ $ ->
         if max > 0
           picture = v['thumbnail_file_name']
           if picture == null then picture = ""
-          #WHERE I LEFT OFF: (fixing the damn hard-coded html)
           html = "<li class='well well-sm'>"
           html += "<a href='/entries/" + v['id'] + "'><img src='" + picture + "' class='img-circle'></a>"
           html += v['title']
@@ -125,6 +128,8 @@ $ ->
   $('.depth').on 'click', ( event ) ->
     loading()
     @.parent().hide()
+  $('a#deleteTmp').on 'click', ( event ) ->
+    console.log @
   $('#search').on 'keypress', ( event ) ->
     console.log "hello"
     keycode = event.keyCode
