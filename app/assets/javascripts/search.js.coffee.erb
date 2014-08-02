@@ -14,8 +14,29 @@ $ ->
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
+  buildRequestHTML = ( requestData, picture, title, rt_id ) ->
+    html = "<li class='well well-sm'>"
+    html += "<a href='#' class='unbuilt' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
+    html += title
+    add = "<button class='btn btn-success'><a class='add"
+    add += "'  id='"+ requestData + "' href='#'>Add</a></button></li>"
+    html += add
+    # html = "<a href='#' class='unbuilt' id='"
+    # html += requestData + "'><img src='" + movie["posters"]["detailed"] + "' class='img-circle'><li>"
+    # html += movie['title'] + "</li></a>"
+    # add = "<a class='add'  id='" + requestData + "' href='#'>Add</a><br>"
+    # add = $("#add" + movie['id'])
+    # + "</li></a>"
+    return html
+  buildAttachedHTML = ( picture, title, id ) ->
+    html = "<li class='well well-sm'>"
+    html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
+    html += title
+    add = "<button class='btn btn-success add" + id + "'><a class='add"
+    add += "'  id='"+ id + "' href='#'>Add</a></button></li>"
+    html += add
+    return html
   appendEntryHTML = ( data ) ->
-    console.log data
     if data['thumbnail_file_name'] != null
       photo = data['thumbnail_file_name']
     else
@@ -27,47 +48,38 @@ $ ->
     html = $(html)
     $('.backlog').prepend(html)
     del = $('#deleteTmp' + data['id'])
-    console.log del
     del.click(() ->
       html.hide())
   addHandler = ( event ) ->
-    console.log(@)
     event.preventDefault()
     url = '/entries/add/' + @.id
     $.get(url, {id: @.id, append: true}).done ( data ) ->
-      console.log data
       appendEntryHTML(data)
   buildHandler = ( event ) ->
     event.preventDefault()
-    console.log @.class
     loading()
     values = @.id.split("~~")
     clickedElement = @
     if values[2] == undefined then values[2] = ""
     if values[1] == "" then values[1] = "No description"
+    console.log values
+    console.log clickedElement
     url = "/backlog/unbuilt/"
-    console.log(url)
     $.get(url,  {movie_info: values} ).done ( data ) ->
-      console.log data
       loaded()
-      console.log @
       #TODO: Make the class unbuilt more descriptive
-      # console.log @.className('add')
       if clickedElement.className == 'unbuilt'
         window.location.replace("/entries/" + data['id'])
       else if clickedElement.className == 'add'
         #create a request to add it to the backlog
-        console.log data
         url = '/entries/add/' + data['id']
         $.get(url, { id: data['id'], append: true } ).done ( data ) ->
           #append it on success
           appendEntryHTML(data)
   followHandler = ( event ) ->
     event.preventDefault()
-    console.log @.id
     url = '/users/follow/' + @.id
     $.get(url, { id: @.id }).done ( data ) ->
-      console.log("done!")
   appendControllerData = ( data, type, list ) ->
     loaded()
     max = 5
@@ -76,12 +88,7 @@ $ ->
         if max > 0
           picture = v['thumbnail_file_name']
           if picture == null then picture = ""
-          html = "<li class='well well-sm'>"
-          html += "<a href='/entries/" + v['id'] + "'><img src='" + picture + "' class='img-circle'></a>"
-          html += v['title']
-          add = "<button class='btn btn-success'><a class='add add" + v['id']
-          add += "'  id='"+ v['id'] + "' href='#'>Add</a></button></li>"
-          html += add
+          html = buildAttachedHTML(picture, v['title'], v['id'])
           html = $(html)
           list.append(html)
           addAnchor = $(".add" + v['id'])
@@ -97,13 +104,11 @@ $ ->
         html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a><li id='"
         html += v['id'] + "'>" + v['name'] + "</li>"
         add = $(add)
-        console.log html
         list.append(html)
         list.append(add)
         add.click(followHandler)
   window.appendRequestData = ( data ) ->
     loaded()
-    console.log data
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
       #Create the data
@@ -112,26 +117,18 @@ $ ->
       requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "")
       requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
       #Build the html
-      html = "<a href='#' class='unbuilt' id='"
-      html += requestData + "'><img src='" + movie["posters"]["detailed"] + "' class='img-circle'><li>"
-      html += movie['title'] + "</li></a>"
-      html = $(html)
-      add = "<a class='add'  id='" + requestData + "' href='#'>Add</a><br>"
-      add = $(add)
-      #Append the html
+      html = buildRequestHTML(requestData, movie["posters"]["detailed"], movie['title'], movie['id'])
+      show = $('.unbuilt')
       list.append(html)
-      list.append(add)
-      #Add event handlers
-      html.click(buildHandler)
+      add = $(".add")
+      show.click(buildHandler)
       add.click(buildHandler)
 
   $('.depth').on 'click', ( event ) ->
     loading()
     @.parent().hide()
   $('a#deleteTmp').on 'click', ( event ) ->
-    console.log @
   $('#search').on 'keypress', ( event ) ->
-    console.log "hello"
     keycode = event.keyCode
     # type = $('input[name=group]:checked').val()
     type = "entries"
@@ -160,13 +157,11 @@ $ ->
         error: ( jqXHR, textStatus, errorThrown ) ->
           alert "AJAX Error: #{textStatus}"
     else if (url != 'search/users/' && url != 'search/entries/' && url != 'search/entries//no' && url != '/null')
-      console.log(url)
       loading()
       $.ajax url,
         type: 'GET',
         error: ( jqXHR, textStatus, errorThrown ) ->
         success: ( data ) ->
-          console.log data
           appendControllerData(data, type, list)
     else if list.children().length <= 0
       list.prepend("<p>If we don't have what you're looking for press enter to query rotten tomatoes</p>")
