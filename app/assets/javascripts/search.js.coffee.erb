@@ -16,9 +16,9 @@ $ ->
     $('.loading').hide()
   buildRequestHTML = ( requestData, picture, title, rt_id ) ->
     html = "<li class='well well-sm'>"
-    html += "<a href='#' class='unbuilt' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
+    html += "<a href='#' class='unbuilt" + rt_id + "' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title
-    add = "<button class='btn btn-success'><a class='add"
+    add = "<button class='btn btn-success'><a class='add" + rt_id
     add += "'  id='"+ requestData + "' href='#'>Add</a></button></li>"
     html += add
     # html = "<a href='#' class='unbuilt' id='"
@@ -52,7 +52,7 @@ $ ->
       html.hide())
   addHandler = ( event ) ->
     event.preventDefault()
-    url = '/entries/add/' + @.id
+    url = '/entries/add/' + @.childNodes[0].id
     $.get(url, {id: @.id, append: true}).done ( data ) ->
       appendEntryHTML(data)
   buildHandler = ( event ) ->
@@ -62,18 +62,17 @@ $ ->
     clickedElement = @
     if values[2] == undefined then values[2] = ""
     if values[1] == "" then values[1] = "No description"
-    console.log values
-    console.log clickedElement
     url = "/backlog/unbuilt/"
     $.get(url,  {movie_info: values} ).done ( data ) ->
       loaded()
       #TODO: Make the class unbuilt more descriptive
-      if clickedElement.className == 'unbuilt'
+      if clickedElement.className.substring(0,7) == 'unbuilt'
         window.location.replace("/entries/" + data['id'])
-      else if clickedElement.className == 'add'
+      else if clickedElement.className.substring(0,3) == 'add'
         #create a request to add it to the backlog
         url = '/entries/add/' + data['id']
         $.get(url, { id: data['id'], append: true } ).done ( data ) ->
+
           #append it on success
           appendEntryHTML(data)
   followHandler = ( event ) ->
@@ -118,9 +117,9 @@ $ ->
       requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
       #Build the html
       html = buildRequestHTML(requestData, movie["posters"]["detailed"], movie['title'], movie['id'])
-      show = $('.unbuilt')
       list.append(html)
-      add = $(".add")
+      show = $('.unbuilt' + movie['id'])
+      add = $(".add"+ movie['id'])
       show.click(buildHandler)
       add.click(buildHandler)
 
@@ -156,7 +155,7 @@ $ ->
         jsonpCallback: 'appendRequestData',
         error: ( jqXHR, textStatus, errorThrown ) ->
           alert "AJAX Error: #{textStatus}"
-    else if (url != 'search/users/' && url != 'search/entries/' && url != 'search/entries//no' && url != '/null')
+    else if ((url != 'search/users/') && (url != 'search/entries/') && url != ('search/entries//no') && (url != '/null'))
       loading()
       $.ajax url,
         type: 'GET',

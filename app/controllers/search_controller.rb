@@ -62,6 +62,9 @@ class SearchController < ApplicationController
       @results = User.search query, limit: 10, page: params[:page], per_page: 10
     end
 
+    logger.debug("RESULTS:")
+    logger.debug()
+
     if @results.blank? && @results.count > 0
       render nothing: true
     else
