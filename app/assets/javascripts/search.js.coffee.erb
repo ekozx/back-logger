@@ -17,21 +17,15 @@ $ ->
   buildRequestHTML = ( requestData, picture, title, rt_id ) ->
     html = "<li class='well well-sm'>"
     html += "<a href='#' class='unbuilt" + rt_id + "' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
-    html += title
+    html += title.substring(0,30)
     add = "<button class='btn btn-success'><a class='add" + rt_id
     add += "'  id='"+ requestData + "' href='#'>Add</a></button></li>"
     html += add
-    # html = "<a href='#' class='unbuilt' id='"
-    # html += requestData + "'><img src='" + movie["posters"]["detailed"] + "' class='img-circle'><li>"
-    # html += movie['title'] + "</li></a>"
-    # add = "<a class='add'  id='" + requestData + "' href='#'>Add</a><br>"
-    # add = $("#add" + movie['id'])
-    # + "</li></a>"
     return html
   buildAttachedHTML = ( picture, title, id ) ->
     html = "<li class='well well-sm'>"
     html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
-    html += title
+    html += title.substring(0,30)
     add = "<button class='btn btn-success add" + id + "'><a class='add"
     add += "'  id='"+ id + "' href='#'>Add</a></button></li>"
     html += add
@@ -55,6 +49,7 @@ $ ->
     url = '/entries/add/' + @.childNodes[0].id
     $.get(url, {id: @.id, append: true}).done ( data ) ->
       appendEntryHTML(data)
+    $.get('/search/reindex')
   buildHandler = ( event ) ->
     event.preventDefault()
     loading()
@@ -72,7 +67,7 @@ $ ->
         #create a request to add it to the backlog
         url = '/entries/add/' + data['id']
         $.get(url, { id: data['id'], append: true } ).done ( data ) ->
-
+          $.get('/search/reindex')
           #append it on success
           appendEntryHTML(data)
   followHandler = ( event ) ->
@@ -129,7 +124,6 @@ $ ->
   $('a#deleteTmp').on 'click', ( event ) ->
   $('#search').on 'keypress', ( event ) ->
     keycode = event.keyCode
-    # type = $('input[name=group]:checked').val()
     type = "entries"
     if window.location.pathname == "/users/following" then type = "users"
     searchValue = $('#search').children().first().val()

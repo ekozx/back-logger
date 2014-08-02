@@ -9,8 +9,7 @@ class SearchController < ApplicationController
       #TODO: Switch this to bisection for speed
       #TODO: handle /search/entries//none
       if query.blank?
-        Entry.reindex
-        User.reindex
+        redindex
         #TODO: add a message instead
         @results = Entry.search query, page: params[:page], per_page: 10
       else
@@ -52,6 +51,11 @@ class SearchController < ApplicationController
       @results = User.search query
     end
   end
+  def reindex
+    Entry.reindex
+    User.reindex
+  end
+
   def query
     query = params[:query]
     logger = Logger.new('log/development.log')
@@ -61,9 +65,9 @@ class SearchController < ApplicationController
     else
       @results = User.search query, limit: 10, page: params[:page], per_page: 10
     end
-
     logger.debug("RESULTS:")
-    logger.debug()
+    logger.debug(query)
+    logger.debug(@results.count)
 
     if @results.blank? && @results.count > 0
       render nothing: true
