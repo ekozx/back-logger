@@ -15,19 +15,19 @@ $ ->
     $('.pagination').hide()
     $('.loading').hide()
   appendEntryHTML = ( data ) ->
-    if data['photo'] != null
-      photo = "http://image.tmdb.org/t/p/w500/" + data['photo']
-    else if data['thumbnail_file_name'] != null
+    console.log data
+    if data['thumbnail_file_name'] != null
       photo = data['thumbnail_file_name']
     else
       photo = '/assets/thumb/missing.png'
-    html = "<li><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + " class='img-circle''>"
-    html += "</a>" + data['title'] + "<a data-method='delete' data-remote='true' href='/entries/"
+    html = "<li class='well well-sm'><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
+    html += "</a>" + data['title'] + "<a class='deleteEntry' data-method='delete' data-remote='true' href='/entries/"
     html += data['id'] + "' rel='nofollow'>"
-    html += "Delete</a>"
+    html += "<i class='fa fa-trash-o fa-2x'></i></a>"
     html = $(html)
     $('.backlog').prepend(html)
   addHandler = ( event ) ->
+    console.log(@)
     event.preventDefault()
     url = '/entries/add/' + @.id
     $.get(url, {id: @.id, append: true}).done ( data ) ->
@@ -72,15 +72,17 @@ $ ->
         if max > 0
           picture = v['thumbnail_file_name']
           if picture == null then picture = ""
-          html = "<a href='/entries/" + v['id'] + "'>"
-          html += "<img src='" + picture + "' class='img-circle'><li id='" + v['id'] + "'>" + v['title']
-          html += "</li></a>"
-          add = "<a class='add'  id='"+ v['id'] + "' href='#'>Add</a><br>"
-          add = $(add)
+          #WHERE I LEFT OFF: (fixing the damn hard-coded html)
+          html = "<li class='well well-sm'>"
+          html += "<a href='/entries/" + v['id'] + "'><img src='" + picture + "' class='img-circle'></a>"
+          html += v['title']
+          add = "<button class='btn btn-success'><a class='add add" + v['id']
+          add += "'  id='"+ v['id'] + "' href='#'>Add</a></button></li>"
+          html += add
           html = $(html)
           list.append(html)
-          list.append(add)
-          add.click(addHandler)
+          addAnchor = $(".add" + v['id'])
+          addAnchor.click(addHandler)
           max--
     else
       max = 5
@@ -122,7 +124,7 @@ $ ->
 
   $('.depth').on 'click', ( event ) ->
     loading()
-
+    @.parent().hide()
   $('#search').on 'keypress', ( event ) ->
     console.log "hello"
     keycode = event.keyCode
