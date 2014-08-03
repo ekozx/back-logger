@@ -150,8 +150,14 @@ $ ->
   $('a#deleteTmp').on 'click', ( event ) ->
   $('#search').on 'keypress', ( event ) ->
     keycode = event.keyCode
-    type = "entries"
-    if window.location.pathname == "/users/following" then type = "users"
+    if window.location.pathname == "/users/following"
+      type = "users"
+    else if window.location.pathname == "/search"
+      type = $('input[name=group]:checked', '#searchForm').val()
+    else
+      type = "entries"
+
+    console.log type
     searchValue = $('#search').children().first().val()
     url = "/search/" + type + "/" + searchValue + "/no"
     list = $('#list')
