@@ -14,6 +14,14 @@ $ ->
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
+  buildUserHTML = ( amazonPath, user_id, name ) ->
+    html = "<li class='well well-sm'>"
+    html += "<a href='users/" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
+    html += name.substring(0,30)
+    add = "<button class='btn btn-success'><a class='add" + user_id
+    add += "' id='" + user_id + "' href='#'>follow</a></button></li>"
+    html += add
+    return html
   buildRequestHTML = ( requestData, picture, title, rt_id ) ->
     html = "<li class='well well-sm'>"
     html += "<a href='#' class='unbuilt" + rt_id + "' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
@@ -30,6 +38,26 @@ $ ->
     add += "'  id='"+ id + "' href='#'>Add</a></button></li>"
     html += add
     return html
+  appendUserHTML = ( data ) ->
+    console.log data
+    amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
+    #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
+    #TODO: Should probably DRY amazonPath because it's used twice, will do w/ logic above
+    amazonPath = amazonPath + "00" + data['id'] + "/thumb/" + data['avatar_file_name']
+    html = "<li class='well well-sm'>"
+    html += "<a href='users/" + data['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a>"
+    html += data['name'].substring(0,30)
+    add = "<button class='btn btn-warning right'><a class='unfollow" + data['id']
+    add += "'  id='"+ data['id'] + "' href='#'>unfollow</a></button></li>"
+    html += add
+    html = $(html)
+    $('.following').prepend(html)
+    unfollow = $('.unfollow' + data['id'])
+    unfollow.click(() ->
+      $.ajax "unfollow/" + data['id'],
+        type: "GET",
+        success: ( data ) ->
+          html.hide())
   appendEntryHTML = ( data ) ->
     if data['thumbnail_file_name'] != null
       photo = data['thumbnail_file_name']
@@ -74,6 +102,7 @@ $ ->
     event.preventDefault()
     url = '/users/follow/' + @.id
     $.get(url, { id: @.id }).done ( data ) ->
+      appendUserHTML(data)
   appendControllerData = ( data, type, list ) ->
     loaded()
     max = 5
@@ -94,12 +123,9 @@ $ ->
         amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
         #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
         amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-        add = "<a href='#' class='follow' id='" + v['id'] + "'>Follow</a><br>"
-        html = "<a href='users/" + v['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a><li id='"
-        html += v['id'] + "'>" + v['name'] + "</li>"
-        add = $(add)
+        html = buildUserHTML(amazonPath, v['id'], v['name'])
         list.append(html)
-        list.append(add)
+        add = $('.add' + v['id'])
         add.click(followHandler)
   window.appendRequestData = ( data ) ->
     loaded()
@@ -156,5 +182,3 @@ $ ->
         error: ( jqXHR, textStatus, errorThrown ) ->
         success: ( data ) ->
           appendControllerData(data, type, list)
-    else if list.children().length <= 0
-      list.prepend("<p>If we don't have what you're looking for press enter to query rotten tomatoes</p>")

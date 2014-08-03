@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
   def follow
     current_user.follow!(params[:id], current_user.id)
-    render nothing: true
+    render json: User.find(params[:id])
   end
   def unfollow
     puts params["id"]

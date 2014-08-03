@@ -1,19 +1,22 @@
-%h1 People you're following:
-%p Start typing to find other users
-=form_tag search_path, method: 'get', id: "searchForm" do
-  %br
-  %span#search
-    = text_field_tag :query, params[:search]
-  %span
-    = submit_tag "More Results", class: "depth"
+.col-lg-8
+  %h1 People you're following:
+  %p Start typing to find other users
+  =form_tag search_path, method: 'get', id: "searchForm" do
+    .input-group
+      = hidden_field_tag(:group, "users")
+      #search
+        = text_field_tag :query, params[:search], placeholder: "Type to search users", class: "form-control"
+      .input-group-btn
+        = submit_tag "More Results", class: "depth btn btn-default"
 
-.loading
-  =image_tag src="loading1.gif"
+  .loading
+    =image_tag src="loading1.gif"
 
-= render 'shared/results'
-  
-%ul
-  - @followed_users.all.each do |followed_user|
-    %li
-      = link_to (followed_user.name || followed_user.nickname), user_path(followed_user)
-      = link_to "unfollow", 'unfollow/' + followed_user.id.to_s, id: "unfollow", remote: true, method: :get
+  = render 'shared/results'
+
+  %ul.following
+    - @followed_users.all.each do |followed_user|
+      %li.well.well-sm
+        = link_to image_tag(followed_user.avatar.url(:thumb), class: "img-circle"), user_path(followed_user)
+        = link_to (followed_user.name || followed_user.nickname), user_path(followed_user)
+        = link_to "unfollow", 'unfollow/' + followed_user.id.to_s, id: "unfollow", remote: true, method: :get, class: "right"
