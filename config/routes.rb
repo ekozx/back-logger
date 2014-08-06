@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'backlog/unbuilt'      => 'backlog#unbuilt'
   get 'search'               => 'search#index'
   get 'search/:type/:query/:t'  => 'search#query'
-  get 'search#reindex'       => 'search#reindex'
+  get 'search/reindex'       => 'search#reindex'
   get 'entries/remove/:id'   => 'entries#delete'
   get 'entries/add/:id'      => 'entries#add'
   get '/entries/'            => 'entries#new'

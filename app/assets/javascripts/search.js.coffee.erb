@@ -63,8 +63,11 @@ $ ->
       photo = data['thumbnail_file_name']
     else
       photo = '/assets/thumb/missing.png'
+    title = data['title']
+    if title.length >= 30
+      title = title.substring(0,30) + "..."
     html = "<li class='well well-sm'><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
-    html += "</a>" + data['title'] + "<a class='deleteEntry' id='deleteTmp" + data['id'] + "' data-method='delete' data-remote='true' href='/entries/"
+    html += "</a>" + title + "<a class='deleteEntry' id='deleteTmp" + data['id'] + "' data-method='delete' data-remote='true' href='/entries/"
     html += data['id'] + "' rel='nofollow'>"
     html += "<i class='fa fa-trash-o fa-2x'></i></a>"
     html = $(html)
@@ -131,12 +134,10 @@ $ ->
     loaded()
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
-      #Create the data
       alternate = movie['alternate_ids']
       if alternate != undefined then imdb = alternate['imdb'] else imdb = "unknown"
       requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "")
       requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
-      #Build the html
       html = buildRequestHTML(requestData, movie["posters"]["detailed"], movie['title'], movie['id'])
       list.append(html)
       show = $('.unbuilt' + movie['id'])
@@ -156,8 +157,6 @@ $ ->
       type = $('input[name=group]:checked', '#searchForm').val()
     else
       type = "entries"
-
-    console.log type
     searchValue = $('#search').children().first().val()
     url = "/search/" + type + "/" + searchValue + "/no"
     list = $('#list')
@@ -166,7 +165,6 @@ $ ->
     loaded()
     if keycode == 13 && type == 'entries'
       event.preventDefault()
-      # entry.remove() for entry in entries
       loading()
       pageLimit = "&page_limit=5"
       if window.location.pathname == '/search' then pageLimit = "&page_limit=10"

@@ -1,10 +1,23 @@
 %ul#list
   - if @results
     - @results.each do |result|
-      %li
+      %li.well.well-sm
         - if @group == 'entries'
-          = link_to image_tag(result.thumbnail(:thumb)), entry_path(result.id)
-          = link_to result.title, entry_path(result.id)
+          -if result.thumbnail_file_name.blank?
+            = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)
+          - else
+            = link_to image_tag(result.thumbnail_file_name, class: 'img-circle'), entry_path(result.id)
+          - if result.title.length > 30
+            = result.title[0..30] + "..."
+          - else
+            = result.title
         - else
-          = link_to image_tag(result.avatar.url(:thumb)), user_path(result.id)
-          = link_to result.nickname, user_path(result.id)
+          -if result.avatar.blank?
+            = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)
+          - else
+            = link_to image_tag(result.avatar.url(:thumb), class: 'img-circle'), user_path(result.id)
+          - display_name = result.name || result.nickname || result.email
+          - if display_name.length > 30
+            = result.display_name[0..30] + "..."
+          - else
+            = display_name

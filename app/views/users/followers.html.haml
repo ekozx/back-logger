@@ -1,8 +1,9 @@
 .col-lg-8
-  %h1 People followering you
+  %h1.greeting.text-center
+    Followers
   %ul
     - if @followers == nil || @followers.count == 0
-      %p No followers:(
+      %p.text-center No followers:(
     - else
       - @followers.all.each do |follower|
         %li.well.well-sm

@@ -54,6 +54,7 @@ class SearchController < ApplicationController
   def reindex
     Entry.reindex
     User.reindex
+    render nothing: true
   end
 
   def query

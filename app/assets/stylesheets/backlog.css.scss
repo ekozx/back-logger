@@ -11,6 +11,10 @@ ul {
   height: 50px;
 }
 
+.greeting {
+  margin-top: 10%;
+}
+
 @media screen and (max-width: 1500px) {
   .fa-trash-o, .btn-success, .right {
     float: right;

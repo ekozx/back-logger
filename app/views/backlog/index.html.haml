@@ -1,38 +1,37 @@
 - if user_signed_in?
-  %p
-    Hi,
-    - if not current_user.name.blank?
-      = current_user.name
-    - elsif current_user.nickname != nil
-      = current_user.nickname
-    - else
-      = current_user.email
+  .col-lg-8
+    %h3.greeting
+      Hi,
+      - if not current_user.name.blank?
+        = current_user.name
+      - elsif current_user.nickname != nil
+        = current_user.nickname
+      - else
+        = current_user.email
+    =form_tag search_path, method: 'get', id: "searchForm" do
+      .input-group
+        = hidden_field_tag(:group, "entries")
+        #search
+          = text_field_tag :query, params[:search], placeholder: "Type to search movies & shows", class: "form-control"
+        .input-group-btn
+          = submit_tag "More Results", class: "depth btn btn-default"
+    .loading
+      =image_tag src="loading1.gif"
 
-    .col-lg-8
-      =form_tag search_path, method: 'get', id: "searchForm" do
-        .input-group
-          = hidden_field_tag(:group, "entries")
-          #search
-            = text_field_tag :query, params[:search], placeholder: "Type to search movies & shows", class: "form-control"
-          .input-group-btn
-            = submit_tag "More Results", class: "depth btn btn-default"
-      .loading
-        =image_tag src="loading1.gif"
+    = render 'shared/results'
 
-      = render 'shared/results'
-
-      %h3.text-center Your backlog:
-      - if current_user.backlog != nil
-        %ul.backlog
-          - @entries.each do |entry|
-            %li.well.well-sm
-              -if entry.thumbnail_file_name.blank?
-                = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(entry.id)
-              - else entry.photo.blank?
-                = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)
-              - if entry.title.length > 30
-                = entry.title[0..30] + "..."
-              - else
-                = entry.title
-              = link_to content_tag(:i, "", class: "fa fa-trash-o fa-2x"), entry, remote: true, method: :delete, class: "deleteEntry"
-          =paginate @entries
+    %h3.text-center Your backlog:
+    - if current_user.backlog != nil
+      %ul.backlog
+        - @entries.each do |entry|
+          %li.well.well-sm
+            -if entry.thumbnail_file_name.blank?
+              = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(entry.id)
+            - else entry.photo.blank?
+              = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)
+            - if entry.title.length > 30
+              = entry.title[0..30] + "..."
+            - else
+              = entry.title
+            = link_to content_tag(:i, "", class: "fa fa-trash-o fa-2x"), entry, remote: true, method: :delete, class: "deleteEntry"
+        =paginate @entries
