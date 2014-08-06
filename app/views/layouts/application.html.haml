@@ -7,7 +7,7 @@
     = csrf_meta_tags
   %body.container-fluid
     - if user_signed_in?
-      .col-lg-3.text-center
+      .col-lg-2.text-center
         %h1
           = link_to "Zappcord", '/'
         %ul.nav.nav-pills.nav-stacked.well
@@ -26,5 +26,5 @@
     - else
       = link_to "Sign up", '/users/sign_up'
       or #{link_to "Sign in", new_user_session_path}
-  .col-lg-8.col-lg-offset-1
+  .col-lg-10
     = yield

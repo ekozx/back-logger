@@ -1,13 +1,13 @@
-- if not @entry.photo.blank?
-  = image_tag("http://image.tmdb.org/t/p/w500/" + @entry.photo)
-- elsif not @entry.thumbnail_file_name.blank?
-  = image_tag (@entry.thumbnail_file_name)
-- else
-  = image_tag ('thumb/missing.png')
-%h1= @entry.title
-%p= @entry.description
--# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
-- if current_user.backlog.entries.include?(@entry)
-  %p This entry is in your backlog
--else
-  = link_to "Add to your backlog", "add/" + @entry.id.to_s, remote: true, method: :get
+.col-lg-5
+  %h1.text-center= @entry.title
+  - if not @entry.photo.blank?
+    = image_tag("http://image.tmdb.org/t/p/w500/" + @entry.photo, class: "portrait-img img-responsive")
+  - else
+    = image_tag("medium/missing.png", class: "portrait-img img-responsive")
+.col-lg-5.text-center
+  %blockquote.bq= @entry.description
+  -# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
+  - if current_user.backlog.entries.include?(@entry)
+    %p This entry is in your backlog
+  -else
+    = link_to "Add to your backlog", "add/" + @entry.id.to_s, remote: true, method: :get

@@ -2,11 +2,11 @@
   %h3.greeting
     Advanced Search
   =form_tag search_path, method: 'get', id: "searchForm" do
+    = radio_button_tag(:group, "entries", checked: true)
+    = label_tag(:group_type, "Shows/Movies")
+    = radio_button_tag(:group, "users")
+    = label_tag(:group_type, "Users")
     .input-group
-      = radio_button_tag(:group, "entries", checked: true)
-      = label_tag(:group_type, "Shows/Movies")
-      = radio_button_tag(:group, "users")
-      = label_tag(:group_type, "Users")
       #search
         = text_field_tag :query, params[:search], placeholder: "Type to search", class: "form-control"
       .input-group-btn
