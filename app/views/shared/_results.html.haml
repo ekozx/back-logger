@@ -1,7 +1,7 @@
 %ul#list
   - if @results
     - @results.each do |result|
-      %li.well.well-sm
+      %li.new_well
         - if @group == 'entries'
           -if result.thumbnail_file_name.blank?
             = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)

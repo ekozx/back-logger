@@ -15,7 +15,7 @@ $ ->
     $('.pagination').hide()
     $('.loading').hide()
   buildUserHTML = ( amazonPath, user_id, name ) ->
-    html = "<li class='well well-sm'>"
+    html = "<li class='new_well'>"
     html += "<a href='users/" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
     add = "<button class='btn btn-success'><a class='add" + user_id
@@ -23,7 +23,7 @@ $ ->
     html += add
     return html
   buildRequestHTML = ( requestData, picture, title, rt_id ) ->
-    html = "<li class='well well-sm'>"
+    html = "<li class='new_well '>"
     html += "<a href='#' class='unbuilt" + rt_id + "' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title.substring(0,30)
     add = "<button class='btn btn-success'><a class='add" + rt_id
@@ -31,7 +31,7 @@ $ ->
     html += add
     return html
   buildAttachedHTML = ( picture, title, id ) ->
-    html = "<li class='well well-sm'>"
+    html = "<li class='new_well '>"
     html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title.substring(0,30)
     add = "<button class='btn btn-success add" + id + "'><a class='add"
@@ -44,7 +44,7 @@ $ ->
     #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
     #TODO: Should probably DRY amazonPath because it's used twice, will do w/ logic above
     amazonPath = amazonPath + "00" + data['id'] + "/thumb/" + data['avatar_file_name']
-    html = "<li class='well well-sm'>"
+    html = "<li class='new_well '>"
     html += "<a href='users/" + data['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += data['name'].substring(0,30)
     add = "<button class='btn btn-warning right'><a class='unfollow" + data['id']
@@ -66,7 +66,7 @@ $ ->
     title = data['title']
     if title.length >= 30
       title = title.substring(0,30) + "..."
-    html = "<li class='well well-sm'><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
+    html = "<li class='new_well '><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
     html += "</a>" + title + "<a class='deleteEntry' id='deleteTmp" + data['id'] + "' data-method='delete' data-remote='true' href='/entries/"
     html += data['id'] + "' rel='nofollow'>"
     html += "<i class='fa fa-trash-o fa-2x'></i></a>"

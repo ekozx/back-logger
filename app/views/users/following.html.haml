@@ -16,7 +16,7 @@
 
   %ul.following
     - @followed_users.all.each do |followed_user|
-      %li.well.well-sm
+      %li.new_well
         = link_to image_tag(followed_user.avatar.url(:thumb), class: "img-circle"), user_path(followed_user)
         = link_to (followed_user.name || followed_user.nickname), user_path(followed_user)
         = link_to "unfollow", 'unfollow/' + followed_user.id.to_s, id: "unfollow", remote: true, method: :get, class: "right"

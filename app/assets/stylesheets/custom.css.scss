@@ -1,0 +1,32 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700,100&subset=all);
+@import "colors";
+@import 'mixins.css.scss';
+
+.new_well {
+  background-color: none !important;
+  padding-top: 6px;
+  background-color: rgba(255,255,255,0.85);
+  padding: 15px;
+  @include boxShadow(0, 1px, 1px, rgba(0,0,0,0.8));
+}
+.new_well:hover {
+      margin: 5px -10px;
+      padding: 5px 20px;
+      font-size: 18px;
+      background-color: rgba(255, 255, 255, 0.9);
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      -ms-border-radius: 3px;
+      -o-border-radius: 3px;
+      border-radius: 3px;
+      border-bottom: 1px solid #bbb;
+      -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+      -ms-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+      -o-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
+
+html {
+  background-repeat: no-repeat;
+  background-size: 100%;
+}

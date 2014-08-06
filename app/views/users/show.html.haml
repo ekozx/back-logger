@@ -1,9 +1,8 @@
-= image_tag(@user.avatar.url(:medium))
-= link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get
-- if @user_backlog != nil
-  %ul
-    - @user_backlog.entries.all.each do |entry|
-      %li
-        = link_to image_tag(entry.thumbnail(:thumb)), entry_path(entry.id)
-        = entry.title
-        = link_to "Add", "/entries/add/" + entry.id.to_s, remote: true, method: :get
+.col-lg-8
+  .h1.greeting.text-center
+    = @user.name
+  = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
+  = link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get, class: "btn btn-success"
+  .bottom_margin
+    - if @user_backlog != nil
+      = render 'shared/results'

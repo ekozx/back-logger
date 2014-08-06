@@ -4,17 +4,6 @@
 
 #TODO: turbolinks spinner
 $ ->
-  # $('.entry').on 'click', (event) ->
-  #   $(@).parent().parent().hide()
-  #   url = "entries/remove/" + $(@).data("id")
-  #   console.log($(@).data("id"))
-  #   console.log(url)
-  #   $.ajax url,
-  #     type: "GET",
-  #     dataType: "json",
-  #     success: (response) ->
-  #       console.log(response)
-
   $("a.deleteEntry[data-remote]").on 'mousedown', (event) ->
     console.log("mousedown")
     $(@).parent().append("deleting...")
@@ -22,4 +11,3 @@ $ ->
     console.log("ajax success")
     $(@).parent().hide()
     $(@).parent().append("deleted!")
-    

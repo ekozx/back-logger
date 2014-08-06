@@ -5,12 +5,18 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
-  %body.container-fluid
+  - background_image_list = ['bg3', 'bg4', 'bg5', 'bg9']
+  - background_image_types = {'bg3' => '.png', 'bg4' => '.jpg', 'bg5' => '.jpg', 'bg9' => '.jpg'}
+  - val = (background_image_list.length * rand).floor
+  -# - background_path = '../../app/assets/images/actor_backgrounds/'
+  - image = background_image_list[val] + background_image_types[background_image_list[val]]
+  - background_path = image_path("actor_backgrounds/" + image)
+  %body.container-fluid{ style: "background-image: url(" + background_path + "); background-repeat: no-repeat;"}
     - if user_signed_in?
       .col-lg-2.text-center
-        %h1
+        %h1.brand
           = link_to "Zappcord", '/'
-        %ul.nav.nav-pills.nav-stacked.well
+        %ul.nav.nav-pills.nav-stacked.new_well
           %li
             = link_to image_tag(current_user.avatar.url(:thumb), class: 'img-circle'), '/'
           %li
@@ -26,5 +32,5 @@
     - else
       = link_to "Sign up", '/users/sign_up'
       or #{link_to "Sign in", new_user_session_path}
-  .col-lg-10
-    = yield
+    .col-lg-10
+      = yield

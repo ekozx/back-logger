@@ -8,6 +8,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @user_backlog = @user.backlog
+    @group = 'entries'
+    @results = @user_backlog.entries.page(params[:page]).per(10)
   end
   def follow
     current_user.follow!(params[:id], current_user.id)
