@@ -25,5 +25,7 @@
       %br/
       = f.password_field :password_confirmation
     %div
-      Avatar: #{f.file_field :avatar}
-    %div= f.submit "Sign up"
+      = f.label :avatar
+      #{f.file_field :avatar}
+    %br/
+    %div= f.submit "Sign up", class: 'btn btn-primary'
