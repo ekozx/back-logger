@@ -1,6 +1,6 @@
 .col-lg-8
   .static_well
-    %h3.greeting.text-center
+    %h3.text-center
       Advanced Search
     =form_tag search_path, method: 'get', id: "searchForm" do
       = radio_button_tag(:group, "entries", checked: true)

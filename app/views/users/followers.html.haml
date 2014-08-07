@@ -1,9 +1,9 @@
 .col-lg-8
-  %h1.greeting.text-center
+  %h1.greeting.text-center.static_well
     Followers
   %ul
     - if @followers == nil || @followers.count == 0
-      %p.text-center No followers:(
+      %p.text-center.static_well No followers:(
     - else
       - @followers.all.each do |follower|
         %li.new_well
