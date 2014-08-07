@@ -1,6 +1,6 @@
 - if user_signed_in?
   .col-lg-8
-    %h3.greeting
+    %h3.greeting.static_well
       Hi,
       - if not current_user.name.blank?
         = current_user.name
@@ -20,7 +20,7 @@
 
     = render 'shared/results'
 
-    %h3.text-center Your backlog:
+    %h3.text-center.static_well Your backlog:
     - if current_user.backlog != nil
       %ul.backlog
         - @entries.each do |entry|

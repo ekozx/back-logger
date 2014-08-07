@@ -147,6 +147,7 @@ $ ->
 
   $('.depth').on 'click', ( event ) ->
     loading()
+    console.log @
     @.parent().hide()
   $('a#deleteTmp').on 'click', ( event ) ->
   $('#search').on 'keypress', ( event ) ->

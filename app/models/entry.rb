@@ -20,7 +20,7 @@ class Entry < ActiveRecord::Base
     def validate
       entries = Entry.where(title: @entry.title)
       if entries.count > 0
-        if entries.where(description: @entry.description) && !@entry.description.blank?
+        if entries.where(description: @entry.description).count > 0
           @entry.errors[:base] << "Duplicate title/description pair"
         end
       end
