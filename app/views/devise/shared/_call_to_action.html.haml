@@ -1,0 +1,15 @@
+.col-lg-8
+  .static_well
+    %h3
+      Share and keep track of the movies and shows you care about with the people you care about
+  %br/
+  - if devise_mapping.omniauthable?
+    %ul.list-inline
+      - resource_class.omniauth_providers.each do |provider|
+        %li.static_well.sign_in_well
+          - provider_name = provider.to_s.titleize
+          - if provider_name == 'Twitter'
+            = link_to content_tag(:i, "", class: "fa fa-twitter fa-2x")
+          - else
+            = link_to content_tag(:i, "", class: "fa fa-facebook fa-2x")
+          = link_to "Sign in with #{provider_name}", omniauth_authorize_path(resource_name, provider)
