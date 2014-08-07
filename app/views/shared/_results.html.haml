@@ -11,7 +11,8 @@
             = result.title[0..30] + "..."
           - else
             = result.title
-          = link_to "add", '/entries/add/' + result.id.to_s, remote: true, method: :get, class: "btn btn-success"
+          - unless current_user.backlog.entries.include? result  
+            = link_to "add", '/entries/add/' + result.id.to_s, remote: true, method: :get, class: "btn btn-success"
         - else
           -if result.avatar.blank?
             = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)

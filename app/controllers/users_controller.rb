@@ -20,4 +20,8 @@ class UsersController < ApplicationController
     current_user.unfollow!(params[:id], current_user.id)
     render nothing: true
   end
+
+  #Will implement for typed search later
+  def has_entry?
+  end
 end

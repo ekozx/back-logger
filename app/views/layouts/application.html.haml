@@ -12,10 +12,11 @@
   - image = background_image_list[val] + background_image_types[background_image_list[val]]
   - background_path = image_path("actor_backgrounds/" + image)
   %body.container-fluid{ style: "background-image: url(" + background_path + "); background-repeat: no-repeat;"}
+    .text-center.row.brand
+      %h1.static_well
+        = link_to "Zappcord", '/'
     - if user_signed_in?
       .col-lg-2.text-center
-        %h1.brand
-          = link_to "Zappcord", '/'
         %ul.nav.nav-pills.nav-stacked.new_well
           %li
             = link_to image_tag(current_user.avatar.url(:thumb), class: 'img-circle'), '/'

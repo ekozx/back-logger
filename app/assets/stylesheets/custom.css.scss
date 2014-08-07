@@ -2,7 +2,7 @@
 @import "colors";
 @import 'mixins.css.scss';
 
-.new_well {
+.new_well, .static_well {
   background-color: none !important;
   padding-top: 6px;
   background-color: rgba(255,255,255,0.85);
