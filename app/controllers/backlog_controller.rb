@@ -3,6 +3,8 @@ class BacklogController < ApplicationController
 
   def index
     if current_user.backlog.nil?
+      Entry.clean_indices
+      User.clean_indices
       Entry.reindex
       User.reindex
       Backlog.create(user_id: current_user.id)
