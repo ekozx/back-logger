@@ -33,3 +33,17 @@ html {
 body {
   font-family: 'Raleway', sans-serif !important;
 }
+a {
+  color: $red1 !important;
+  // background-color: $red1 !important;
+  border-color: $red1 !important;
+}
+.btn-primary {
+  background-color: $red1 !important;
+  border-color: $red1 !important;
+}
+li.active > a {
+  color: $white1 !important;
+  background-color: $red1 !important;
+  border-color: $red1 !important;
+}
