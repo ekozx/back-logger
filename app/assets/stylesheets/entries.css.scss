@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .entry_view {
-  background-color: white;
+  background-color: white !important;
 }
 
 .portrait-img {
@@ -15,4 +15,7 @@
 
 .bq {
   margin-top: 20%;
+}
+button.btn-success > a {
+  color: white !important;
 }

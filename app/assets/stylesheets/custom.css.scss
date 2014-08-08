@@ -33,14 +33,23 @@ html {
 body {
   font-family: 'Raleway', sans-serif !important;
 }
-a {
-  color: $red1 !important;
-  // background-color: $red1 !important;
-  border-color: $red1 !important;
+a.btn-success {
+  color: white;
 }
-.btn-primary {
+a.btn-primary {
   background-color: $red1 !important;
   border-color: $red1 !important;
+  color: $white1 !important;
+  display: block !important;
+  margin: auto !important;
+}
+h1 > a, .nav > li > a {
+  color: $red1 !important;
+}
+.pagination > li > a {
+  color: $red1 !important;
+  // background-color: $red1 !important;
+  // border-color: $red1 !important;
 }
 li.active > a {
   color: $white1 !important;

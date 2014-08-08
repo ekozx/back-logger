@@ -27,7 +27,7 @@ $ ->
     html += "<a href='#' class='unbuilt" + rt_id + "' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title.substring(0,30)
     add = "<button class='btn btn-success'><a class='add" + rt_id
-    add += "'  id='"+ requestData + "' href='#'>Add</a></button></li>"
+    add += "'  id='"+ requestData + "' href='#'>add</a></button></li>"
     html += add
     return html
   buildAttachedHTML = ( picture, title, id ) ->
@@ -35,7 +35,7 @@ $ ->
     html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title.substring(0,30)
     add = "<button class='btn btn-success add" + id + "'><a class='add"
-    add += "'  id='"+ id + "' href='#'>Add</a></button></li>"
+    add += "'  id='"+ id + "' href='#'>add</a></button></li>"
     html += add
     return html
   appendUserHTML = ( data ) ->
