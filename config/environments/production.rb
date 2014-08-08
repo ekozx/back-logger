@@ -89,5 +89,5 @@ Rails.application.configure do
     }
   }
 
-  ENV['ELASTICSEARCH_URL'] = ENV['SEARCHBOX_URL']
+  ENV['ELASTICSEARCH_URL'] = ENV['BONSAI_URL']
 end
