@@ -27,6 +27,7 @@ gem 'aws-sdk'
 
 #Searching, pagination
 gem 'searchkick'
+gem 'tire'
 gem 'kaminari'
 
 gem 'themoviedb'
