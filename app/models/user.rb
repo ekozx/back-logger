@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
     :case_sensitive => false
   }
   #,format { } later
+  #Emails set to "" are duplicates!
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
 
   def self.find_for_oauth(auth, signed_in_resource = nil)

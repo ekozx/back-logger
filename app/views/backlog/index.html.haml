@@ -12,7 +12,7 @@
       .input-group
         = hidden_field_tag(:group, "entries")
         #search
-          = text_field_tag :query, params[:search], placeholder: "Type to search movies & shows", class: "form-control"
+          = text_field_tag :query, params[:search], placeholder: "Type to search", class: "form-control"
         .input-group-btn
           = submit_tag "More Results", class: "depth btn btn-default"
     .loading

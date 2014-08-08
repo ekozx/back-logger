@@ -1,4 +1,4 @@
-.col-lg-5.static_well.pull-left
+.col-lg-5.static_well
   %h1.text-center= @entry.title
   - if not @entry.photo.blank?
     = image_tag("http://image.tmdb.org/t/p/w500/" + @entry.photo, class: "portrait-img img-responsive")
