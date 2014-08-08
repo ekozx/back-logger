@@ -166,6 +166,7 @@ $ ->
       loading()
       pageLimit = "&page_limit=5"
       if window.location.pathname == '/search' then pageLimit = "&page_limit=10"
+      console.log "<%= ENV['ROTTEN_TOMATOES_KEY'] %>"
       url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
       url += encodeURI(searchValue)
       url += pageLimit
