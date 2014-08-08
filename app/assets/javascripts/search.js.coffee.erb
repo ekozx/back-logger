@@ -5,7 +5,7 @@
 #TODO: Handle more error cases in AJAX
 #TODO: Try doing this with the helpers from:
 #      http://edgeguides.rubyonrails.org/working_with_javascript_in_rails.html#a-simple-example
-#
+#TODO: user/users, buttons
 $ ->
   #TODO: DRY the handlers
   loading = () ->
@@ -16,7 +16,7 @@ $ ->
     $('.loading').hide()
   buildUserHTML = ( amazonPath, user_id, name ) ->
     html = "<li class='new_well'>"
-    html += "<a href='users/" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
+    html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
     add = "<button class='btn btn-success'><a class='add" + user_id
     add += "' id='" + user_id + "' href='#'>follow</a></button></li>"
@@ -39,13 +39,12 @@ $ ->
     html += add
     return html
   appendUserHTML = ( data ) ->
-    console.log data
     amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
     #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
     #TODO: Should probably DRY amazonPath because it's used twice, will do w/ logic above
     amazonPath = amazonPath + "00" + data['id'] + "/thumb/" + data['avatar_file_name']
     html = "<li class='new_well '>"
-    html += "<a href='users/" + data['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a>"
+    html += "<a href='" + data['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += data['name'].substring(0,30)
     add = "<button class='btn btn-warning right'><a class='unfollow" + data['id']
     add += "'  id='"+ data['id'] + "' href='#'>unfollow</a></button></li>"
@@ -147,7 +146,6 @@ $ ->
 
   $('.depth').on 'click', ( event ) ->
     loading()
-    console.log @
     @.parent().hide()
   $('a#deleteTmp').on 'click', ( event ) ->
   $('#search').on 'keypress', ( event ) ->
