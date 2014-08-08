@@ -2,6 +2,8 @@ class BacklogController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    Entry.clean_indices
+    User.clean_indices
     Entry.reindex
     User.reindex
     if current_user.backlog.nil?

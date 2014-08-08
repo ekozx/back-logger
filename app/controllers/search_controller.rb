@@ -52,6 +52,8 @@ class SearchController < ApplicationController
     end
   end
   def reindex
+    Entry.clean_indices
+    User.clean_indices
     Entry.reindex
     User.reindex
     render nothing: true
