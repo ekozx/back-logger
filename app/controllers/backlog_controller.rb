@@ -2,6 +2,8 @@ class BacklogController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    Entry.reindex
+    User.reindex
     if current_user.backlog.nil?
       Backlog.create(user_id: current_user.id)
       @entries = []
