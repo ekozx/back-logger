@@ -35,7 +35,10 @@ ul {
     display: block !important;
     float: none;
   }
-  .well {
-    text-align: center;
+  .static_well, .new_well {
+    display: block;
+  }
+  .list-inline {
+    display: flex !important;
   }
 }

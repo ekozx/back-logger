@@ -1,10 +1,10 @@
-.col-lg-5.static_well
+.col-lg-5.static_well.pull-left
   %h1.text-center= @entry.title
   - if not @entry.photo.blank?
     = image_tag("http://image.tmdb.org/t/p/w500/" + @entry.photo, class: "portrait-img img-responsive")
   - else
     = image_tag("medium/missing.png", class: "portrait-img img-responsive")
-.col-lg-5.text-center.static_well
+.col-lg-5.text-center.static_well.pull-left
   %blockquote.bq= @entry.description
   -# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
   - if current_user.backlog.entries.include?(@entry)
