@@ -1,15 +1,11 @@
 // Place all the styles related to the backlog controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "colors";
 
 ul {
   list-style-type: none;
   padding: 0;
-}
-
-.img-circle {
-  width: 50px;
-  height: 50px;
 }
 
 .brand {
@@ -24,6 +20,10 @@ ul {
   }
   .bq {
     margin-top: 20%;
+  }
+  .img-circle {
+    width: 50px;
+    height: 50px;
   }
 }
 
@@ -48,14 +48,24 @@ ul {
     margin-top: 0px !important;
     font-size: 30px;
   }
-  .form-control, .btn-default {
-    font-size: 60px !important;
-    height: 100px !important;
+  .form-control, .btn-default, .btn-success, .btn-warning, .btn-primary {
+    font-size: 50px !important;
+    height: 80px !important;
   }
-  h3 {
+  h2, h3 {
     font-size: 40px !important;
   }
-  .new_well {
+  p {
+    color: $red1;
+    font-size: 30px;
+  }
+  .new_well, .sign_in_well {
+    font-size: 30px !important;
+  }
+  label {
+    font-size: 28px;
+  }
+  .devise_link {
     font-size: 30px !important;
   }
 }

@@ -4,7 +4,7 @@
     %h2 Sign in
     = form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:novalidate => 'novalidate'}) do |f|
       %div.input-group
-        = f.label :login
+        = f.label :login, "Nickname or Email"
         %br/
         = f.email_field :login, :autofocus => true, class: 'form-control'
       %div.input-group

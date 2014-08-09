@@ -7,25 +7,29 @@
     %div
       = f.label :email
       %br/
-      = f.email_field :email, :autofocus => true
+      = f.email_field :email, :autofocus => true, class: 'form-control'
     %div
       = f.label :name
       %br/
-      = f.text_field :name, :autofocus => true
+      = f.text_field :name, :autofocus => true, class: 'form-control'
     %div
       = f.label :nickname
       %br/
-      = f.text_field :nickname, :autofocus => true
+      = f.text_field :nickname, :autofocus => true, class: 'form-control'
     %div
       = f.label :password
       %br/
-      = f.password_field :password
+      = f.password_field :password, class: 'form-control'
     %div
       = f.label :password_confirmation
       %br/
-      = f.password_field :password_confirmation
+      = f.password_field :password_confirmation, class: 'form-control'
     %div
       = f.label :avatar
-      #{f.file_field :avatar}
+      %br/
+      .list-inline
+        %li= content_tag(:i, "", class: "fa fa-upload fa-3x")
+        %li
+          #{f.file_field :avatar}
     %br/
     %div= f.submit "Sign up", class: 'btn btn-primary'

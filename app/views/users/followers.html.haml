@@ -7,6 +7,6 @@
     - else
       - @followers.all.each do |follower|
         %li.new_well
-          = link_to image_tag(follower.avatar.url(:thumb)), user_path(follower)
-          = link_to follower.name, user_path(follower)
+          = link_to image_tag(follower.avatar.url(:thumb), class: "img-circle"), user_path(follower)
+          = link_to (follower.name || follower.nickname), user_path(follower)
           = link_to "follow", "follow/" + follower.id.to_s, remote: true, method: :get, class: "right"
