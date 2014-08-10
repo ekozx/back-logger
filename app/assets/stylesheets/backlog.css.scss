@@ -14,6 +14,9 @@ ul {
 }
 
 @media screen and (max-width: 1500px) {
+  .btn-file {
+    width: 200px;
+  }
   .fa-trash-o, .btn-success, .right {
     float: right;
     margin-top: 10px;
@@ -28,6 +31,13 @@ ul {
 }
 
 @media screen and (max-width: 1137px) {
+  #user_avatar {
+    margin-top: 30px;
+    font-size: 25px !important;
+  }
+  .btn-file {
+    width: 100%;
+  }
   .fa-trash-o, .btn-success, .right {
     display: block !important;
   }

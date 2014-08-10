@@ -27,9 +27,7 @@
     %div
       = f.label :avatar
       %br/
-      .list-inline
-        %li= content_tag(:i, "", class: "fa fa-upload fa-3x")
-        %li
-          #{f.file_field :avatar}
+      .btn.btn-default.btn-file
+        #{f.file_field :avatar}
     %br/
     %div= f.submit "Sign up", class: 'btn btn-primary'
