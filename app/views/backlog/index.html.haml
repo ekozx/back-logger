@@ -1,13 +1,14 @@
 - if user_signed_in?
   .col-lg-8
     %h3.greeting.static_well
-      Hi,
+      Hi
       - if not current_user.name.blank?
         = current_user.name
       - elsif current_user.nickname != nil
         = current_user.nickname
       - else
         = current_user.email
+      , Press enter/go to query Rotten Tomatoes
     =form_tag search_path, method: 'get', id: "searchForm" do
       .input-group
         = hidden_field_tag(:group, "entries")
