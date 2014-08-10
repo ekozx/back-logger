@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Zappcord
+    %title Zapcord
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
@@ -14,7 +14,7 @@
   %body.container-fluid{ style: "background-image: url(" + background_path + "); background-repeat: no-repeat;"}
     .text-center.row.brand
       %h1.static_well
-        = link_to "Zappcord", '/'
+        = link_to "Zapcord", '/'
     - if user_signed_in?
       .col-lg-2.text-center
         %ul.nav.nav-pills.nav-stacked.new_well
