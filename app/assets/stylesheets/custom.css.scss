@@ -9,6 +9,15 @@
   padding: 15px;
   @include boxShadow(0, 1px, 1px, rgba(0,0,0,0.8));
 }
+.notification_well {
+  background-color: $green1;
+  border-color: $green1;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  border-radius: 10px;
+  // display: none;
+}
 .new_well:hover {
       margin: 5px -10px;
       padding: 5px 20px;

@@ -6,6 +6,7 @@
 #TODO: Try doing this with the helpers from:
 #      http://edgeguides.rubyonrails.org/working_with_javascript_in_rails.html#a-simple-example
 $ ->
+  $('#added').hide()
   #TODO: DRY the handlers
   loading = () ->
     $('.loading').show()
@@ -142,7 +143,9 @@ $ ->
       add = $(".add"+ movie['id'])
       show.click(buildHandler)
       add.click(buildHandler)
-
+  $('.btn-success').on 'click', ( event ) ->
+    console.log @
+    $('#added').show()
   $('.depth').on 'click', ( event ) ->
     loading()
     @.parent().hide()

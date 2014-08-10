@@ -1,3 +1,5 @@
+.static_well.notification_well.text-center#added
+  Added
 %ul#list
   - if @results
     - @results.each do |result|
@@ -11,7 +13,7 @@
             = result.title[0..30] + "..."
           - else
             = result.title
-          - unless current_user.backlog.entries.include? result  
+          - unless current_user.backlog.entries.include? result
             = link_to "add", '/entries/add/' + result.id.to_s, remote: true, method: :get, class: "btn btn-success"
         - else
           -if result.avatar.blank?
