@@ -39,7 +39,8 @@ html {
   background-size: 100%;
 }
 body {
-  background-repeat: repeat !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed;
   font-family: 'Raleway', sans-serif !important;
 }
 a.btn-success {

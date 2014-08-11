@@ -11,7 +11,7 @@
   -# - background_path = '../../app/assets/images/actor_backgrounds/'
   - image = background_image_list[val] + background_image_types[background_image_list[val]]
   - background_path = image_path("actor_backgrounds/" + image)
-  %body.container-fluid{ style: "background-image: url(" + background_path + "); background-repeat: no-repeat;"}
+  %body.container-fluid{ style: "background-image: url(" + background_path + ")"}
     .text-center.row.brand
       %h1.static_well
         = link_to "Zapcord", '/'
