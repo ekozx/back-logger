@@ -1,6 +1,7 @@
 class Entry < ActiveRecord::Base
   has_many :associations, dependent: :destroy
   has_many :backlogs, through: :associations
+  has_many :zaps
 
   searchkick
 
