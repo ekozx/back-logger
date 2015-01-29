@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :entries
   resources :associations
   resources :relationships, only: [:create, :destroy]
+  resources :zaps 
   devise_for :users, :controllers => { :registration => 'users', :omniauth_callbacks => "omniauth_callbacks" }
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,0 +1,2 @@
+class ZapsController < ApplicationController
+end
