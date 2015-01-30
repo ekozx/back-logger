@@ -1,1 +1,17 @@
-%h1 Zaps
+- if user_signed_in?
+  .col-lg-8
+    %h3.text-center.static_well
+      =link_to "Your suggestions"
+      =link_to "others suggestions"
+
+    - if current_user.zaps != nil
+      %ul.backlog
+        - @zaps.each do |zap|
+          - entry = zap.entry
+          %li.new_well
+            %p= entry.title
+            - if entry.thumbnail_file_name.blank?
+              = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(entry.id)
+            - else
+              = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)
+            %p= zap.message
