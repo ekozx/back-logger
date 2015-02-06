@@ -1,9 +1,11 @@
+#Super helpful jumping off point!
+#https://codelation.com/blog/rails-restful-api-just-add-water
 module Api
   class BaseController < ApplicationController
     protect_from_forgery with: :null_session
     before_action :set_resource, only: [:destroy, :show, :update]
     respond_to :json
-    
+
     # POST /api/{plural_resource_name}
     def create
       set_resource(resource_class.new(resource_params))
