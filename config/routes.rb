@@ -25,4 +25,8 @@ Rails.application.routes.draw do
   get 'users/unfollow/:id'   => 'users#unfollow'
 
   resources :users, only: [:show]
+
+  namespace :api do
+    resources :entries
+  end
 end
