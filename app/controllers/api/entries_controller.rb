@@ -1,5 +1,5 @@
 module Api
-  class Entries_Controller < Api::BaseController
+  class EntriesController < Api::BaseController
     private
       def entry_params
         params.require(:entry).permit(:title)
