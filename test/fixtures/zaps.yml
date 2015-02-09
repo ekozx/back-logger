@@ -1,9 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  message: MyString
-  entry_id: 
+  boolean: 
+  string: 
+  string: 
+  receiver_id: 1
+  creator_id: 1
 
 two:
-  message: MyString
-  entry_id: 
+  boolean: 
+  string: 
+  string: 
+  receiver_id: 1
+  creator_id: 1

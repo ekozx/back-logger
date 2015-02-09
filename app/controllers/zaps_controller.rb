@@ -2,10 +2,15 @@ class ZapsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if current_user.zaps.nil?
-      @zaps = []
+    potential_zaps = Zap.where(receiver_id: current_user.id)
+    @has_zaps = potential_zaps.count > 0
+    if @has_zaps
+      @zaps = potential_zaps
     else
-      @zaps = current_user.zaps
+      @zaps = []
     end
+  end
+
+  def created_zaps
   end
 end

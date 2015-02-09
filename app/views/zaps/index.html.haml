@@ -4,7 +4,7 @@
       =link_to "Your suggestions"
       =link_to "others suggestions"
 
-    - if current_user.zaps != nil
+    - if @has_zaps
       %ul.backlog
         - @zaps.each do |zap|
           - entry = zap.entry
@@ -15,3 +15,5 @@
             - else
               = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)
             %p= zap.message
+    - else
+      %h2 You don't have any pending zaps!
