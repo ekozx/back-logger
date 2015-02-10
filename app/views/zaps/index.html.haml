@@ -1,8 +1,8 @@
 - if user_signed_in?
   .col-lg-8
     %h3.text-center.static_well
-      =link_to "Your suggestions", zaps_path
-      =link_to "Others suggestions", 'zaps/created'
+      =link_to "Others suggestions", zaps_path
+      =link_to "Your suggestions", '/zaps/created'
 
     - if @has_zaps
       %ul.backlog
@@ -10,6 +10,8 @@
           - entry = zap.entry
           %li.new_well
             %p= entry.title
+            = link_to image_tag(User.find(zap.creator_id).avatar.url(:thumb), class: 'img-circle'), user_path(zap.creator_id)
+            = link_to image_tag(User.find(zap.receiver_id).avatar.url(:thumb), class: 'img-circle'), user_path(zap.receiver_id)
             - if entry.thumbnail_file_name.blank?
               = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(entry.id)
             - else

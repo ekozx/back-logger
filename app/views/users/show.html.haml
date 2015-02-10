@@ -6,7 +6,8 @@
           = @user.name
       .inline
         = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
-        = link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get, class: "btn btn-success"
+        - unless @user.id == current_user.id
+          = link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get, class: "btn btn-success"
 
   .bottom_margin
     %h3.text-center.static_well
