@@ -24,7 +24,6 @@ class ZapsController < ApplicationController
   end
 
   def new
-    
   end
 
   def show
