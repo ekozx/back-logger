@@ -1,0 +1,18 @@
+- if user_signed_in?
+  .col-lg-5.static_well
+    %h1.text-center= @entry.title
+    - if not @entry.photo.blank?
+      = image_tag("http://image.tmdb.org/t/p/w500/" + @entry.photo, class: "portrait-img img-responsive")
+    - else
+      = image_tag("medium/missing.png", class: "portrait-img img-responsive")
+  .col-lg-5.static_well
+    %blockquote.bq= @entry.description
+    -# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
+    - if current_user.backlog.entries.include?(@entry)
+      %p This entry is in your backlog
+    -else
+      = link_to "Add to your backlog", "add/" + @entry.id.to_s, remote: true, method: :get
+  .col-lg-2.static_well
+    = link_to image_tag(@creator.avatar.url(:thumb), class: 'img-circle'), user_path(@zap.creator_id)
+    = link_to image_tag(@receivor.avatar.url(:thumb), class: 'img-circle'), user_path(@zap.receiver_id)
+    %h4= (@creator.name.blank? ? @creator.nickname : @creator.name) + "'s zap to " + (@receivor.name.blank? ? @receivor.nickname : @receivor.name)
