@@ -1,12 +1,13 @@
+- name = ""
 .col-lg-8
   .greeting.text-center
     .static_well
       .row
         .h1
           - if @user.name.blank?
-            = @user.nickname
+            = name = @user.nickname
           - else
-            = @user.name
+            = name = @user.name
       .inline
         = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
         - unless @user.id == current_user.id
@@ -14,6 +15,6 @@
 
   .bottom_margin
     %h3.text-center.static_well
-      = (@user.name || @user.nickname) + "'s backlog:"
+      = name + "'s backlog:"
     - if @user_backlog != nil
       = render 'shared/results'
