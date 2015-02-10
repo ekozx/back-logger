@@ -1,8 +1,8 @@
 - if user_signed_in?
   .col-lg-8
     %h3.text-center.static_well
-      =link_to "Your suggestions"
-      =link_to "others suggestions"
+      =link_to "Your suggestions", zaps_path
+      =link_to "Others suggestions", 'zaps/created'
 
     - if @has_zaps
       %ul.backlog

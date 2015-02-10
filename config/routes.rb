@@ -4,11 +4,6 @@ Rails.application.routes.draw do
   #TODO: Refactor these with better namespaces
   # You can have the root of your site routed with "root"
   root 'backlog#index'
-  resources :entries
-  resources :associations
-  resources :relationships, only: [:create, :destroy]
-  resources :zaps
-  devise_for :users, :controllers => { :registration => 'users', :omniauth_callbacks => "omniauth_callbacks" }
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
   get 'backlog/unbuilt'      => 'backlog#unbuilt'
@@ -23,6 +18,13 @@ Rails.application.routes.draw do
   get 'users/following'      => 'users#following'
   get 'users/follow/:id'     => 'users#follow'
   get 'users/unfollow/:id'   => 'users#unfollow'
+  get '/zaps/created'        => 'zaps#created'
+
+  resources :entries
+  resources :associations
+  resources :relationships, only: [:create, :destroy]
+  resources :zaps
+  devise_for :users, :controllers => { :registration => 'users', :omniauth_callbacks => "omniauth_callbacks" }
 
   resources :users, only: [:show]
 
