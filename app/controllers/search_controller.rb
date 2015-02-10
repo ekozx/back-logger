@@ -65,6 +65,8 @@ class SearchController < ApplicationController
     #need to test if we're at the backlogs page
     if params[:type] == "entries"
       @results = Entry.search query, limit: 10, page: params[:page], per_page: 10
+    elsif params[:type] == "followers"
+      @results = current_user.followers.search query, limit: 10, page: params[:page], per_page: 10
     else
       @results = User.search query, limit: 10, page: params[:page], per_page: 10
     end

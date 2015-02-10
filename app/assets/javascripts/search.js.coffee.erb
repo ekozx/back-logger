@@ -14,13 +14,16 @@ $ ->
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
-  buildUserHTML = ( amazonPath, user_id, name ) ->
+  buildUserHTML = ( amazonPath, user_id, name, followers ) ->
     html = "<li class='new_well'>"
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
-    add = "<button class='btn btn-success'><a class='add" + user_id
-    add += "' id='" + user_id + "' href='#'>follow</a></button></li>"
-    html += add
+    if followers
+
+    else
+      add = "<button class='btn btn-success'><a class='add" + user_id
+      add += "' id='" + user_id + "' href='#'>follow</a></button></li>"
+      html += add
     return html
   buildRequestHTML = ( requestData, picture, title, rt_id ) ->
     html = "<li class='new_well '>"
@@ -105,6 +108,20 @@ $ ->
     url = '/users/follow/' + @.id
     $.get(url, { id: @.id }).done ( data ) ->
       appendUserHTML(data)
+  appendUsers = ( data, list, followers ) ->
+    max = 5
+    for k,v of data
+      amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
+      #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
+      amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
+      if followers
+        html = buildUserHTML(amazonPath, v['id'], v['name'], true)
+        list.append(html)
+      else
+        html = buildUserHTML(amazonPath, v['id'], v['name'], false)
+        list.append(html)
+        add = $('.add' + v['id'])
+        add.click(followHandler)
   appendControllerData = ( data, type, list ) ->
     loaded()
     max = 5
@@ -119,16 +136,10 @@ $ ->
           addAnchor = $(".add" + v['id'])
           addAnchor.click(addHandler)
           max--
+    else if type == 'followers'
+      appendUsers(data, list, true)
     else
-      max = 5
-      for k,v of data
-        amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
-        #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
-        amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-        html = buildUserHTML(amazonPath, v['id'], v['name'])
-        list.append(html)
-        add = $('.add' + v['id'])
-        add.click(followHandler)
+      appendUsers(data, list, false)
   window.appendRequestData = ( data ) ->
     loaded()
     list = $('#list') #TODO: find a way to pass this to the callback
@@ -154,6 +165,8 @@ $ ->
     keycode = event.keyCode
     if window.location.pathname == "/users/following"
       type = "users"
+    else if window.location.pathname == "/zaps/new"
+      type = "followers"
     else if window.location.pathname == "/search"
       type = $('input[name=group]:checked', '#searchForm').val()
     else

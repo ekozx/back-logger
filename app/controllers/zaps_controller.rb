@@ -23,8 +23,13 @@ class ZapsController < ApplicationController
     render "index"
   end
 
+  def new
+    
+  end
+
   def show
     @zap = Zap.find(params[:id])
+    @zap.update(seen: true)
     @entry = @zap.entry
     @creator = User.find(@zap.creator_id)
     @receivor = User.find(@zap.receiver_id)
