@@ -3,7 +3,10 @@
     .static_well
       .row
         .h1
-          = @user.name
+          - if @user.name.blank?
+            = @user.nickname
+          - else
+            = @user.name
       .inline
         = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
         - unless @user.id == current_user.id
