@@ -16,12 +16,13 @@
       %h1.static_well
         = link_to "Zapcord", '/'
     - if user_signed_in?
+      - unseen_count = Zap.where(receiver_id: current_user.id, seen: false).count.to_s
       .col-lg-2.text-center
         %ul.nav.nav-pills.nav-stacked.new_well
           %li
             = link_to image_tag(current_user.avatar.url(:thumb), class: 'img-circle'), '/'
           %li
-            = link_to "Zaps", zaps_path
+            = link_to ("Zaps (" + unseen_count + ")"), zaps_path
           %li
             = link_to "Following", users_following_path
           %li
