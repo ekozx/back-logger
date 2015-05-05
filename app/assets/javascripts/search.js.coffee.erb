@@ -172,11 +172,10 @@ $ ->
   $('a#deleteTmp').on 'click', ( event ) ->
   $('#search').on 'keypress', ( event ) ->
     keycode = event.keyCode
-    if window.location.pathname == "/users/following"
+    pathName = window.location.pathname
+    if pathName == "/users/following"
       type = "users"
-    else if window.location.pathname == "/zaps/new"
-      type = "followers"
-    else if window.location.pathname == "/search"
+    else if pathName == "/search"
       type = $('input[name=group]:checked', '#searchForm').val()
     else
       type = "entries"
@@ -191,7 +190,6 @@ $ ->
       loading()
       pageLimit = "&page_limit=5"
       if window.location.pathname == '/search' then pageLimit = "&page_limit=10"
-      console.log "<%= ENV['ROTTEN_TOMATOES_KEY'] %>"
       url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
       url += encodeURI(searchValue)
       url += pageLimit
