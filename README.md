@@ -1,6 +1,7 @@
 #An app to help me improve my rails skills
-
-###TODO (see http://www.evankozliner.info/single/Zapcord):
+## See http://www.evankozliner.info/single/Zapcord for a short description of some features.
+### Another blog post on the way
+###TODO:
 * Refactoring at TODO marks (grep for TODO)
   * search.js.coffee could certainly use some work
 * Friend to friend suggestions
