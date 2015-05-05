@@ -1,21 +1,26 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+# Handles searching for Followers, Following, Entries
+# Utilizes elasticsearch on the model/controller side
+# as well as AWS, TheMovieDB and the rotten tomatoes API for movies
+# not already present in the working database.
 
-#TODO: Handle more error cases in AJAX
-#TODO: Try doing this with the helpers from:
+# TODO: Handle more error cases in AJAX
+# TODO: Try doing some more of this with the helpers from:
 #      http://edgeguides.rubyonrails.org/working_with_javascript_in_rails.html#a-simple-example
+# TODO: DRY the handlers
+# TODO: Be sure the formatting adheres to https://github.com/polarmobile/coffeescript-style-guide
 $ ->
-  $('#added').hide()
-  #TODO: DRY the handlers
+  # Presents the loading gif.
+  # TODO: Get and style a better loading gif
   loading = () ->
     $('.loading').show()
     $('.pagination').show()
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
-  #TODO: Could DRY this up by passing in 'zap' or 'follow' and changing some stuff around
-  buildUserHTML = ( amazonPath, user_id, name, followers ) ->
+
+  # Returns an HTML string to append user wells to a list
+  # TODO: Could DRY this up by passing in 'zap' or 'follow'
+  buildUserHTML = (amazonPath, user_id, name, followers) ->
     html = "<li class='new_well'>"
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
@@ -28,15 +33,22 @@ $ ->
       add += "' id='" + user_id + "' href='/#'>follow</a></button></li>"
       html += add
     return html
-  buildRequestHTML = ( requestData, picture, title, rt_id ) ->
+
+  # Returns an HTML string that will send a request to the controller
+  # to add a new entry using requestData once clicked.
+  buildRequestHTML = (requestData, picture, title, rt_id) ->
     html = "<li class='new_well '>"
-    html += "<a href='#' class='unbuilt" + rt_id + "' id='" + requestData + "'><img src='" + picture + "' class='img-circle'></a>"
+    html += "<a href='#' class='unbuilt" + rt_id + "' id='"
+    html += requestData + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title.substring(0,30)
     add = "<button class='btn btn-success'><a class='add" + rt_id
     add += "'  id='"+ requestData + "' href='#'>add</a></button></li>"
     html += add
     return html
-  buildAttachedHTML = ( picture, title, id ) ->
+
+  # Returns an HTML string for an existing entry, as opposed to one
+  # that might need added to the database.
+  buildAttachedHTML = (picture, title, id) ->
     html = "<li class='new_well '>"
     html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
     html += title.substring(0,30)
@@ -44,7 +56,9 @@ $ ->
     add += "'  id='"+ id + "' href='#'>add</a></button></li>"
     html += add
     return html
-  appendUserHTML = ( data ) ->
+
+  # Adds a users HTML to a list of followers with the option to follow/unfollow them.
+  appendUserHTML = (data) ->
     amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
     #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
     #TODO: Should probably DRY amazonPath because it's used twice, will do w/ logic above
@@ -63,16 +77,21 @@ $ ->
         type: "GET",
         success: ( data ) ->
           html.hide())
-  appendEntryHTML = ( data ) ->
-    if data['thumbnail_file_name'] != null
+
+  # Creates and adds an entries HTML to the backlog list once if a new entry from
+  # search is clicked.
+  appendEntryHTML = (data) ->
+    if data['thumbnail_file_name'] isnt null
       photo = data['thumbnail_file_name']
     else
       photo = '/assets/thumb/missing.png'
     title = data['title']
     if title.length >= 30
       title = title.substring(0,30) + "..."
-    html = "<li class='new_well '><a href='/entries/" + data['id'] + "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
-    html += "</a>" + title + "<a class='deleteEntry' id='deleteTmp" + data['id'] + "' data-method='delete' data-remote='true' href='/entries/"
+    html = "<li class='new_well '><a href='/entries/" + data['id']
+    html += "'><img alt='Missing' src='" + photo + "' class='img-circle''>"
+    html += "</a>" + title + "<a class='deleteEntry' id='deleteTmp"
+    html += data['id'] + "' data-method='delete' data-remote='true' href='/entries/"
     html += data['id'] + "' rel='nofollow'>"
     html += "<i class='fa fa-trash-o fa-2x'></i></a>"
     html = $(html)
@@ -80,42 +99,55 @@ $ ->
     del = $('#deleteTmp' + data['id'])
     del.click(() ->
       html.hide())
-  addHandler = ( event ) ->
+
+  # Event handler for adding an entry to your backlog and calls reindex the searched item type.
+  addHandler = (event) ->
     event.preventDefault()
-    url = '/entries/add/' + @.childNodes[0].id
-    $.get(url, {id: @.id, append: true}).done ( data ) ->
+    url = '/entries/add/' + this.childNodes[0].id
+    $.get(url, {id: this.id, append: true}).done ( data ) ->
       appendEntryHTML(data)
     $.get('/search/reindex')
-  buildHandler = ( event ) ->
+
+  # Event handler for appending a new entry to the backlog list
+  # from the appended search list.
+  buildHandler = (event) ->
     event.preventDefault()
     loading()
-    values = @.id.split("~~")
-    clickedElement = @
-    if values[2] == undefined then values[2] = ""
-    if values[1] == "" then values[1] = "No description"
+    values = this.id.split("~~")
+    clickedElement = this
+    if values[2] is undefined then values[2] = ""
+    if values[1] is "" then values[1] = "No description"
     url = "/backlog/unbuilt/"
     $.get(url,  {movie_info: values} ).done ( data ) ->
       loaded()
       #TODO: Make the class unbuilt more descriptive
-      if clickedElement.className.substring(0,7) == 'unbuilt'
+      if clickedElement.className.substring(0,7) is 'unbuilt'
         window.location.replace("/entries/" + data['id'])
-      else if clickedElement.className.substring(0,3) == 'add'
+      else if clickedElement.className.substring(0,3) is 'add'
         #create a request to add it to the backlog
         url = '/entries/add/' + data['id']
         $.get(url, { id: data['id'], append: true } ).done ( data ) ->
           $.get('/search/reindex')
           #append it on success
           appendEntryHTML(data)
-  followHandler = ( event ) ->
+
+  # Event handler for following a new user that has been appended.
+  followHandler = (event) ->
     event.preventDefault()
-    url = '/users/follow/' + @.id
-    $.get(url, { id: @.id }).done ( data ) ->
+    url = '/users/follow/' + this.id
+    $.get(url, { id: this.id }).done ( data ) ->
       appendUserHTML(data)
-  zapHandler = ( event ) ->
+
+  # Handler for looking for people to zap?
+  # TODO: This will be a "zap" option for a searched user.
+  # TODO: This was an old idea. Is it neccessary?
+  zapHandler = (event) ->
     event.preventDefault()
     #TODO: Decide how we're going to implement this... Default AJAX forms maybe?
     console.log "prevented"
-  appendUsers = ( data, list, followers ) ->
+
+  # Appends user HTML to a list of users to following, potentially "zap".
+  appendUsers = (data, list, followers) ->
     max = 5
     for k,v of data
       amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
@@ -131,30 +163,34 @@ $ ->
         list.append(html)
         add = $('.add' + v['id'])
         add.click(followHandler)
-  appendControllerData = ( data, type, list ) ->
+
+  # Appends existing entries from the controller to a list.
+  appendControllerData = (data, type, list) ->
     loaded()
     max = 5
-    if type == 'entries'
+    if type is 'entries'
       for k,v of data
         if max > 0
           picture = v['thumbnail_file_name']
-          if picture == null then picture = ""
+          if picture is null then picture = ""
           html = buildAttachedHTML(picture, v['title'], v['id'])
           html = $(html)
           list.append(html)
           addAnchor = $(".add" + v['id'])
           addAnchor.click(addHandler)
           max--
-    else if type == 'followers'
+    else if type is 'followers'
       appendUsers(data, list, true)
     else
       appendUsers(data, list, false)
-  window.appendRequestData = ( data ) ->
+
+  # Appends the data from a request to Rotten Tomatoes.
+  window.appendRequestData = (data) ->
     loaded()
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
       alternate = movie['alternate_ids']
-      if alternate != undefined then imdb = alternate['imdb'] else imdb = "unknown"
+      if alternate isnt undefined then imdb = alternate['imdb'] else imdb = "unknown"
       requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "")
       requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
       html = buildRequestHTML(requestData, movie["posters"]["detailed"], movie['title'], movie['id'])
@@ -163,19 +199,34 @@ $ ->
       add = $(".add"+ movie['id'])
       show.click(buildHandler)
       add.click(buildHandler)
-  $('.btn-success').on 'click', ( event ) ->
-    console.log @
+
+  # Hides a newly added entry/user
+  $('#added').hide()
+
+  # Shows a newly added entry/user
+  $('.btn-success').on 'click', (event) ->
     $('#added').show()
-  $('.depth').on 'click', ( event ) ->
+
+  # On click for "More results"
+  $('.depth').on 'click', (event) ->
     loading()
-    @.parent().hide()
-  $('a#deleteTmp').on 'click', ( event ) ->
+    this.parent().hide()
+
+  #TODO: Not sure if this does anything..?
+  $('a#deleteTmp').on 'click', (event) ->
+
+  # The primary elasticsearch keypress event.
+  # Determines the current path and desired resource:
+  #   1) On enter, if the we are searching for entries a query is made to
+  #      Rotten Tomatoes.
+  #   2) On a regular keypress, our controller is queried for entries or users.
+  #   3) TODO: For a Zap....
   $('#search').on 'keypress', ( event ) ->
     keycode = event.keyCode
     pathName = window.location.pathname
-    if pathName == "/users/following"
+    if pathName is "/users/following"
       type = "users"
-    else if pathName == "/search"
+    else if pathName is "/search"
       type = $('input[name=group]:checked', '#searchForm').val()
     else
       type = "entries"
@@ -185,11 +236,11 @@ $ ->
     entries = list.children()
     entry.remove() for entry in entries
     loaded()
-    if keycode == 13 && type == 'entries'
+    if keycode is 13 && type is 'entries' #keycode 13 is 'enter'
       event.preventDefault()
       loading()
       pageLimit = "&page_limit=5"
-      if window.location.pathname == '/search' then pageLimit = "&page_limit=10"
+      if window.location.pathname is '/search' then pageLimit = "&page_limit=10"
       url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
       url += encodeURI(searchValue)
       url += pageLimit
@@ -201,7 +252,7 @@ $ ->
         jsonpCallback: 'appendRequestData',
         error: ( jqXHR, textStatus, errorThrown ) ->
           alert "AJAX Error: #{textStatus}"
-    else if ((url != 'search/users/') && (url != 'search/entries/') && url != ('search/entries//no') && (url != '/null'))
+    else if ((url isnt 'search/users/') and (url isnt 'search/entries/') and url isnt ('search/entries//no') and (url isnt '/null'))
       loading()
       $.ajax url,
         type: 'GET',
