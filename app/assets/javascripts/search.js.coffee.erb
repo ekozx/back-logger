@@ -14,17 +14,18 @@ $ ->
   loaded = () ->
     $('.pagination').hide()
     $('.loading').hide()
+  #TODO: Could DRY this up by passing in 'zap' or 'follow' and changing some stuff around
   buildUserHTML = ( amazonPath, user_id, name, followers ) ->
     html = "<li class='new_well'>"
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
     if followers
       zap = "<button class='btn btn-success'><class='zap" + user_id
-      zap += "' id='" + user_id + "' href='#'>Zap</a></button></li>"
+      zap += "' id='" + user_id + "' href='/#'>Zap</a></button></li>"
       html += zap
     else
       add = "<button class='btn btn-success'><a class='add" + user_id
-      add += "' id='" + user_id + "' href='#'>follow</a></button></li>"
+      add += "' id='" + user_id + "' href='/#'>follow</a></button></li>"
       html += add
     return html
   buildRequestHTML = ( requestData, picture, title, rt_id ) ->
@@ -113,6 +114,7 @@ $ ->
   zapHandler = ( event ) ->
     event.preventDefault()
     #TODO: Decide how we're going to implement this... Default AJAX forms maybe?
+    console.log "prevented"
   appendUsers = ( data, list, followers ) ->
     max = 5
     for k,v of data

@@ -9,5 +9,12 @@
           = submit_tag "More Results", class: "depth btn btn-default"
       .loading
         =image_tag src="loading1.gif"
-
       = render 'shared/results'
+
+    = form_tag zaps_path, method: 'post' do
+
+      = label :zap, :name, 'Title'
+      = text_field :zap, 'title'
+      = label :zap, :name, 'message'
+      = text_field :zap, 'message'
+      = submit_tag 'Save Changes'

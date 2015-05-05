@@ -8,3 +8,4 @@
 * Stylistic changes
   * Change top bar
   * Rearrange profile card
+  * Consider a total design redo once features and API are in
