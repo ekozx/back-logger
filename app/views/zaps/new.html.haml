@@ -9,6 +9,17 @@
 
       = label :zap, :name, 'Title'
       = text_field :zap, 'title'
+
+      = label :zap, :name, 'Friend'
+      = text_field :zap, "username"
+
       = label :zap, :name, 'message'
       = text_field :zap, 'message'
+
+      -# = label :zap, :name, 'movie'
+      -# = text_field :zap, 'movie'
+
+      = hidden_field_tag(:receiver_id, "9")
+      = hidden_field_tag(:entry_id, "65")
+
       = submit_tag 'Save Changes'

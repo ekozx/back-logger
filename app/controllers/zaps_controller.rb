@@ -27,7 +27,20 @@ class ZapsController < ApplicationController
   end
 
   def create
-    render 'show' 
+    @zap = Zap.new
+    @zap.seen = false
+    @zap.creator_id = current_user.id
+
+    @zap.message = params["zap"]["message"]
+    @zap.title = params["zap"]["title"]
+    @zap.entry_id = params["entry_id"].to_i
+    @zap.receiver_id = params["receiver_id"].to_i
+    if @zap.save
+      puts @zap.id.to_s
+      redirect_to "/zaps/" + @zap.id.to_s
+    else
+      render 'zaps/new'
+    end
   end
 
   def show
