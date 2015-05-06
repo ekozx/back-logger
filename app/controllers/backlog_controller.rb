@@ -2,6 +2,7 @@ class BacklogController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @group = "entries"
     if current_user.backlog.nil?
       Entry.clean_indices
       User.clean_indices
@@ -9,7 +10,6 @@ class BacklogController < ApplicationController
       User.reindex
       Backlog.create(user_id: current_user.id)
       @entries = []
-      @group = "entries"
     else
       @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(10)
     end

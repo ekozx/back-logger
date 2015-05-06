@@ -25,7 +25,7 @@ class ZapsController < ApplicationController
 
   def new
     @entries = "entries"
-    @users = ""
+    @users = "users"
   end
 
   def create

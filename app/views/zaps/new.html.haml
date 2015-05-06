@@ -2,10 +2,10 @@
   .static_well.col-lg-8
     %h3 Zap your friend
     %h3 What would you like them to watch?
-    = render 'shared/entries_search'
+    = render 'shared/entries_search', group: @entries
     = render 'shared/results'
 
-    = render 'shared/entries_search'
+    = render 'shared/entries_search', group: @users 
     = render 'shared/results'
 
     = form_tag zaps_path, method: 'post' do
