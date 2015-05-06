@@ -5,8 +5,10 @@
     = render 'shared/entries_search'
     = render 'shared/results'
 
-    = form_tag zaps_path, method: 'post' do
+    = render 'shared/entries_search'
+    = render 'shared/results'
 
+    = form_tag zaps_path, method: 'post' do
       = label :zap, :name, 'Title'
       = text_field :zap, 'title'
 

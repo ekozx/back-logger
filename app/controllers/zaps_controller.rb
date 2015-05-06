@@ -24,6 +24,8 @@ class ZapsController < ApplicationController
   end
 
   def new
+    @entries = "entries"
+    @users = ""
   end
 
   def create

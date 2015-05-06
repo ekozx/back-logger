@@ -10,7 +10,7 @@
         = current_user.email
       , Press Enter/Go to query Rotten Tomatoes
 
-    = render 'shared/entries_search'
+    = render 'shared/entries_search', locals: { group: @group }
     = render 'shared/results'
 
     %h3.text-center.static_well Your backlog:

@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   end
   def following
     @followed_users = current_user.followed_users
+    @group = "users"
   end
   def show
     @user = User.find(params[:id])

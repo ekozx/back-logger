@@ -9,6 +9,7 @@ class BacklogController < ApplicationController
       User.reindex
       Backlog.create(user_id: current_user.id)
       @entries = []
+      @group = "entries"
     else
       @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(10)
     end

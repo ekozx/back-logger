@@ -200,13 +200,6 @@ $ ->
       show.click(buildHandler)
       add.click(buildHandler)
 
-  # Hides a newly added entry/user
-  $('#added').hide()
-
-  # Shows a newly added entry/user
-  $('.btn-success').on 'click', (event) ->
-    $('#added').show()
-
   # On click for "More results"
   $('.depth').on 'click', (event) ->
     loading()
@@ -252,7 +245,10 @@ $ ->
         jsonpCallback: 'appendRequestData',
         error: ( jqXHR, textStatus, errorThrown ) ->
           alert "AJAX Error: #{textStatus}"
-    else if ((url isnt 'search/users/') and (url isnt 'search/entries/') and url isnt ('search/entries//no') and (url isnt '/null'))
+    else if ((url isnt 'search/users/') and
+            (url isnt 'search/entries/') and
+            (url isnt ('search/entries//no')) and
+            (url isnt '/null'))
       loading()
       $.ajax url,
         type: 'GET',
