@@ -214,16 +214,16 @@ $ ->
   #      Rotten Tomatoes.
   #   2) On a regular keypress, our controller is queried for entries or users.
   #   3) TODO: For a Zap....
-  $('#search').on 'keypress', ( event ) ->
+  $('.search').on 'keypress', ( event ) ->
     keycode = event.keyCode
     pathName = window.location.pathname
     if pathName is "/users/following"
       type = "users"
     else if pathName is "/search"
-      type = $('input[name=group]:checked', '#searchForm').val()
+      type = $('input[name=group]:checked', '.searchForm').val()
     else
       type = "entries"
-    searchValue = $('#search').children().first().val()
+    searchValue = $('.search').children().first().val()
     url = "/search/" + type + "/" + searchValue + "/no"
     list = $('#list')
     entries = list.children()
