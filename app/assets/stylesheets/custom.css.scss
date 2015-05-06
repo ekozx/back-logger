@@ -5,9 +5,10 @@
 .new_well, .static_well {
   background-color: none !important;
   padding-top: 6px;
-  background-color: rgba(255,255,255,0.85);
+  transition: 200ms;
+  background-color: rgba(255,255,255,0.92);
   padding: 15px;
-  @include boxShadow(0, 1px, 1px, rgba(0,0,0,0.8));
+  @include boxShadow(0, 1px, 1px, rgba(0,0,0,0.5));
 }
 .notification_well {
   background-color: $green1;
