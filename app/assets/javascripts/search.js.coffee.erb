@@ -11,12 +11,12 @@
 $ ->
   # Presents the loading gif.
   # TODO: Get and style a better loading gif
-  loading = () ->
-    $('.loading').show()
+  loading = (model) ->
+    $('.loading-' + model).show()
     $('.pagination').show()
-  loaded = () ->
+  loaded = (model) ->
     $('.pagination').hide()
-    $('.loading').hide()
+    $('.loading-' + model).hide()
 
   # Returns an HTML string to append user wells to a list
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
@@ -112,14 +112,14 @@ $ ->
   # from the appended search list.
   buildHandler = (event) ->
     event.preventDefault()
-    loading()
+    loading("entry")
     values = this.id.split("~~")
     clickedElement = this
     if values[2] is undefined then values[2] = ""
     if values[1] is "" then values[1] = "No description"
     url = "/backlog/unbuilt/"
     $.get(url,  {movie_info: values} ).done ( data ) ->
-      loaded()
+      loaded('entries')
       #TODO: Make the class unbuilt more descriptive
       if clickedElement.className.substring(0,7) is 'unbuilt'
         window.location.replace("/entries/" + data['id'])
@@ -166,7 +166,7 @@ $ ->
 
   # Appends existing entries from the controller to a list.
   appendControllerData = (data, type, list) ->
-    loaded()
+    loaded(type)
     max = 5
     if type is 'entries'
       for k,v of data
@@ -186,7 +186,7 @@ $ ->
 
   # Appends the data from a request to Rotten Tomatoes.
   window.appendRequestData = (data) ->
-    loaded()
+    loaded('entries')
     list = $('#list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
       alternate = movie['alternate_ids']
@@ -202,7 +202,11 @@ $ ->
 
   # On click for "More results"
   $('.depth').on 'click', (event) ->
-    loading()
+    if $('.loading-entries').length > 0
+      loading('entries')
+    else
+      loading('users')
+
     this.parent().hide()
 
   #TODO: Not sure if this does anything..?
@@ -228,10 +232,10 @@ $ ->
     list = $('#list')
     entries = list.children()
     entry.remove() for entry in entries
-    loaded()
+    loaded(type)
     if keycode is 13 && type is 'entries' #keycode 13 is 'enter'
       event.preventDefault()
-      loading()
+      loading(type)
       pageLimit = "&page_limit=5"
       if window.location.pathname is '/search' then pageLimit = "&page_limit=10"
       url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
@@ -249,7 +253,7 @@ $ ->
             (url isnt 'search/entries/') and
             (url isnt ('search/entries//no')) and
             (url isnt '/null'))
-      loading()
+      loading(type)
       $.ajax url,
         type: 'GET',
         error: ( jqXHR, textStatus, errorThrown ) ->

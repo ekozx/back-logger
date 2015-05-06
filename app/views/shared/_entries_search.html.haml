@@ -6,5 +6,10 @@
     - if more_results
       .input-group-btn
         = submit_tag "More Results", class: "depth btn btn-default"
-.loading
-  =image_tag src="loading1.gif"
+
+- if group === 'entries'
+  .loading-entries
+    =image_tag src="loading1.gif"
+- if group == 'users'
+  .loading-users
+    =image_tag src="loading1.gif"
