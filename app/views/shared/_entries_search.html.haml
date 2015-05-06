@@ -3,7 +3,8 @@
     = hidden_field_tag(:group, group)
     #search
       = text_field_tag :query, params[:search], placeholder: "Type to search " + group, class: "form-control"
-    .input-group-btn
-      = submit_tag "More Results", class: "depth btn btn-default"
+    - if more_results
+      .input-group-btn
+        = submit_tag "More Results", class: "depth btn btn-default"
 .loading
   =image_tag src="loading1.gif"
