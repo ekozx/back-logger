@@ -1,15 +1,20 @@
 =form_tag search_path, method: 'get', id: "searchForm" do
   .input-group
     = hidden_field_tag(:group, group)
-    .search
-      = text_field_tag :query, params[:search], placeholder: "Type to search " + group, class: "form-control"
+    - if group == 'entries'
+      .search-entries
+        = text_field_tag :query, params[:search], placeholder: "Type to search " + group, class: "form-control"
+    - else
+      .search-users
+        = text_field_tag :query, params[:search], placeholder: "Type to search " + group, class: "form-control"
     - if more_results
       .input-group-btn
         = submit_tag "More Results", class: "depth btn btn-default"
-
-- if group === 'entries'
+- if group == 'entries'
   .loading-entries
     =image_tag src="loading1.gif"
-- if group == 'users'
+  %ul#entries-list
+- else
   .loading-users
     =image_tag src="loading1.gif"
+  %ul#users-list

@@ -187,7 +187,7 @@ $ ->
   # Appends the data from a request to Rotten Tomatoes.
   window.appendRequestData = (data) ->
     loaded('entries')
-    list = $('#list') #TODO: find a way to pass this to the callback
+    list = $('#entries-list') #TODO: find a way to pass this to the callback
     for movie in data["movies"]
       alternate = movie['alternate_ids']
       if alternate isnt undefined then imdb = alternate['imdb'] else imdb = "unknown"
@@ -212,24 +212,45 @@ $ ->
   #TODO: Not sure if this does anything..?
   $('a#deleteTmp').on 'click', (event) ->
 
+  $('.search-users').on 'keypress', (event) ->
+    keycode = event.keyCode
+    type = "users"
+    searchValue = $('.search-users').children().first().val()
+    url = "/search/" + type + "/" + searchValue + "/no"
+    list = $('#users-list')
+    entries = list.children()
+    entry.remove() for entry in entries
+    loaded(type)
+    if ((url isnt 'search/users/') and
+            (url isnt 'search/entries/') and
+            (url isnt ('search/entries//no')) and
+            (url isnt '/null'))
+      loading(type)
+      $.ajax url,
+        type: 'GET',
+        error: ( jqXHR, textStatus, errorThrown ) ->
+        success: ( data ) ->
+          appendControllerData(data, type, list)
   # The primary elasticsearch keypress event.
   # Determines the current path and desired resource:
   #   1) On enter, if the we are searching for entries a query is made to
   #      Rotten Tomatoes.
   #   2) On a regular keypress, our controller is queried for entries or users.
   #   3) TODO: For a Zap....
-  $('.search').on 'keypress', ( event ) ->
+  # Rework this to be 3 seperate classes search-entries, search-users, and search-advanced.. :'(
+  $('.search-entries').on 'keypress', ( event ) ->
     keycode = event.keyCode
-    pathName = window.location.pathname
-    if pathName is "/users/following"
-      type = "users"
-    else if pathName is "/search"
-      type = $('input[name=group]:checked', '.searchForm').val()
-    else
-      type = "entries"
-    searchValue = $('.search').children().first().val()
+    # pathName = window.location.pathname
+    # console.log(this)
+    # if pathName is "/users/following"
+    #   type = "users"
+    # else if pathName is "/search"
+    #   type = $('input[name=group]:checked', '.searchForm').val()
+    # else
+    type = "entries"
+    searchValue = $('.search-entries').children().first().val()
     url = "/search/" + type + "/" + searchValue + "/no"
-    list = $('#list')
+    list = $('#entries-list')
     entries = list.children()
     entry.remove() for entry in entries
     loaded(type)

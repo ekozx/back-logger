@@ -16,14 +16,10 @@ class BacklogController < ApplicationController
   end
 
   def unbuilt
-    logger = Logger.new('log/development.log')
-    logger.debug("PARAMS:")
-    logger.debug(params["movie_info"])
-    # logger.debug(params["movie_info"][0])
+    # logger = Logger.new('log/development.log')
+    # logger.debug("stuff")
     title = params["movie_info"][0]
-    # logger.debug(params["movie_info"][1])
     description = params["movie_info"][1]
-    logger.debug(params["movie_info"][2])
     imdb = params["movie_info"][2]
     thumb = params["movie_info"][3]
     if Entry.exists?(title: title, description: description)
@@ -32,9 +28,6 @@ class BacklogController < ApplicationController
       entry = Entry.create(title: title, description: description, imdb_id: imdb, thumbnail_file_name: thumb)
     end
     entry.update_photo
-    logger.debug("ID:")
-    logger.debug(entry)
-    # redirect_to '/entries/' + entry.id.to_s
     render json: entry
   end
 
