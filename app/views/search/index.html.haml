@@ -12,7 +12,7 @@
           = text_field_tag :query, params[:search], placeholder: "Type to search", class: "form-control"
         .input-group-btn
           = submit_tag "More Results", class: "depth btn btn-default"
-  .loading
+  .loading-entries
     =image_tag src="loading1.gif"
 
   = render 'shared/results'

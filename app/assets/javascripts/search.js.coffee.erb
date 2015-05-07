@@ -14,9 +14,66 @@ $ ->
   loading = (model) ->
     $('.loading-' + model).show()
     $('.pagination').show()
+
+  # Hides the loading gif
   loaded = (model) ->
     $('.pagination').hide()
     $('.loading-' + model).hide()
+
+  # Hits search_controller for the revelvant 'type' i.e. entries or users
+  # and begins the process of appending any retrieved data.
+  dbSearchThenAppend = (url, list, type) ->
+    if ((url isnt 'search/users/') and
+        (url isnt '/null')) and
+        (url isnt 'search/entries/') and
+        (url isnt ('search/entries//no')) and
+        (url isnt '/null')
+      loading(type)
+      $.ajax url,
+        type: 'GET',
+        error: ( jqXHR, textStatus, errorThrown ) ->
+        success: ( data ) ->
+          appendControllerData(data, type, list)
+
+  # Searches by hitting the search_controller to get matching items from the DB.
+  searchUsers = (keycode) ->
+    type = "users"
+    searchValue = $('.search-users').children().first().val()
+    url = "/search/" + type + "/" + searchValue + "/no"
+    list = $('#users-list')
+    entries = list.children()
+    entry.remove() for entry in entries
+    loaded(type)
+    dbSearchThenAppend(url, list, type)
+
+  # Searches entries either by hitting the search_controller to get matching items from the dB
+  # or queries Rotten tomatoes on 'Enter'.
+  searchEntries = (keycode) ->
+    type = "entries"
+    searchValue = $('.search-entries').children().first().val()
+    url = "/search/" + type + "/" + searchValue + "/no"
+    list = $('#entries-list')
+    entries = list.children()
+    entry.remove() for entry in entries
+    loaded(type)
+    if keycode is 13 and type is 'entries' #keycode 13 is 'enter', in this case we query Rotten Tomatoes
+      event.preventDefault()
+      loading(type)
+      pageLimit = "&page_limit=5"
+      if window.location.pathname is '/search' then pageLimit = "&page_limit=10"
+      url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
+      url += encodeURI(searchValue)
+      url += pageLimit
+      url += "&callback=appendRequestData"
+      $.ajax url,
+        type: 'GET',
+        crossDomain: true,
+        dataType: 'jsonp',
+        jsonpCallback: 'appendRequestData',
+        error: ( jqXHR, textStatus, errorThrown ) ->
+          alert "AJAX Error: #{textStatus}"
+    else #Otherwise we simply hit search_controller for our own values
+      dbSearchThenAppend(url, list, type)
 
   # Returns an HTML string to append user wells to a list
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
@@ -206,77 +263,22 @@ $ ->
       loading('entries')
     else
       loading('users')
-
     this.parent().hide()
 
-  #TODO: Not sure if this does anything..?
-  $('a#deleteTmp').on 'click', (event) ->
-
+  # Keypress event for searching for users to follow
   $('.search-users').on 'keypress', (event) ->
     keycode = event.keyCode
-    type = "users"
-    searchValue = $('.search-users').children().first().val()
-    url = "/search/" + type + "/" + searchValue + "/no"
-    list = $('#users-list')
-    entries = list.children()
-    entry.remove() for entry in entries
-    loaded(type)
-    if ((url isnt 'search/users/') and
-            (url isnt 'search/entries/') and
-            (url isnt ('search/entries//no')) and
-            (url isnt '/null'))
-      loading(type)
-      $.ajax url,
-        type: 'GET',
-        error: ( jqXHR, textStatus, errorThrown ) ->
-        success: ( data ) ->
-          appendControllerData(data, type, list)
-  # The primary elasticsearch keypress event.
-  # Determines the current path and desired resource:
-  #   1) On enter, if the we are searching for entries a query is made to
-  #      Rotten Tomatoes.
-  #   2) On a regular keypress, our controller is queried for entries or users.
-  #   3) TODO: For a Zap....
-  # Rework this to be 3 seperate classes search-entries, search-users, and search-advanced.. :'(
+    searchUsers(keycode)
+
+  # Keypress event for searching for entries
   $('.search-entries').on 'keypress', ( event ) ->
     keycode = event.keyCode
-    # pathName = window.location.pathname
-    # console.log(this)
-    # if pathName is "/users/following"
-    #   type = "users"
-    # else if pathName is "/search"
-    #   type = $('input[name=group]:checked', '.searchForm').val()
-    # else
-    type = "entries"
-    searchValue = $('.search-entries').children().first().val()
-    url = "/search/" + type + "/" + searchValue + "/no"
-    list = $('#entries-list')
-    entries = list.children()
-    entry.remove() for entry in entries
-    loaded(type)
-    if keycode is 13 && type is 'entries' #keycode 13 is 'enter'
-      event.preventDefault()
-      loading(type)
-      pageLimit = "&page_limit=5"
-      if window.location.pathname is '/search' then pageLimit = "&page_limit=10"
-      url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=<%= ENV['ROTTEN_TOMATOES_KEY'] %>&q="
-      url += encodeURI(searchValue)
-      url += pageLimit
-      url += "&callback=appendRequestData"
-      $.ajax url,
-        type: 'GET',
-        crossDomain: true,
-        dataType: 'jsonp',
-        jsonpCallback: 'appendRequestData',
-        error: ( jqXHR, textStatus, errorThrown ) ->
-          alert "AJAX Error: #{textStatus}"
-    else if ((url isnt 'search/users/') and
-            (url isnt 'search/entries/') and
-            (url isnt ('search/entries//no')) and
-            (url isnt '/null'))
-      loading(type)
-      $.ajax url,
-        type: 'GET',
-        error: ( jqXHR, textStatus, errorThrown ) ->
-        success: ( data ) ->
-          appendControllerData(data, type, list)
+    pathName = window.location.pathname
+    if pathName is "/search"
+      type = $('input[name=group]:checked', '.searchForm').val()
+      if type is "entries"
+        searchEntries(keycode)
+      else
+        searchUsers(keycode)
+    else
+      searchEntries(keycode)
