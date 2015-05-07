@@ -3,10 +3,10 @@
     %h3 Zap your friend
     %h3 What would you like them to watch?
     = render 'shared/entries_search', group: @entries, more_results: false
-    = render 'shared/results'
+    = render 'shared/results', group: @entries
 
     = render 'shared/entries_search', group: @users, more_results: false
-    = render 'shared/results'
+    = render 'shared/results', group: @users
 
     = form_tag zaps_path, method: 'post' do
       = label :zap, :name, 'Title'

@@ -8,11 +8,11 @@
       = radio_button_tag(:group, "users")
       = label_tag(:group_type, "Users")
       .input-group
-        #search
+        .search-entries
           = text_field_tag :query, params[:search], placeholder: "Type to search", class: "form-control"
         .input-group-btn
           = submit_tag "More Results", class: "depth btn btn-default"
   .loading-entries
     =image_tag src="loading1.gif"
-
-  = render 'shared/results'
+    
+  = render 'shared/results', group: @group

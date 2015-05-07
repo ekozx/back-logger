@@ -275,7 +275,7 @@ $ ->
     keycode = event.keyCode
     pathName = window.location.pathname
     if pathName is "/search"
-      type = $('input[name=group]:checked', '.searchForm').val()
+      type = $('input:checked').val()
       if type is "entries"
         searchEntries(keycode)
       else

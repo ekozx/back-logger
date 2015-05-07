@@ -1,27 +1,32 @@
-%ul#list
-  - if @results
-    - @results.each do |result|
-      %li.new_well
-        - if @group == 'entries'
-          -if result.thumbnail_file_name.blank?
-            = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)
+- if group.blank?
+  %ul#list
+-  elsif group == 'entries'
+  %ul#entries-list
+- else
+  %ul#users-list
+    - if @results
+      - @results.each do |result|
+        %li.new_well
+          - if @group == 'entries'
+            -if result.thumbnail_file_name.blank?
+              = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)
+            - else
+              = link_to image_tag(result.thumbnail_file_name, class: 'img-circle'), entry_path(result.id)
+            - if result.title.length > 30
+              = result.title[0..30] + "..."
+            - else
+              = result.title
+            - unless current_user.backlog.entries.include? result
+              = link_to "add", '/entries/add/' + result.id.to_s, remote: true, method: :get, class: "btn btn-success"
           - else
-            = link_to image_tag(result.thumbnail_file_name, class: 'img-circle'), entry_path(result.id)
-          - if result.title.length > 30
-            = result.title[0..30] + "..."
-          - else
-            = result.title
-          - unless current_user.backlog.entries.include? result
-            = link_to "add", '/entries/add/' + result.id.to_s, remote: true, method: :get, class: "btn btn-success"
-        - else
-          -if result.avatar.blank?
-            = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)
-          - else
-            = link_to image_tag(result.avatar.url(:thumb), class: 'img-circle'), user_path(result.id)
-          - display_name = result.name || result.nickname || result.email
-          - if display_name.length > 30
-            = result.display_name[0..30] + "..."
-          - else
-            = display_name
-  - unless @results.blank?
-    =paginate @results
+            -if result.avatar.blank?
+              = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(result.id)
+            - else
+              = link_to image_tag(result.avatar.url(:thumb), class: 'img-circle'), user_path(result.id)
+            - display_name = result.name || result.nickname || result.email
+            - if display_name.length > 30
+              = result.display_name[0..30] + "..."
+            - else
+              = display_name
+    - unless @results.blank?
+      =paginate @results

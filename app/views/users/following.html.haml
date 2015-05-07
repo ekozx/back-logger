@@ -2,7 +2,7 @@
   %h1.greeting.text-center.static_well Following:
   %p.static_well Start typing to find other users
   = render 'shared/entries_search', group: @group, more_results: true
-  = render 'shared/results'
+  = render 'shared/results', group: @group
 
   %ul.following
     - @followed_users.all.each do |followed_user|

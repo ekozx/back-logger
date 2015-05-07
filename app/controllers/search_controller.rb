@@ -50,6 +50,8 @@ class SearchController < ApplicationController
     else
       @results = User.search query
     end
+
+    @group = "entries"
   end
   def reindex
     Entry.clean_indices

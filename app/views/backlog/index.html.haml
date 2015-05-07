@@ -10,8 +10,8 @@
         = current_user.email
       , Press Enter/Go to query Rotten Tomatoes
 
-    = render 'shared/entries_search', group: @group, more_results: true 
-    = render 'shared/results'
+    = render 'shared/entries_search', group: @group, more_results: true
+    = render 'shared/results', group: @group
 
     %h3.text-center.static_well Your backlog:
     - if current_user.backlog != nil
