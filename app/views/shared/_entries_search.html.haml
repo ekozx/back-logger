@@ -13,8 +13,14 @@
 - if group == 'entries'
   .loading-entries
     =image_tag src="loading1.gif"
-  %ul#entries-list
+  - if zap == true
+    %ul.suggest#entries-list
+  - else
+    %ul#entries-list
 - else
   .loading-users
     =image_tag src="loading1.gif"
-  %ul#users-list
+  - if zap == true
+    %ul.zap#users-list
+  - else
+    %ul#users-list

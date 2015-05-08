@@ -31,8 +31,8 @@ $ ->
       loading(type)
       $.ajax url,
         type: 'GET',
-        error: ( jqXHR, textStatus, errorThrown ) ->
-        success: ( data ) ->
+        error: (jqXHR, textStatus, errorThrown) ->
+        success: (data) ->
           appendControllerData(data, type, list)
 
   # Searches by hitting the search_controller to get matching items from the DB.
@@ -79,7 +79,6 @@ $ ->
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
   buildUserHTML = (amazonPath, user_id, name, followers) ->
     html = "<li class='new_well'>"
-    console.log(user_id)
     if window.location.pathname == '/search' then user_id = "/users/" + user_id
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
@@ -110,9 +109,15 @@ $ ->
   buildAttachedHTML = (picture, title, id) ->
     html = "<li class='new_well '>"
     html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
-    html += title.substring(0,30)
-    add = "<button class='btn btn-success add" + id + "'><a class='add"
-    add += "'  id='"+ id + "' href='#'>add</a></button></li>"
+    html += "<span>" + title.substring(0,30) + "</span>"
+    suggestion = false
+    if $('.suggest').length > 0 then suggestion = true
+    if suggestion
+      add = "<button class='btn btn-success add" + id + "'><a class='suggest"
+      add += "'  id='" + id + "' href='#/'>suggest</a></button></li>"
+    else
+      add = "<button class='btn btn-success add" + id + "'><a class='add"
+      add += "'  id='"+ id + "' href='#'>add</a></button></li>"
     html += add
     return html
 
@@ -158,6 +163,12 @@ $ ->
     del = $('#deleteTmp' + data['id'])
     del.click(() ->
       html.hide())
+
+  # Event handler for suggesting an entry for a zap.
+  suggestHandler = (event) ->
+    event.preventDefault()
+    title = $(this).parent().children()[1].innerHTML
+    $('#zap_title').val(title)
 
   # Event handler for adding an entry to your backlog and calls reindex the searched item type.
   addHandler = (event) ->
@@ -234,8 +245,12 @@ $ ->
           html = buildAttachedHTML(picture, v['title'], v['id'])
           html = $(html)
           list.append(html)
-          addAnchor = $(".add" + v['id'])
-          addAnchor.click(addHandler)
+          if $('.suggest').length > 0
+            suggestAnchor = $(".add" + v['id'])
+            suggestAnchor.click(suggestHandler)
+          else
+            addAnchor = $(".add" + v['id'])
+            addAnchor.click(addHandler)
           max--
     else if type is 'followers'
       appendUsers(data, list, true)
