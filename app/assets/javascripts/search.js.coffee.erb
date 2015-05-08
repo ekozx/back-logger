@@ -36,11 +36,11 @@ $ ->
           appendControllerData(data, type, list)
 
   # Searches by hitting the search_controller to get matching items from the DB.
-  searchUsers = (keycode) ->
+  searchUsers = (keycode, cssClass) ->
     type = "users"
-    searchValue = $('.search-users').children().first().val()
+    searchValue = $(cssClass).children().first().val()
     url = "/search/" + type + "/" + searchValue + "/no"
-    list = $('#users-list')
+    if cssClass == '.search-entries' then list = $('#entries-list') else list = $('#users-list')
     entries = list.children()
     entry.remove() for entry in entries
     loaded(type)
@@ -79,6 +79,8 @@ $ ->
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
   buildUserHTML = (amazonPath, user_id, name, followers) ->
     html = "<li class='new_well'>"
+    console.log(user_id)
+    if window.location.pathname == '/search' then user_id = "/users/" + user_id
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += name.substring(0,30)
     if followers
@@ -201,7 +203,6 @@ $ ->
   zapHandler = (event) ->
     event.preventDefault()
     #TODO: Decide how we're going to implement this... Default AJAX forms maybe?
-    console.log "prevented"
 
   # Appends user HTML to a list of users to following, potentially "zap".
   appendUsers = (data, list, followers) ->
@@ -268,7 +269,7 @@ $ ->
   # Keypress event for searching for users to follow
   $('.search-users').on 'keypress', (event) ->
     keycode = event.keyCode
-    searchUsers(keycode)
+    searchUsers(keycode, '.search-users')
 
   # Keypress event for searching for entries
   $('.search-entries').on 'keypress', ( event ) ->
@@ -279,6 +280,6 @@ $ ->
       if type is "entries"
         searchEntries(keycode)
       else
-        searchUsers(keycode)
+        searchUsers(keycode, ".search-entries")
     else
       searchEntries(keycode)
