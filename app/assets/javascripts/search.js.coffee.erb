@@ -94,13 +94,20 @@ $ ->
 
   # Returns an HTML string that will send a request to the controller
   # to add a new entry using requestData once clicked.
+  # TODO: Repeat code here and buildAttachedHTML: refactor
   buildRequestHTML = (requestData, picture, title, rt_id) ->
+    suggestion = false
+    if $('.suggest').length > 0 then suggestion = true
     html = "<li class='new_well '>"
     html += "<a href='#' class='unbuilt" + rt_id + "' id='"
     html += requestData + "'><img src='" + picture + "' class='img-circle'></a>"
-    html += title.substring(0,30)
-    add = "<button class='btn btn-success'><a class='add" + rt_id
-    add += "'  id='"+ requestData + "' href='#'>add</a></button></li>"
+    html += "<span>" + title.substring(0,30) + "</span>"
+    if suggestion
+      add = "<button class='btn btn-success '><a class='suggest add" + rt_id
+      add += "'  id='" + requestData + "' href='#/'>suggest</a></button></li>"
+    else
+      add = "<button class='btn btn-success'><a class='add" + rt_id
+      add += "'  id='"+ requestData + "' href='#'>add</a></button></li>"
     html += add
     return html
 
@@ -181,6 +188,8 @@ $ ->
   # Event handler for appending a new entry to the backlog list
   # from the appended search list.
   buildHandler = (event) ->
+    suggestion = false
+    if $('.suggest').length > 0 then suggestion = true
     event.preventDefault()
     loading("entry")
     values = this.id.split("~~")
@@ -188,7 +197,9 @@ $ ->
     if values[2] is undefined then values[2] = ""
     if values[1] is "" then values[1] = "No description"
     url = "/backlog/unbuilt/"
-    $.get(url,  {movie_info: values} ).done ( data ) ->
+    $.get(url,  {movie_info: values}).done (data) ->
+      title = $(clickedElement).parent().parent().children()[1].innerHTML
+      $('#zap_title').val(title)
       loaded('entries')
       #TODO: Make the class unbuilt more descriptive
       if clickedElement.className.substring(0,7) is 'unbuilt'
@@ -199,7 +210,7 @@ $ ->
         $.get(url, { id: data['id'], append: true } ).done ( data ) ->
           $.get('/search/reindex')
           #append it on success
-          appendEntryHTML(data)
+          unless suggestion then appendEntryHTML(data)
 
   # Event handler for following a new user that has been appended.
   followHandler = (event) ->
@@ -207,13 +218,6 @@ $ ->
     url = '/users/follow/' + this.id
     $.get(url, { id: this.id }).done ( data ) ->
       appendUserHTML(data)
-
-  # Handler for looking for people to zap?
-  # TODO: This will be a "zap" option for a searched user.
-  # TODO: This was an old idea. Is it neccessary?
-  zapHandler = (event) ->
-    event.preventDefault()
-    #TODO: Decide how we're going to implement this... Default AJAX forms maybe?
 
   # Appends user HTML to a list of users to following, potentially "zap".
   appendUsers = (data, list, followers) ->
@@ -258,6 +262,7 @@ $ ->
       appendUsers(data, list, false)
 
   # Appends the data from a request to Rotten Tomatoes.
+  # TODO: Is 'window' neccessary?
   window.appendRequestData = (data) ->
     loaded('entries')
     list = $('#entries-list') #TODO: find a way to pass this to the callback
