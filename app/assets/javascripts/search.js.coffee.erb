@@ -78,7 +78,7 @@ $ ->
   # Returns an HTML string to append user wells to a list
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
   buildUserHTML = (amazonPath, user_id, name, followers) ->
-    if window.location.pathname == '/search' then user_id = "/users/" + user_id
+    # if window.location.pathname == '/search' then user_id = "/users/" + user_id
     isZap = false
     if $('.zap').length > 0 then isZap = true
     html = "<li class='new_well'>"
@@ -94,7 +94,7 @@ $ ->
         add += "' id='" + user_id + "' href='/#'>zap</a></button></li>"
       else
         add = "<button class='btn btn-success'><a class='add" + user_id
-        add += "' id='" + user_id + "' href='/#'>follow</a></button></li>"
+        add += "' id='" + user_id + "' href='#/'>follow</a></button></li>"
       html += add
     return html
 
@@ -199,7 +199,6 @@ $ ->
     if $('.suggest').length > 0 then suggestion = true
     event.preventDefault()
     loading("entry")
-    console.log(this)
     values = this.id.split("~~")
     clickedElement = this
     if values[2] is undefined then values[2] = ""
