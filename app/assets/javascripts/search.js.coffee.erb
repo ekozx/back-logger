@@ -78,17 +78,25 @@ $ ->
   # Returns an HTML string to append user wells to a list
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
   buildUserHTML = (amazonPath, user_id, name, followers) ->
-    html = "<li class='new_well'>"
     if window.location.pathname == '/search' then user_id = "/users/" + user_id
+    isZap = false
+    console.log("buildUserHTML")
+    console.log(name)
+    if $('.zap').length > 0 then isZap = true
+    html = "<li class='new_well'>"
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
-    html += name.substring(0,30)
+    html += "<span>" + name.substring(0,30) + "</span>"
     if followers
       zap = "<button class='btn btn-success'><class='zap" + user_id
       zap += "' id='" + user_id + "' href='/#'>Zap</a></button></li>"
       html += zap
     else
-      add = "<button class='btn btn-success'><a class='add" + user_id
-      add += "' id='" + user_id + "' href='/#'>follow</a></button></li>"
+      if isZap
+        add = "<button class='btn btn-success'><a class='add" + user_id
+        add += "' id='" + user_id + "' href='/#'>zap</a></button></li>"
+      else
+        add = "<button class='btn btn-success'><a class='add" + user_id
+        add += "' id='" + user_id + "' href='/#'>follow</a></button></li>"
       html += add
     return html
 
@@ -212,6 +220,11 @@ $ ->
           #append it on success
           unless suggestion then appendEntryHTML(data)
 
+  zapHandler = (event) ->
+    event.preventDefault()
+    title = $(this).parent().parent().children()[1].innerHTML
+    $('#zap_username').val(title)
+
   # Event handler for following a new user that has been appended.
   followHandler = (event) ->
     event.preventDefault()
@@ -226,16 +239,21 @@ $ ->
       amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
       #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
       amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
+      if v['name'] is "" then name = v['nickname']
       if followers
-        html = buildUserHTML(amazonPath, v['id'], v['name'], true)
+        html = buildUserHTML(amazonPath, v['id'], name, true)
         list.append(html)
         add = $('.zapp' + v['id'])
         add.click(zapHandler)
       else
-        html = buildUserHTML(amazonPath, v['id'], v['name'], false)
+        console.log(v)
+        html = buildUserHTML(amazonPath, v['id'], name, false)
         list.append(html)
         add = $('.add' + v['id'])
-        add.click(followHandler)
+        if $('.zap').length > 0
+          add.click(zapHandler)
+        else
+          add.click(followHandler)
 
   # Appends existing entries from the controller to a list.
   appendControllerData = (data, type, list) ->
