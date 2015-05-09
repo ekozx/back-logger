@@ -38,7 +38,9 @@ class EntriesController < ApplicationController
 
   def destroy
     entry_id = params[:id]
-    if Entry.pluck(:id).include? entry_id.to_i then Entry.find(params[:id]).remove_entry!(current_user.backlog.id, entry_id) end
+    if Entry.pluck(:id).include? entry_id.to_i
+      Entry.find(params[:id]).remove_entry!(current_user.backlog.id, entry_id)
+    end
     render nothing: true
   end
 

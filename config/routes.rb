@@ -28,7 +28,10 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show]
 
-  namespace :api do
-    resources :entries
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      # resources :entries
+      get '/entries', to: 'entries#index'
+    end
   end
 end
