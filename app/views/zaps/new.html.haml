@@ -13,7 +13,7 @@
       = text_field :zap, 'title', readonly: true
 
       = label :zap, :name, 'Friend'
-      = text_field :zap, "username"
+      = text_field :zap, "username", readonly: true
 
       = label :zap, :name, 'message'
       = text_field :zap, 'message'
@@ -21,7 +21,7 @@
       -# = label :zap, :name, 'movie'
       -# = text_field :zap, 'movie'
 
-      = hidden_field_tag(:receiver_id, "4")
+      = hidden_field_tag(:receiver_id, "")
       = hidden_field_tag(:entry_id, "")
 
       = submit_tag 'Save Changes', id: 'submit_zap'

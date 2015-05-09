@@ -80,8 +80,6 @@ $ ->
   buildUserHTML = (amazonPath, user_id, name, followers) ->
     if window.location.pathname == '/search' then user_id = "/users/" + user_id
     isZap = false
-    console.log("buildUserHTML")
-    console.log(name)
     if $('.zap').length > 0 then isZap = true
     html = "<li class='new_well'>"
     html += "<a href='" + user_id + "'><img src='" + amazonPath + "' class='img-circle'></a>"
@@ -184,6 +182,7 @@ $ ->
     event.preventDefault()
     title = $(this).parent().children()[1].innerHTML
     $('#zap_title').val(title)
+    $('#entry_id').val($(this).children()[0].id)
 
   # Event handler for adding an entry to your backlog and calls reindex the searched item type.
   addHandler = (event) ->
@@ -224,6 +223,7 @@ $ ->
     event.preventDefault()
     title = $(this).parent().parent().children()[1].innerHTML
     $('#zap_username').val(title)
+    $('#receiver_id').val($(this).attr('id'))
 
   # Event handler for following a new user that has been appended.
   followHandler = (event) ->
@@ -246,7 +246,6 @@ $ ->
         add = $('.zapp' + v['id'])
         add.click(zapHandler)
       else
-        console.log(v)
         html = buildUserHTML(amazonPath, v['id'], name, false)
         list.append(html)
         add = $('.add' + v['id'])
