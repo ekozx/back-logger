@@ -199,6 +199,7 @@ $ ->
     if $('.suggest').length > 0 then suggestion = true
     event.preventDefault()
     loading("entry")
+    console.log(this)
     values = this.id.split("~~")
     clickedElement = this
     if values[2] is undefined then values[2] = ""
@@ -208,6 +209,8 @@ $ ->
       title = $(clickedElement).parent().parent().children()[1].innerHTML
       $('#zap_title').val(title)
       loaded('entries')
+      if suggestion
+        $('#entry_id').val(data['id'])
       #TODO: Make the class unbuilt more descriptive
       if clickedElement.className.substring(0,7) is 'unbuilt'
         window.location.replace("/entries/" + data['id'])
