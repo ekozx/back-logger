@@ -1,6 +1,5 @@
 class CreateZaps < ActiveRecord::Migration
   def change
-    drop_table :zaps
     create_table :zaps do |t|
       t.boolean :seen
       t.string :message
