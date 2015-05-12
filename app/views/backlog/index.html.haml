@@ -14,8 +14,8 @@
     = render 'shared/results', group: @group
 
     %h3.text-center.static_well Your backlog:
-    - if current_user.backlog != nil
-      %ul.backlog
+    %ul.backlog
+      - if current_user.backlog != nil
         - @entries.each do |entry|
           %li.new_well
             -if entry.thumbnail_file_name.blank?
