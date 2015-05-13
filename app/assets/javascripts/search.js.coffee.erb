@@ -136,10 +136,14 @@ $ ->
 
   # Adds a users HTML to a list of followers with the option to follow/unfollow them.
   appendUserHTML = (data) ->
-    amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
-    #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
     #TODO: Should probably DRY amazonPath because it's used twice, will do w/ logic above
-    amazonPath = amazonPath + "00" + data['id'] + "/thumb/" + data['avatar_file_name']
+    amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
+    amazonId = "00" + data['id'] #The amazonId is a bucket is s3 dependent on user_id
+    if amazonId.length is 4
+      amazonId = ("0" + data['id'])
+    else if amazonId.length is 5
+      (amazonId = data['id'])
+    amazonPath = amazonPath + amazonId + "/thumb/" + data['avatar_file_name']
     html = "<li class='new_well '>"
     html += "<a href='" + data['id'] + "'><img src='" + amazonPath + "' class='img-circle'></a>"
     html += data['name'].substring(0,30)
@@ -152,7 +156,7 @@ $ ->
     unfollow.click(() ->
       $.ajax "unfollow/" + data['id'],
         type: "GET",
-        success: ( data ) ->
+        success: (data) ->
           html.hide())
 
   # Creates and adds an entries HTML to the backlog list once if a new entry from
@@ -240,9 +244,15 @@ $ ->
     for k,v of data
       amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
       #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
-      amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-      name = ""
-      if (v['name'] is "" or v['name'] is undefined) then name = v['nickname'] #get the display name
+      # amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
+      amazonId = "00" + v['id'] #The amazonId is a bucket is s3 dependent on user_id
+      if amazonId.length is 4
+        amazonId = ("0" + v['id'])
+      else if amazonId.length is 5
+        amazonId = v['id']
+      amazonPath = amazonPath + amazonId + "/thumb/" + v['avatar_file_name']
+      name = v['name']
+      if (name is "" or name is undefined) then name = v['nickname'] #get the display name
       if followers
         html = buildUserHTML(amazonPath, v['id'], name, true)
         list.append(html)
