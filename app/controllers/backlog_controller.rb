@@ -11,7 +11,7 @@ class BacklogController < ApplicationController
       Backlog.create(user_id: current_user.id)
       @entries = []
     else
-      @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(10)
+      @entries = current_user.backlog.entries.reorder("associations.created_at DESC").page(params[:page]).per(5)
     end
   end
 

@@ -5,11 +5,11 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'application', 'http://fonts.googleapis.com/css?family=Raleway:400,700,100&subset=all'
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}/
     = csrf_meta_tags
   - background_image_list = ['bg3', 'bg4', 'bg5', 'bg9']
   - background_image_types = {'bg3' => '.png', 'bg4' => '.jpg', 'bg5' => '.jpg', 'bg9' => '.jpg'}
   - val = (background_image_list.length * rand).floor
-  -# - background_path = '../../app/assets/images/actor_backgrounds/'
   - image = background_image_list[val] + background_image_types[background_image_list[val]]
   - background_path = image_path("actor_backgrounds/" + image)
   %body.container-fluid{ style: "background-image: url(" + background_path + ")"}
