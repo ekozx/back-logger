@@ -243,7 +243,7 @@ $ ->
       amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
       console.log(v['name'])
       console.log(v['nickname'])
-      if v['name'] is "" then name = v['nickname']
+      if (v['name'] is "" or v['name'] is undefined) then name = v['nickname']
       if followers
         html = buildUserHTML(amazonPath, v['id'], name, true)
         list.append(html)
