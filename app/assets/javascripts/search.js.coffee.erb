@@ -33,6 +33,7 @@ $ ->
         type: 'GET',
         error: (jqXHR, textStatus, errorThrown) ->
         success: (data) ->
+          console.log(data)
           appendControllerData(data, type, list)
 
   # Searches by hitting the search_controller to get matching items from the DB.
@@ -236,13 +237,12 @@ $ ->
 
   # Appends user HTML to a list of users to following, potentially "zap".
   appendUsers = (data, list, followers) ->
+    console.log("appendUsers")
     max = 5
     for k,v of data
       amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
       #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
       amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-      console.log(v['name'])
-      console.log(v['nickname'])
       if (v['name'] is "" or v['name'] is undefined) then name = v['nickname']
       if followers
         html = buildUserHTML(amazonPath, v['id'], name, true)
