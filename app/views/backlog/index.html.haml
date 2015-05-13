@@ -1,19 +1,12 @@
 - if user_signed_in?
   .col-lg-5
     %h3.greeting.static_well
-      Hi
-      - if not current_user.name.blank?
-        = current_user.name
-      - elsif current_user.nickname != nil
-        = current_user.nickname
-      - else
-        = current_user.email
-      , Press Enter/Go to query Rotten Tomatoes
-
+      Press Enter for New Results
     = render 'shared/entries_search', group: @group, more_results: true, zap: false
     = render 'shared/results', group: @group
   .col-lg-5
-    %h3.text-center.static_well Your backlog:
+    %h3.text-center.static_well
+      =link_to "Your backlog:", user_path(current_user)
     %ul.backlog
       - if current_user.backlog != nil
         - @entries.each do |entry|

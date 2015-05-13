@@ -8,8 +8,8 @@
       .search-users
         = text_field_tag :query, params[:search], placeholder: "Type to search " + group, class: "form-control"
     - if more_results
-      .input-group-btn
-        = submit_tag "More Results", class: "depth btn btn-default"
+      %span.input-group-btn.search-icon
+        = content_tag(:i, "", class: "fa fa-search fa-2x btn btn-default depth")
 - if group == 'entries'
   .loading-entries
     =image_tag src="loading1.gif"

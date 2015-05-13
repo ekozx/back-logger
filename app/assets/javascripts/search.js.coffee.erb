@@ -312,6 +312,7 @@ $ ->
   $('.depth').on 'click', (event) ->
     if $('.loading-entries').length > 0
       loading('entries')
+      $('#searchForm').submit()
     else
       loading('users')
     this.parent().hide()
