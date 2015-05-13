@@ -6,7 +6,6 @@ class SearchController < ApplicationController
     query = params[:query]
     @group = params[:group]
     if @group == 'entries'
-      #TODO: Switch this to bisection for speed
       #TODO: handle /search/entries//none
       if query.blank?
         redindex

@@ -33,7 +33,6 @@ $ ->
         type: 'GET',
         error: (jqXHR, textStatus, errorThrown) ->
         success: (data) ->
-          console.log(data)
           appendControllerData(data, type, list)
 
   # Searches by hitting the search_controller to get matching items from the DB.
@@ -79,7 +78,7 @@ $ ->
   # Returns an HTML string to append user wells to a list
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
   buildUserHTML = (amazonPath, user_id, name, followers) ->
-    # if window.location.pathname == '/search' then user_id = "/users/" + user_id
+    if window.location.pathname is '/search' then user_id = "/users/" + user_id
     isZap = false
     if $('.zap').length > 0 then isZap = true
     html = "<li class='new_well'>"
@@ -237,13 +236,13 @@ $ ->
 
   # Appends user HTML to a list of users to following, potentially "zap".
   appendUsers = (data, list, followers) ->
-    console.log("appendUsers")
     max = 5
     for k,v of data
       amazonPath = "http://s3.amazonaws.com/zappcord/users/avatars/000/000/"
       #TODO: logic for amazons file path here, once there are too many users just appending '00' won't work
       amazonPath = amazonPath + "00" + v['id'] + "/thumb/" + v['avatar_file_name']
-      if (v['name'] is "" or v['name'] is undefined) then name = v['nickname']
+      name = ""
+      if (v['name'] is "" or v['name'] is undefined) then name = v['nickname'] #get the display name
       if followers
         html = buildUserHTML(amazonPath, v['id'], name, true)
         list.append(html)
