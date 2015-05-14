@@ -11,6 +11,9 @@
 .inline {
   display: inline-block;
 }
+.backlog-title {
+  margin-top: 85px;
+}
 .center {
   text-align: center;
   display: inline-block;
@@ -21,7 +24,18 @@
 .call-to-action {
   overflow: hidden;
 }
+.list-inline, .user-zap {
+  width: 100%;
+  float: left;
+  margin-top: 0 !important;
+}
 .list-inline {
-   padding: 0 !important;
-   margin: 0 !important;
+  padding: 0 !important;
+}
+.inline-list-item {
+  padding-top: 10px;
+}
+.user-zap {
+  padding-bottom: 20px;
+  padding-top: 20px;
 }

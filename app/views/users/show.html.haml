@@ -1,20 +1,25 @@
 - name = ""
 .col-lg-8
-  .greeting.text-center
-    .static_well
-      .row
-        .h1
-          - if @user.name.blank?
-            = name = @user.nickname
-          - else
-            = name = @user.name
-      .inline
-        = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
-        - unless @user.id == current_user.id
-          = link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get, class: "btn btn-success"
-
-  .bottom_margin
-    %h3.text-center.static_well
-      = name + "'s backlog:"
-    - if @user_backlog != nil
-      = render 'shared/results', group: 'entries'
+  %ul.list-inline.static_well.text-center
+    %li.inline-list-item
+      = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
+    %li.inline-list-item
+      .h4
+        - if @user.name.blank?
+          = name = @user.nickname
+        - else
+          = name = @user.nickname
+          %br
+          = name = @user.name
+    %li.inline-list-item
+      - unless @user.id == current_user.id
+        = link_to "follow", "/users/follow/" + @user.id.to_s, remote: true, method: :get, class: "btn btn-success"
+  %h3.text-center.static_well.backlog-title
+    = name + "'s backlog:"
+  - if @user_backlog != nil
+    -# = render 'shared/results', group: 'entries'
+    = render 'shared/grid'
+.col-lg-4
+  %h3.static_well.text-center.user-zap
+    - message = "Zap " + name
+    = message
