@@ -1,7 +1,7 @@
 namespace :entries do
   desc 'Entries related tasks'
 
-  def bare_string s
+  def bare s
     return s.sub(/['-*]/, "").strip
   end
 
@@ -25,7 +25,18 @@ namespace :entries do
       if entry_hash[:description] == "" || entry_hash[:description] == "No description"
         puts entry_hash[:id]
         #Duplicate entries rollback here!!
-        Entry.find(entry_hash[:id]).update!(description: "No Description")
+        dups = Entry.where('id != ?', entry_hash[:id]).where(
+          title: entry_hash[:title]
+          )
+        puts dups.count
+        if dups.count > 0
+          puts "removing duplicate"
+          puts entry_hash
+          puts dups
+          dups.destroy_all
+        else
+          Entry.find(entry_hash[:id]).update!(description: "No Description")
+        end
       end
     end
 
@@ -34,11 +45,11 @@ namespace :entries do
       # mark down the ids of the two
       add = true
       valid_entry_array_map.each do |valid_entry|
-        if(bare_string(valid_entry[:description]) == bare_string(entry[:description])) &&
+        if(bare(valid_entry[:description]) == bare(entry[:description])) &&
           (valid_entry[:title].strip == entry[:title].strip)
-          puts valid_entry[:id]
-          puts entry[:id]
-          puts "\n"
+          # puts valid_entry[:id]
+          # puts entry[:id]
+          # puts "\n"
           duplicate_ids.push([valid_entry[:id], entry[:id]])
           add = false
         end
