@@ -27,7 +27,8 @@ $ ->
         (url isnt '/null')) and
         (url isnt 'search/entries/') and
         (url isnt ('search/entries//no')) and
-        (url isnt '/null')
+        (url isnt '/null') and
+        (url isnt '/search/entries//no')
       loading(type)
       $.ajax url,
         type: 'GET',
@@ -192,8 +193,10 @@ $ ->
   addHandler = (event) ->
     event.preventDefault()
     url = '/entries/add/' + this.childNodes[0].id
-    $.get(url, {id: this.id, append: true}).done ( data ) ->
-      appendEntryHTML(data)
+    $.get(url, {id: this.id, append: true}).done (data) ->
+      console.log(data)
+      unless jQuery.isEmptyObject(data)
+        appendEntryHTML(data)
     $.get('/search/reindex')
 
   # Event handler for appending a new entry to the backlog list
@@ -220,7 +223,7 @@ $ ->
       else if clickedElement.className.substring(0,3) is 'add'
         #create a request to add it to the backlog
         url = '/entries/add/' + data['id']
-        $.get(url, { id: data['id'], append: true } ).done ( data ) ->
+        $.get(url, { id: data['id'], append: true } ).done (data) ->
           $.get('/search/reindex')
           #append it on success
           unless suggestion then appendEntryHTML(data)
