@@ -8,25 +8,8 @@ class Entry < ActiveRecord::Base
   #should probably change the medium to large some time soon
   has_attached_file :thumbnail, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => ":style/missing.png"
   validates_attachment_content_type :thumbnail, :content_type => /\Aimage\/.*\Z/
-
-  validate do |entry|
-    UniquenessValidator.new(entry).validate
-  end
-
-  class UniquenessValidator
-    def initialize(entry)
-      @entry = entry
-    end
-
-    def validate
-      entries = Entry.where(title: @entry.title)
-      if entries.count > 0
-        if entries.where(description: @entry.description).count > 0
-          @entry.errors[:base] << "Duplicate title/description pair"
-        end
-      end
-    end
-  end
+  validates :title, uniqueness: {case_sensative: false}
+  validates_with UniquenessValidator, attributes: [:title]
 
   def update_photo
     Tmdb::Api.key(ENV["TMDB_KEY"])
@@ -64,5 +47,23 @@ class Entry < ActiveRecord::Base
     data = resp.body
     feed = JSON.parse(data)
     return feed
+  end
+end
+
+class UniquenessValidator < ActiveModel::Validator
+  def bare s
+    return s.gsub(/[-()'*,.]/, "").strip.downcase
+  end
+  def validate(entry)
+    entries = Entry.where(title: entry.title)
+    if entries.count > 0
+      descriptions = entries.pluck(:description)
+      test_description = bare(entry.description)
+      descriptions.each do |description|
+        if bare(description) == bare(test_description)
+          entry.errors[:base] << "Duplicate title/description parir"
+        end
+      end
+    end
   end
 end
