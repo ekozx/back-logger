@@ -43,7 +43,7 @@ figcaption {
 	position: absolute;
 	top: 150%;
 	background: rgba(0,0,0,.5);
-	height: 50%;
+	height: 60%;
 	width: 100%;
 	padding:20px;
 	-webkit-transition:.4s;
@@ -56,9 +56,23 @@ figcaption {
 figure:hover figcaption
 {
   color: white;
-	top: 50%;
+	top: 40%;
 	opacity: 1;
 	overflow: hidden;
+}
+figcaption > h3 {
+  margin-top: 0px;
+}
+.grid-img {
+  margin-bottom: 0px !important;
+}
+.missing-img {
+  display: table-cell !important;
+  background: #eee;
+}
+.marginless-col {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
 }
 html {
   background-size: 100%;
