@@ -1,7 +1,10 @@
 - if @results
   - @results.each do |result|
-    .col-lg-3
+    %figure.col-lg-4
       - if not result.photo.blank?
         = image_tag("http://image.tmdb.org/t/p/w500/" + result.photo, class: "portrait-img img-responsive")
       - else
         = image_tag("medium/missing.png", class: "portrait-img img-responsive")
+      %figcaption
+        %h3= result.title
+        %p= result.description[0..120] + "..."
