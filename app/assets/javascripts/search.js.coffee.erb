@@ -187,9 +187,18 @@ $ ->
   # Event handler for suggesting an entry for a zap.
   suggestHandler = (event) ->
     event.preventDefault()
+    button = this
     title = $(this).parent().children()[1].innerHTML
+    id = $(this).children()[0].id
     $('#zap_title').val(title)
-    $('#entry_id').val($(this).children()[0].id)
+    $('#entry_id').val(id)
+    if $('.user-zap').length > 0
+      url = '/zaps'
+      user_id = window.location.href.split("/")[4]
+      $.post(url, {zap: {message: ""}, entry_id: id, receiver_id: user_id}).done (data) ->
+        $(button).parent().hide()
+        # $(this).innerHTML
+
 
   # Event handler for adding an entry to your backlog and calls reindex the searched item type.
   addHandler = (event) ->

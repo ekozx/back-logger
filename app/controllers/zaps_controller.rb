@@ -32,10 +32,12 @@ class ZapsController < ApplicationController
     @zap = Zap.new
     @zap.seen = false
     @zap.creator_id = current_user.id
-
+    puts "PARAMS"
+    puts params["receiver_id"]
     @zap.message = params["zap"]["message"]
-    @zap.title = params["zap"]["title"]
+    # @zap.title = params["zap"]["title"]
     @zap.entry_id = params["entry_id"].to_i
+    @zap.title = Entry.find(params["entry_id"].to_i).title
     @zap.receiver_id = params["receiver_id"].to_i
     if @zap.save
       puts @zap.id.to_s
