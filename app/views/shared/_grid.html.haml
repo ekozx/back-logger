@@ -1,32 +1,16 @@
 - if @results
   %ul
-    -# - current = 0
-    -# - this_row = []
     - @results.each_with_index do |result, index|
-      -# - if index % 3 == 0 && index != 0
-      -#   %tr
-      -#     - this_row.each do |entry|
-      -#       %td
-      -#         %figure
-      -#           - if not entry.photo.blank?
-      -#             = image_tag("http://image.tmdb.org/t/p/w500/" + entry.photo, class: "portrait-img img-responsive grid-img")
-      -#           - else
-      -#             = image_tag("medium/missing.png", class: "portrait-img img-responsive missing-img")
-      -#           %figcaption
-      -#             %h3= entry.title
-      -#             %p= entry.description[0..70] + "..."
-      -#     - this_row = []
-      -# - else
-      -#   - this_row.push(result)
       %li.marginless-col.col-lg-4
-        %figure
-          - if not result.photo.blank?
-            = image_tag("http://image.tmdb.org/t/p/w500/" + result.photo, class: "portrait-img img-responsive grid-img")
-          - else
-            = image_tag("medium/missing.png", class: "portrait-img img-responsive missing-img")
-          %figcaption
-            - title = result.title
-            - if title.length > 25
-              - title = title[0..25] + "..."
-            %h3= title
-            %p= result.description[0..70] + "..."
+        %a{href: entry_path(result)}
+          %figure
+            - if not result.photo.blank?
+              = image_tag("http://image.tmdb.org/t/p/w500/" + result.photo, class: "portrait-img img-responsive grid-img")
+            - else
+              = image_tag("medium/missing.png", class: "portrait-img img-responsive missing-img")
+            %figcaption
+              - title = result.title
+              - if title.length > 20
+                - title = title[0..20] + "..."
+              %h3= title
+              %p= result.description[0..70] + "..."

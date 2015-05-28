@@ -121,9 +121,11 @@ $ ->
   # Returns an HTML string for an existing entry, as opposed to one
   # that might need added to the database.
   buildAttachedHTML = (picture, title, id) ->
+    if title.length > 25
+      title = title.substring(0,23) + "..."
     html = "<li class='new_well '>"
     html += "<a href='/entries/" + id + "'><img src='" + picture + "' class='img-circle'></a>"
-    html += "<span>" + title.substring(0,30) + "</span>"
+    html += "<span>" + title + "</span>"
     suggestion = false
     if $('.suggest').length > 0 then suggestion = true
     if suggestion

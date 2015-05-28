@@ -1,5 +1,5 @@
 - name = ""
-.col-lg-8
+.col-lg-7
   %ul.list-inline.static_well.text-center
     %li.inline-list-item
       = image_tag(@user.avatar.url(:medium), class: 'img-circle user-img')
@@ -19,7 +19,9 @@
   - if @user_backlog != nil
     -# = render 'shared/results', group: 'entries'
     = render 'shared/grid'
-.col-lg-4
-  %h3.static_well.text-center.user-zap
-    - message = "Zap " + name
-    = message
+.col-lg-5
+  - unless current_user.id == @user.id
+    %h3.static_well.text-center.user-zap
+      - message = "Zap " + name
+      = message
+    = render 'shared/entries_search', group: "entries", more_results: false, zap: true
