@@ -1,27 +1,22 @@
 - if user_signed_in?
-  .static_well.col-lg-8
-    %h3 Zap your friend
-    %h3 What would you like them to watch?
-    = render 'shared/entries_search', group: @entries, more_results: false, zap: true
-    = render 'shared/results', group: @entries
-
-    = render 'shared/entries_search', group: @users, more_results: false, zap: true
-    = render 'shared/results', group: @users
-
-    = form_tag zaps_path, method: 'post' do
-      = label :zap, :name, 'Title'
-      = text_field :zap, 'title', readonly: true
-
+  = form_tag zaps_path, method: 'post' do
+    .static_well.col-lg-6
+      %h3 Zap your friend
+      = render 'shared/entries_search', group: @users, more_results: false, zap: true
+      = render 'shared/results', group: @users
+      = render 'shared/entries_search', group: @entries, more_results: false, zap: true
+      = render 'shared/results', group: @entries
+    .col-lg-6.static_well
       = label :zap, :name, 'Friend'
       = text_field :zap, "username", readonly: true
-
+      %br
+      = label :zap, :name, 'Title'
+      = text_field :zap, 'title', readonly: true
+      %br
       = label :zap, :name, 'message'
       = text_field :zap, 'message'
 
-      -# = label :zap, :name, 'movie'
-      -# = text_field :zap, 'movie'
-
       = hidden_field_tag(:receiver_id, "")
       = hidden_field_tag(:entry_id, "")
-
+      %br
       = submit_tag 'Save Changes', id: 'submit_zap'

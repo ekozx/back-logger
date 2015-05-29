@@ -192,6 +192,7 @@ $ ->
     id = $(this).children()[0].id
     $('#zap_title').val(title)
     $('#entry_id').val(id)
+    $('#entries-list').hide()
     if $('.user-zap').length > 0
       url = '/zaps'
       user_id = window.location.href.split("/")[4]
@@ -244,6 +245,7 @@ $ ->
     title = $(this).parent().parent().children()[1].innerHTML
     $('#zap_username').val(title)
     $('#receiver_id').val($(this).attr('id'))
+    $('#users-list').hide()
 
   # Event handler for following a new user that has been appended.
   followHandler = (event) ->
@@ -333,6 +335,8 @@ $ ->
 
   # Keypress event for searching for users to follow
   $('.search-users').on 'keypress', (event) ->
+    usersList = $('#users-list')
+    if usersList.length > 0 then usersList.show()
     keycode = event.keyCode
     searchUsers(keycode, '.search-users')
 
@@ -340,6 +344,8 @@ $ ->
   $('.search-entries').on 'keypress', ( event ) ->
     keycode = event.keyCode
     pathName = window.location.pathname
+    entriesList = $('#entries-list')
+    if entriesList.length > 0 then entriesList.show()
     if pathName is "/search"
       type = $('input:checked').val()
       if type is "entries"

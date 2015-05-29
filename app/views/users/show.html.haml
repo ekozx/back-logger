@@ -24,4 +24,5 @@
     %h3.static_well.text-center.user-zap
       - message = "Zap " + name
       = message
-    = render 'shared/entries_search', group: "entries", more_results: false, zap: true
+    .form-group
+      = render 'shared/entries_search', group: "entries", more_results: false, zap: true
