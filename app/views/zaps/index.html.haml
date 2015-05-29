@@ -28,6 +28,6 @@
               = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)
             %p= zap.message
     - else
-      %h2 You don't have any pending zaps!
+      %h2.static_well You don't have any pending zaps!
   .col-lg-4
     %h3.static_well= link_to "Zap your friend", new_zap_path

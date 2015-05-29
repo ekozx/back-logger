@@ -197,7 +197,7 @@ $ ->
       user_id = window.location.href.split("/")[4]
       $.post(url, {zap: {message: ""}, entry_id: id, receiver_id: user_id}).done (data) ->
         $(button).parent().hide()
-        # $(this).innerHTML
+        # $(this).parent().
 
 
   # Event handler for adding an entry to your backlog and calls reindex the searched item type.
@@ -324,12 +324,12 @@ $ ->
 
   # On click for "More results"
   $('.depth').on 'click', (event) ->
+    console.log("depth")
     if $('.loading-entries').length > 0
       loading('entries')
     else
       loading('users')
-    $('#search_form').submit()
-    this.parent().hide()
+    $('#searchForm').submit()
 
   # Keypress event for searching for users to follow
   $('.search-users').on 'keypress', (event) ->
