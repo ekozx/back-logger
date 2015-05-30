@@ -92,7 +92,7 @@ $ ->
       html += zap
     else
       if isZap
-        add = "<button class='btn btn-success'><a class='add" + user_id
+        add = "<button class='btn btn-success'><a class='add" + user_id.split("/")[2]
         add += "' id='" + user_id + "' href='/#'>zap</a></button></li>"
       else
         add = "<button class='btn btn-success'><a class='add" + user_id
@@ -241,8 +241,11 @@ $ ->
           #append it on success
           unless suggestion then appendEntryHTML(data)
 
+  # Event handler for 'zapping' a user
   zapHandler = (event) ->
     event.preventDefault()
+    console.log(this)
+    console.log("zapHandler")
     title = $(this).parent().parent().children()[1].innerHTML
     $('#zap_username').val(title)
     $('#receiver_id').val($(this).attr('id'))
@@ -274,6 +277,7 @@ $ ->
         html = buildUserHTML(amazonPath, v['id'], name, true)
         list.append(html)
         add = $('.zapp' + v['id'])
+        # TODO: Is this right? I thought followers had a different handler
         add.click(zapHandler)
       else
         html = buildUserHTML(amazonPath, v['id'], name, false)
