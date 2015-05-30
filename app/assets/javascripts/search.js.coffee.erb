@@ -79,7 +79,8 @@ $ ->
   # Returns an HTML string to append user wells to a list
   # TODO: Could DRY this up by passing in 'zap' or 'follow'
   buildUserHTML = (amazonPath, user_id, name, followers) ->
-    if window.location.pathname is '/search' then user_id = "/users/" + user_id
+    path = window.location.pathname
+    if ((path is '/search') or (path is '/zaps/new')) then user_id = "/users/" + user_id
     isZap = false
     if $('.zap').length > 0 then isZap = true
     html = "<li class='new_well'>"
@@ -254,7 +255,7 @@ $ ->
     $.get(url, { id: this.id }).done ( data ) ->
       appendUserHTML(data)
 
-  # Appends user HTML to a list of users to following, potentially "zap".
+  # Appends user HTML to a list of users to following
   appendUsers = (data, list, followers) ->
     max = 5
     for k,v of data
