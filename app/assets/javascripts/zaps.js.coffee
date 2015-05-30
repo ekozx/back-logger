@@ -7,3 +7,4 @@ $ ->
     if receiver_id == "" or entry_id == "" or receiver_id == null or entry_id == null
       event.preventDefault()
       alert('Please select a movie and friend')
+    

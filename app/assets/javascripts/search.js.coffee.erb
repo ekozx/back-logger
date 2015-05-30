@@ -234,12 +234,10 @@ $ ->
       if clickedElement.className.substring(0,7) is 'unbuilt'
         window.location.replace("/entries/" + data['id'])
       else if clickedElement.className.substring(0,3) is 'add'
-        #create a request to add it to the backlog
-        url = '/entries/add/' + data['id']
+        url = '/entries/add/' + data['id'] #create a request to add it to the backlog
         $.get(url, { id: data['id'], append: true } ).done (data) ->
           $.get('/search/reindex')
-          #append it on success
-          unless suggestion then appendEntryHTML(data)
+          unless suggestion then appendEntryHTML(data) #append it on success
 
   # Event handler for 'zapping' a user
   zapHandler = (event) ->
