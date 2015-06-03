@@ -1,12 +1,12 @@
 - if user_signed_in?
-  = form_tag zaps_path, method: 'post' do
-    .static_well.col-lg-6
-      %h3 Zap your friend
-      = render 'shared/entries_search', group: @users, more_results: false, zap: true
-      = render 'shared/results', group: @users
-      = render 'shared/entries_search', group: @entries, more_results: false, zap: true
-      = render 'shared/results', group: @entries
-    .col-lg-6.static_well
+  .static_well.col-lg-6
+    %h3 Zap your friend
+    = render 'shared/entries_search', group: @users, more_results: false, zap: true
+    = render 'shared/results', group: @users
+    = render 'shared/entries_search', group: @entries, more_results: false, zap: true
+    = render 'shared/results', group: @entries
+  .col-lg-6.static_well
+    = form_tag zaps_path, method: 'post' do
       = label :zap, :name, 'Friend'
       = text_field :zap, "username", readonly: true
       %br

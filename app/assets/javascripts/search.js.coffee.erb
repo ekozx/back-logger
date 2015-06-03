@@ -246,7 +246,7 @@ $ ->
     console.log("zapHandler")
     title = $(this).parent().parent().children()[1].innerHTML
     $('#zap_username').val(title)
-    $('#receiver_id').val($(this).attr('id'))
+    $('#receiver_id').val($(this).attr('id').split("/")[2])
     $('#users-list').hide()
 
   # Event handler for following a new user that has been appended.
