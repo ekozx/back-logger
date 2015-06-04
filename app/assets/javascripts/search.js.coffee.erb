@@ -207,7 +207,6 @@ $ ->
     event.preventDefault()
     url = '/entries/add/' + this.childNodes[0].id
     $.get(url, {id: this.id, append: true}).done (data) ->
-      console.log(data)
       unless jQuery.isEmptyObject(data)
         appendEntryHTML(data)
     $.get('/search/reindex')
@@ -239,11 +238,20 @@ $ ->
           $.get('/search/reindex')
           unless suggestion then appendEntryHTML(data) #append it on success
 
+  # Event for if they click the zap button instead of text
+  zapHandlerButton = (event) ->
+    name = $(this).parent().children()[1].innerHTML
+    console.log(name)
+    console.log($(this).children()[0].id.split("/")[2])
+    receiverId = $(this).children()[0].id.split("/")[2]
+    console.log(receiverId)
+    $('#zap_username').val(name)
+    $('#receiver_id').val(receiverId)
+    $('#users-list').hide()
+
   # Event handler for 'zapping' a user
   zapHandler = (event) ->
     event.preventDefault()
-    console.log(this)
-    console.log("zapHandler")
     title = $(this).parent().parent().children()[1].innerHTML
     $('#zap_username').val(title)
     $('#receiver_id').val($(this).attr('id').split("/")[2])
@@ -274,15 +282,16 @@ $ ->
       if followers
         html = buildUserHTML(amazonPath, v['id'], name, true)
         list.append(html)
-        add = $('.zapp' + v['id'])
+        addText = $('.zapp' + v['id'])
         # TODO: Is this right? I thought followers had a different handler
-        add.click(zapHandler)
+        addText.click(zapHandler)
       else
         html = buildUserHTML(amazonPath, v['id'], name, false)
         list.append(html)
-        add = $('.add' + v['id'])
+        addText = $('.add' + v['id'])
         if $('.zap').length > 0
-          add.click(zapHandler)
+          addText.parent().click(zapHandlerButton)
+          addText.click(zapHandler)
         else
           add.click(followHandler)
 
@@ -329,7 +338,6 @@ $ ->
 
   # On click for "More results"
   $('.depth').on 'click', (event) ->
-    console.log("depth")
     if $('.loading-entries').length > 0
       loading('entries')
     else
