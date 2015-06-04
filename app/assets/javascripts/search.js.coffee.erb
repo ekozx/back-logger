@@ -241,10 +241,7 @@ $ ->
   # Event for if they click the zap button instead of text
   zapHandlerButton = (event) ->
     name = $(this).parent().children()[1].innerHTML
-    console.log(name)
-    console.log($(this).children()[0].id.split("/")[2])
     receiverId = $(this).children()[0].id.split("/")[2]
-    console.log(receiverId)
     $('#zap_username').val(name)
     $('#receiver_id').val(receiverId)
     $('#users-list').hide()
@@ -338,11 +335,16 @@ $ ->
 
   # On click for "More results"
   $('.depth').on 'click', (event) ->
-    if $('.loading-entries').length > 0
-      loading('entries')
+    console.log(window.location.pathname)
+    if window.location.pathname is '/zaps/new'
+      event.preventDefault()
+      console.log($(this))
     else
-      loading('users')
-    $('#searchForm').submit()
+      if $('.loading-entries').length > 0
+        loading('entries')
+      else
+        loading('users')
+      $('#searchForm').submit()
 
   # Keypress event for searching for users to follow
   $('.search-users').on 'keypress', (event) ->

@@ -3,6 +3,17 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .zap-search {
-  width: 80%;
+  width: 90%;
   margin:auto;
+  height: 40
+}
+#query {
+  height: 45px;
+}
+.depth {
+  height: 45px;
+}
+#entries-list  > li, #users-list > li {
+  width: 90%;
+  margin: auto;
 }
