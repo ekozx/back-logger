@@ -237,6 +237,8 @@ $ ->
         $.get(url, { id: data['id'], append: true } ).done (data) ->
           $.get('/search/reindex')
           unless suggestion then appendEntryHTML(data) #append it on success
+      if $('.zap').length > 0
+        $('#entries-list').hide()
 
   # Event for if they click the zap button instead of text
   zapHandlerButton = (event) ->
