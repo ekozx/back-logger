@@ -2,12 +2,17 @@
 $ ->
   populateZapFormEntry = (zapTitle, entryId, context) ->
     $('#zap_title').val(zapTitle)
+    $(context).css("display", "none")
     $('#entry_id').val(entryId)
+    #add a display: none class and slide in from the left
     $('.zap-pair-entry').append(context)
+    context.show('slow')
   populateZapFormUser = (zap_username, receiver_id, context) ->
     $('#zap_username').val(zap_username)
     $('#receiver_id').val(receiver_id)
+    context.css("display", "none")
     $('.zap-pair-user').append(context)
+    context.show('slow')
 
   $('#submit_zap').on 'click', (event) ->
     receiver_id  = $('#receiver_id').val()
@@ -18,12 +23,10 @@ $ ->
 
   $('.suggested-friend').on 'click', (event) ->
     event.preventDefault()
-    console.log(this)
     classList = this.className.split(" ")
-    populateZapFormUser(classList[3], classList[2], this)
+    populateZapFormUser(classList[3], classList[2], $(this).clone())
 
   $('.suggested-zap').on 'click', (event) ->
     event.preventDefault()
-    console.log(this)
     classList = this.className.split(" ")
-    populateZapFormEntry($(this).parent()[0].id, classList[2], this)
+    populateZapFormEntry($(this).parent()[0].id, classList[2], $(this).clone())
