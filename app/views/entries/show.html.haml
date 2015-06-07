@@ -6,7 +6,21 @@
 .col-lg-5.text-center.static_well.pull-left
   %h1.text-center= @entry.title
   %blockquote= @entry.description
-  -# = link_to "Add to your backlog", "/entries/add/" + @entry.id.to_s, remote: true
+  - if @seen
+    - rating_str = "Your rating was: " + rating
+    %p You've seen this movie
+  - else
+    %span.star-rating
+      %input{type: "radio", name: "rating", value: 1}
+        %i
+      %input{type: "radio", name: "rating", value: 2}
+        %i
+      %input{type: "radio", name: "rating", value: 3}
+        %i
+      %input{type: "radio", name: "rating", value: 4}
+        %i
+      %input{type: "radio", name: "rating", value: 5}
+        %i
   - if current_user.backlog.entries.include?(@entry)
     %p This entry is in your backlog
   -else
