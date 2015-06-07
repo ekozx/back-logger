@@ -1,23 +1,40 @@
 - if user_signed_in?
   .static_well.col-lg-6
-    %h2 Zap your friend
+    %h2.zap-header Zap a Follower
+    %ul.centered-suggestions
+      %li.suggested-zap-item
+        %label.suggested-zap-label Entries:
+      - @suggested_entries.each do |entry|
+        %li.suggested-zap-item
+          - thumbnail_class = 'img-circle suggested-zap ' + entry.id.to_s
+          -if entry.thumbnail_file_name.blank?
+            = link_to(image_tag('thumb/missing.png', class: thumbnail_class), "#", id: entry.title)
+          - else entry.photo.blank?
+            = link_to(image_tag(entry.thumbnail_file_name, class: thumbnail_class), "#", id: entry.title)
+
     = render 'shared/entries_search', group: @entries, more_results: false, zap: true
     = render 'shared/results', group: @entries
 
+    %ul.centered-suggestions
+      %li.suggested-zap-item
+        %label.suggested-zap-label Users:
+      %li.suggested-zap-item
+        - @suggested_followers.each do |user|
+          - user_class = "img-circle suggested-friend " + user.id.to_s + " " + user.nickname
+          = link_to image_tag(user.avatar.url(:thumb), class: user_class), user_path(user)
     = render 'shared/entries_search', group: @users, more_results: false, zap: true
     = render 'shared/results', group: @users
+
   .col-lg-6.static_well
     = form_tag zaps_path, method: 'post' do
-      = label :zap, :name, 'Friend'
-      = text_field :zap, "username", readonly: true
+      .zap-header
+        %h2.zap-intro Your Zap
+        = submit_tag 'Send', id: 'submit_zap', class: "btn btn-success zap-btn"
+      .zap-pair-entry
+        = text_field :zap, 'title', readonly: true, value: "...", class: "zap-field"
       %br
-      = label :zap, :name, 'Title'
-      = text_field :zap, 'title', readonly: true
-      %br
-      = label :zap, :name, 'message'
-      = text_field :zap, 'message'
+      .zap-pair-user
+        = text_field :zap, "username", readonly: true, value: "...", class: "zap-field"
 
       = hidden_field_tag(:receiver_id, "")
       = hidden_field_tag(:entry_id, "")
-      %br
-      = submit_tag 'Save Changes', id: 'submit_zap'

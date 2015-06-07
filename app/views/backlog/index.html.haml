@@ -11,13 +11,10 @@
       - if current_user.backlog != nil
         - @entries.each do |entry|
           %li.new_well
-            -if entry.thumbnail_file_name.blank?
-              = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(entry.id)
-            - else entry.photo.blank?
-              = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)
+            = render 'shared/entry_img', entry: entry
+            = link_to content_tag(:i, "", class: "fa fa-trash-o fa-2x"), entry, remote: true, method: :delete, class: "deleteEntry"
             - if entry.title.length > 30
               = entry.title[0..30] + "..."
             - else
               = entry.title
-            = link_to content_tag(:i, "", class: "fa fa-trash-o fa-2x"), entry, remote: true, method: :delete, class: "deleteEntry"
         =paginate @entries

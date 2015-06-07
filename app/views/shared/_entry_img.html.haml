@@ -1,0 +1,4 @@
+-if entry.thumbnail_file_name.blank?
+  = link_to image_tag('thumb/missing.png', class: 'img-circle'), entry_path(entry.id)
+- else entry.photo.blank?
+  = link_to image_tag(entry.thumbnail_file_name, class: 'img-circle'), entry_path(entry.id)

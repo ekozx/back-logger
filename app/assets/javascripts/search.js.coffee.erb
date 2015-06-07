@@ -207,7 +207,7 @@ $ ->
     event.preventDefault()
     url = '/entries/add/' + this.childNodes[0].id
     $.get(url, {id: this.id, append: true}).done (data) ->
-      unless jQuery.isEmptyObject(data)
+      unless $.isEmptyObject(data) # Was jQuery.empty...
         appendEntryHTML(data)
     $.get('/search/reindex')
 
@@ -227,18 +227,16 @@ $ ->
       title = $(clickedElement).parent().parent().children()[1].innerHTML
       $('#zap_title').val(title)
       loaded('entries')
-      if suggestion
+      if suggestion # TODO: I'm sure there's replicate code here
         $('#entry_id').val(data['id'])
-      #TODO: Make the class unbuilt more descriptive
-      if clickedElement.className.substring(0,7) is 'unbuilt'
+        $('#entries-list').hide()
+      if clickedElement.className.substring(0,7) is 'unbuilt' #TODO: make 'unbuilt' more descriptive
         window.location.replace("/entries/" + data['id'])
       else if clickedElement.className.substring(0,3) is 'add'
         url = '/entries/add/' + data['id'] #create a request to add it to the backlog
         $.get(url, { id: data['id'], append: true } ).done (data) ->
           $.get('/search/reindex')
           unless suggestion then appendEntryHTML(data) #append it on success
-      if $('.zap').length > 0
-        $('#entries-list').hide()
 
   # Event for if they click the zap button instead of text
   zapHandlerButton = (event) ->

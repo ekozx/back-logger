@@ -17,3 +17,33 @@
   width: 90%;
   margin: auto;
 }
+.centered-suggestions {
+  padding-bottom: 10px;
+  width: inherit;
+  margin:auto;
+}
+.suggested-zap-item {
+  display: inline-block;
+}
+.suggested-zap-label {
+  font-size: 1.3em;
+  margin-left: -20px;
+  margin-right: 20px;
+}
+.zap-header {
+  display: flex;
+  margin-bottom: 25px;
+}
+.zap-field {
+  font-size: 1.2em;
+  height: 60px;
+  width: 80%;
+  border-color: white;
+  margin-bottom: 30px;
+}
+.zap-intro {
+  width: 80%;
+}
+.zap-btn {
+  height: 50px;
+}

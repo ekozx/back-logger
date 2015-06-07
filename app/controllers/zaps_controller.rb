@@ -24,6 +24,8 @@ class ZapsController < ApplicationController
   end
 
   def new
+    @suggested_entries = current_user.backlog.entries.limit(3)
+    @suggested_followers = current_user.followers.limit(3)
     @entries = "entries"
     @users = "users"
   end
