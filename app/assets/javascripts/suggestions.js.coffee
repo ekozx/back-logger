@@ -9,3 +9,6 @@
 $ ->
   $(':radio').on 'change', (event) ->
     $('.choice').text(this.val + ' stars')
+  $(':radio').on 'click', (event) ->
+    url = '/rating/' + $(this).parent()[0].className.split(" ")[1] + "/" + this.value
+    $.post(url)

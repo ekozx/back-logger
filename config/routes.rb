@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'users/follow/:id'     => 'users#follow'
   get 'users/unfollow/:id'   => 'users#unfollow'
   get '/zaps/created'        => 'zaps#created'
+  post '/rating/:id/:rating'  => 'users#rating'
 
   resources :suggestions
   resources :entries
