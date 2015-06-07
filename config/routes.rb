@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'users/unfollow/:id'   => 'users#unfollow'
   get '/zaps/created'        => 'zaps#created'
 
+  resources :suggestions
   resources :entries
   resources :associations
   resources :relationships, only: [:create, :destroy]
