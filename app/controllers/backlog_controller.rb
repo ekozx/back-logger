@@ -22,10 +22,16 @@ class BacklogController < ApplicationController
     description = params["movie_info"][1]
     imdb = params["movie_info"][2]
     thumb = params["movie_info"][3]
+    rt_id = params["movie_info"][4]
     if Entry.exists?(title: title, description: description)
       entry = Entry.where(title: title, description: description).take
     else
-      entry = Entry.create(title: title, description: description, imdb_id: imdb, thumbnail_file_name: thumb)
+      entry = Entry.create(title: title,
+        description: description,
+        imdb_id: imdb,
+        thumbnail_file_name: thumb,
+        rotten_tomatoes_id: rt_id
+        )
     end
     entry.update_photo
     render json: entry

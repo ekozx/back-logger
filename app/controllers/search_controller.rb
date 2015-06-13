@@ -36,14 +36,14 @@ class SearchController < ApplicationController
               title: movie["title"],
               thumbnail_file_name: movie["posters"]["thumbnail"],
               description: movie["synopsis"],
-              imdb_id: imdb
+              imdb_id: imdb,
+              rotten_tomatoes_id: movie["id"].to_i
               )
             end
           end
         end
         #TODO: there's certainly a better way of doing this... (not DRY, we query twice)
-        #Seems to fix the issue
-        sleep 0.25
+        sleep 0.25 #Seems to fix the issue... But why?
         @results = Entry.search query, page: params[:page], per_page: 10
       end
     else

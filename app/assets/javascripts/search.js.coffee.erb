@@ -326,6 +326,7 @@ $ ->
       if alternate isnt undefined then imdb = alternate['imdb'] else imdb = "unknown"
       requestData = movie['title'] + "~~" + movie['synopsis'].replace(/'/g, "")
       requestData += "~~" + imdb + "~~" + movie['posters']['detailed']
+      requestData += "~~" + movie['id']
       html = buildRequestHTML(requestData, movie["posters"]["detailed"], movie['title'], movie['id'])
       list.append(html)
       show = $('.unbuilt' + movie['id'])
@@ -335,10 +336,8 @@ $ ->
 
   # On click for "More results"
   $('.depth').on 'click', (event) ->
-    console.log(window.location.pathname)
     if window.location.pathname is '/zaps/new'
       event.preventDefault()
-      console.log($(this))
     else
       if $('.loading-entries').length > 0
         loading('entries')
