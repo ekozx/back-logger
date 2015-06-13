@@ -13,3 +13,7 @@
   * Change top bar
   * Rearrange profile card
   * Consider a total design redo once features and API are in
+
+For information regarding k-means clustering:
+* http://cs229.stanford.edu/proj2013/Bystrom-MovieRecommendationsFromUserRatings.pdf
+* http://shop.oreilly.com/product/9780596529321.do
