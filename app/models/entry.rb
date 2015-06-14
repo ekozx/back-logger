@@ -83,6 +83,7 @@ class Entry < ActiveRecord::Base
     # Computes the "distance" between entries as an integer, x, such that 0 <= x <= 3
     # Uses the directors (3), genre (1*num), actors(1*num), mpaa rating(2) and studio(3)
     # to determine similarity between points. Weights for each are in parenthesis.
+    # Tanimoto coefficient
     def distance(point)
       distance = 0
       entry_coordinate = generate_coordinate
