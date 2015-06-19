@@ -26,7 +26,7 @@ class SuggestionsController < ApplicationController
   # TODO: Need to add Sidekiq worker for background processing the spreadsheet on ajax
   def get_suggestions(entries, number) #including number if I want to specify the amount they can get later
     # append the user and the users entries to the proper spreadsheets
-    clusterer = KMeans::Clusterer.new('default') # use the default data in /lib/k_means
+    clusterer = KMeans::Clusterer.new('default', entries) # use the default data in /lib/k_means
     # run k-means on that data
     clusterer.k_means()
     # remove the users ratings from the list
