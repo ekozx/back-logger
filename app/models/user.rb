@@ -112,4 +112,14 @@ class User < ActiveRecord::Base
   def unfollow!(followed_id, follower_id)
     self.relationships.find_by(followed_id: followed_id, follower_id: follower_id).destroy
   end
+
+  def get_rating(entry)
+    rating_record = Rating.where(user_id: self.id, entry_id: entry.id)
+    if rating_record.blank?
+      rating = 3
+    else
+      rating = rating_record.rating
+    end
+    return rating
+  end
 end

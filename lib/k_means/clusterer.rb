@@ -1,17 +1,15 @@
 module KMeans
-  include SpreadsheetHandler
+  # include SpreadsheetHandler
   class Clusterer
-    def initialize(data_type, incoming_data)
+    def initialize(data_type, user)
       if data_type != 'default'
         # load_some_custom_data
+        puts "custom data implementation here"
       else # default to clustering movies based on MovieLens data
-        # Initialize and add user to existing csv
-        @spreadsheet_handler = SpreadsheetHandler::Handler.new('./ratings.csv') #gotta move this file
-        # Add new data to file, return the users id within ratings.csv
-        @spreadsheet_user_id = @spreadsheet_handler.append_incoming_data(incoming_data)
-        # Return newly populated data as a hash
-        @data = @spreadsheet_handler.get_data()
+        @handler = SpreadsheetHandler.new("#{Rails.root}/lib/k_means/ratings.csv")
+        @handler.append_user_data(user)
       end
+      puts "finished initializing cluster"
     end
 
     def k_means

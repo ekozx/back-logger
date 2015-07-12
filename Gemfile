@@ -59,6 +59,3 @@ gem 'rails_12factor'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
-# spreadsheet handling
-gem 'roo', '~> 2.0.0'

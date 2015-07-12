@@ -1,1 +1,20 @@
-%h1 Coming Soon ~
+- if user_signed_in?
+  .col-lg-6
+    %h3.greeting.static_well
+      Press Enter for New Results
+    = render 'shared/entries_search', group: @group, more_results: true, zap: false
+    = render 'shared/results', group: @group
+  .col-lg-6
+    %h3.text-center.static_well
+      =link_to "Your backlog:", user_path(current_user)
+    %ul.backlog
+      - if current_user.backlog != nil
+        - @entries.each do |entry|
+          %li.new_well
+            = render 'shared/entry_img', entry: entry
+            = link_to content_tag(:i, "", class: "fa fa-trash-o fa-2x"), entry, remote: true, method: :delete, class: "deleteEntry"
+            - if entry.title.length > 30
+              = entry.title[0..30] + "..."
+            - else
+              = entry.title
+        =paginate @entries
