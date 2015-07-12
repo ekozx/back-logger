@@ -1,7 +1,7 @@
 class SuggestionsController < ApplicationController
   include KMeans
   def index
-    @suggested_entries = get_suggestions(10)
+    # @suggested_entries = get_suggestions(10)
   end
 
   ##############################################################################

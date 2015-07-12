@@ -8,15 +8,15 @@
   %blockquote= @entry.description
   - star_class = "star-rating " + @entry.id.to_s
   %span{class: star_class}
-    %input{type: "radio", name: "rating", value: 1}
+    %input{type: "radio", name: "rating", value: 1, class: "star"}
       %i
-    %input{type: "radio", name: "rating", value: 2}
+    %input{type: "radio", name: "rating", value: 2, class: "star"}
       %i
-    %input{type: "radio", name: "rating", value: 3}
+    %input{type: "radio", name: "rating", value: 3, class: "star"}
       %i
-    %input{type: "radio", name: "rating", value: 4}
+    %input{type: "radio", name: "rating", value: 4, class: "star"}
       %i
-    %input{type: "radio", name: "rating", value: 5}
+    %input{type: "radio", name: "rating", value: 5, class: "star"}
       %i
   - if current_user.backlog.entries.include?(@entry)
     %p This entry is in your backlog

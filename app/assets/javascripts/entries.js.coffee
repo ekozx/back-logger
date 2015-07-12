@@ -8,4 +8,6 @@ $ ->
     $("#new_entry").append "<p>ERROR</p>"
   # TODO: clicking submit isn't processed correctly
   $("#new_entry").on 'submit', (event) ->
-    $(@).append "<p>posting... </p>"
+    $(this).append "<p>posting... </p>"
+  $(".star").on 'click', (event) ->
+    $.post('/rating/' + window.location.pathname.split('/')[2] + '/' + $(this).val())

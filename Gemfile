@@ -59,3 +59,5 @@ gem 'rails_12factor'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+# Use React
+gem 'react-rails', '~> 1.0'

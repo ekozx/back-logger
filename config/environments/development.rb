@@ -49,6 +49,9 @@ Rails.application.configure do
   #   domain => 'somedomain.com'
   # }
 
+  # For react development
+  config.react.variant = :development
+
   config.paperclip_defaults = {
     :storage => :s3,
     :s3_credentials => {
