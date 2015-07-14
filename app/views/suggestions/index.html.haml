@@ -1,2 +1,3 @@
 - if user_signed_in?
-  = react_component('HelloMessage', {name: "Evan".to_json}, {:prerender => true})
+  .col-lg-12.static_well
+    = react_component('SuggestionBox', {:prerender => true})

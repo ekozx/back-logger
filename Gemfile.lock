@@ -53,7 +53,7 @@ GEM
       jmespath (~> 1.0)
     aws-sdk-resources (2.1.4)
       aws-sdk-core (= 2.1.4)
-    babel-source (5.6.16)
+    babel-source (5.6.19)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
@@ -276,7 +276,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.2.0)
   coffee-rails (~> 4.0.0)
   devise
-  font-awesome-sass
+  font-awesome-sass (~> 4.3.0)
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
