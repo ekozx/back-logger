@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150614043711) do
+ActiveRecord::Schema.define(version: 20150719052554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,23 @@ ActiveRecord::Schema.define(version: 20150614043711) do
 
   add_index "friendships", ["friend_user_id", "user_id"], name: "index_friendships_on_friend_user_id_and_user_id", unique: true, using: :btree
   add_index "friendships", ["user_id", "friend_user_id"], name: "index_friendships_on_user_id_and_friend_user_id", unique: true, using: :btree
+
+  create_table "genre_mappings", force: true do |t|
+    t.integer  "entry_id"
+    t.integer  "genre_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "genre_mappings", ["entry_id"], name: "index_genre_mappings_on_entry_id", using: :btree
+  add_index "genre_mappings", ["genre_id", "entry_id"], name: "index_genre_mappings_on_genre_id_and_entry_id", unique: true, using: :btree
+  add_index "genre_mappings", ["genre_id"], name: "index_genre_mappings_on_genre_id", using: :btree
+
+  create_table "genres", force: true do |t|
+    t.string   "genre_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"

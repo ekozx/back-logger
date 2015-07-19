@@ -5,15 +5,28 @@ namespace :entries do
     return s.gsub(/[-()'*,.]/, "").strip.downcase
   end
 
+  def genre_id_mapping(genres, entry)
+    genres.each do |genre|
+      # Make sure we have entries for each genre
+      genre_record = Genre.where(genre_name: genre).take
+      if genre_record == nil
+        genre_record = Genre.create(genre_name: genre)
+      end
+      # Create a genre mapping to remember this specific genre
+      unless GenreMapping.where(entry_id: entry.id, genre_id: genre_record.id).count > 0
+        GenreMapping.create(entry_id: entry.id, genre_id: genre_record.id)
+      end
+    end
+  end
+
   # A super quick task to update my old entries with new fields
   # Reuses the HTTP call to rotten tomatoes from search_controller, could be DRY'd up of course
   task fetch_update: :environment do
-    call_limit = 100
+    call_limit = 400
     call = 0
     if Rails.env == 'development'
       Entry.all.each do |entry|
-        if ((entry.rotten_tomatoes_id.blank? || # lol, this condition could be its own method
-          entry.genre.blank?) &&
+        if ((entry.rotten_tomatoes_id.blank?) && # lol, this condition could be its own method)
           (call < call_limit) &&
           (!(entry.imdb_id.blank?)))
           puts ("entry with id: " + entry.id.to_s +
@@ -24,13 +37,16 @@ namespace :entries do
           "&type=imdb" +
           "&id=" + entry.imdb_id.to_s)
           resp = JSON.parse(Net::HTTP.get_response(uri).body)
+          puts resp
           # Incrememnt the number of cals to be sure we dont go over
           call += 2
           unless resp.blank?
             entry.update(
               rotten_tomatoes_id: resp['id'],
-              genre: genre_id_mapping(resp["genres"])
             )
+            unless resp['genres'].blank?
+              genre_id_mapping(resp['genres'], entry)
+            end
           end
         end
       end

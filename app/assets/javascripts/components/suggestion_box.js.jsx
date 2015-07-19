@@ -1,10 +1,18 @@
 var GuessListItem = React.createClass({
   quickSuggestion: function(e) {
     console.log(this.props.movieData);
-    $('')
+    var rtId = this.props.movieData['rotten_tomatoes_id'];
+    var imdbId = this.props.movieData['imdb_id'];
+
+    if (rtId !== null) {
+      $.get("http://api.rottentomatoes.com/api/public/v1.0/movies/" + rtId + ".json?apikey=")
+    } else if (imdbId !== null) {
+
+    } else {
+      console.log("lame. nothing to work with");
+    }
   },
   render: function() {
-    console.log(this);
     return (
       <li><a href='#' onClick={this.quickSuggestion}>
       {this.props.movieData['title']}

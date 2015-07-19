@@ -3,7 +3,7 @@ class Entry < ActiveRecord::Base
   has_many :backlogs, through: :associations
   has_many :zaps
   has_many :genres
-
+  #TODO the 'genre' field refers to the id of a genre mapping. This name should be changed appropriately 
   searchkick
 
   #should probably change the medium to large some time soon
