@@ -5,6 +5,40 @@ namespace :entries do
     return s.gsub(/[-()'*,.]/, "").strip.downcase
   end
 
+  # A super quick task to update my old entries with new fields
+  # Reuses the HTTP call to rotten tomatoes from search_controller, could be DRY'd up of course
+  task fetch_update: :environment do
+    call_limit = 100
+    call = 0
+    if Rails.env == 'development'
+      Entry.all.each do |entry|
+        if ((entry.rotten_tomatoes_id.blank? || # lol, this condition could be its own method
+          entry.genre.blank?) &&
+          (call < call_limit) &&
+          (!(entry.imdb_id.blank?)))
+          puts ("entry with id: " + entry.id.to_s +
+          " and imdb id: " + entry.imdb_id.to_s + " needs updated. Call #" + call.to_s)
+          # Info call
+          uri = URI("http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?apikey=" +
+          ENV["ROTTEN_TOMATOES_KEY"] +
+          "&type=imdb" +
+          "&id=" + entry.imdb_id.to_s)
+          resp = JSON.parse(Net::HTTP.get_response(uri).body)
+          # Incrememnt the number of cals to be sure we dont go over
+          call += 2
+          unless resp.blank?
+            entry.update(
+              rotten_tomatoes_id: resp['id'],
+              genre: genre_id_mapping(resp["genres"])
+            )
+          end
+        end
+      end
+    else
+      puts "update entries not available in production"
+    end
+  end
+
   # Searching for 2 or more entries with the same title/description
   # but different ids and removing one or more.
   task remove_dups: :environment do
