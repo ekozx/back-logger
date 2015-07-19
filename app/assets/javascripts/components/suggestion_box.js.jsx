@@ -1,34 +1,28 @@
-var SuggestionList = React.createClass({
+var GuessList = React.createClass({
   render: function() {
-    var createItem = function(itemText, index) {
-      console.log("ItemText:");
-      console.log(itemText);
-      console.log("Index:");
-      console.log(index);
-      return <li key={index + itemText}>{itemText}</li>;
-    };
-    return <ul className='col-lg-6'>{this.props.results.map(createItem)}</ul>;
+    function iterateData(data) {
+      items = [];
+      for(var obj in data) {
+        items.push(<li>{data[obj]['title']}</li>)
+      }
+    }
+    iterateData(this.props.guessList);
+    return <ul className='guess-list'>{items}</ul>;
   }
 });
 var SuggestionBox = React.createClass({
   getInitialState: function() {
-    return {guesses: [], results: [], text: ''};
+    return {results: [], text: '', data: {}};
   },
   onChange: function(e) {
-    url = "/search/entries/" + e.target.value + "/no";
-    $.get(url, function(data) {
-      console.log(data)
-      var dbResults = [];
-      for(var value in data) {
-        if (value["thumbnail_file_name"] == null) {
-          data["thumbnail_file_name"] = "";
-        }
-        if (value != null) {
-          dbResults.push(value);
-        }
-      }
-      this.setState({guesses: dbResults, text: e.target.value})
-    });
+    var txt = e.target.value
+    url = "/search/entries/" + txt  + "/no";
+    if (url === '/search/entries//no') {
+      this.setState({data: {}, text: txt});
+    }
+    $.get(url, function(data){
+      this.setState({data: data, text: txt});
+    }.bind(this));
   },
   handleSubmit: function(e) {
     e.preventDefault();
@@ -41,7 +35,8 @@ var SuggestionBox = React.createClass({
           <input onChange={this.onChange} value={this.state.text} />
           <button>{'Suggestions based on ' + (this.state.text)}</button>
         </form>
-        <SuggestionList results={this.state.results} />
+        <br></br>
+        <GuessList guessList={this.state.data} />
       </div>
     );
   }
