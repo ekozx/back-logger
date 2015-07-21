@@ -1,15 +1,32 @@
+var SuggestionList = React.createClass({
+  render: function() {
+    var suggestions = [];
+    function iterateSuggestions(suggestions) {
+
+    }
+    iterateSuggestions(this.props.suggestionList);
+    return <ul className='suggestion-list'>{suggestions}</ul>;
+  }
+});
+
 var GuessListItem = React.createClass({
   quickSuggestion: function(e) {
-    console.log(this.props.movieData);
     var rtId = this.props.movieData['rotten_tomatoes_id'];
     var imdbId = this.props.movieData['imdb_id'];
-
     if (rtId !== null) {
-      $.get("http://api.rottentomatoes.com/api/public/v1.0/movies/" + rtId + ".json?apikey=")
+      $.get('/rt_suggestion/rt/' + rtId, function(data) {
+        console.log(data);
+        // this.setState({suggestions: ['my', 'rt', 'suggestions']});
+        this.props.suggest(['my', 'rt', 'suggestions']);
+      }.bind(this));
     } else if (imdbId !== null) {
-
+      $.get('/rt_suggestion/imdb/' + imdbId, function(data) {
+        console.log(data);
+        // this.setState({suggestions: ['my', 'rt', 'suggestions']});
+        this.props.suggest(['my', 'rt', 'suggestions']);
+      }.bind(this));
     } else {
-      console.log("lame. nothing to work with");
+      console.log("nada");
     }
   },
   render: function() {
@@ -23,23 +40,28 @@ var GuessListItem = React.createClass({
 
 var GuessList = React.createClass({
   render: function() {
-    function iterateData(data) {
+    function iterateData(data, suggestFunction) {
       items = [];
       for(var index in data) {
-        items.push(<GuessListItem movieData={data[index]} />);
+        items.push(<GuessListItem movieData={data[index]} suggest={suggestFunction}/>);
       }
     }
-    iterateData(this.props.guessList);
+    // this.setState(suggestions:)
+    iterateData(this.props.guessList, this.props.suggest);
     return <ul className='guess-list'>{items}</ul>;
   }
 });
 
 var SuggestionBox = React.createClass({
   getInitialState: function() {
-    return {results: [], text: '', data: {}};
+    return{text: '', data: {}, suggestions: []};
+  },
+  suggestionFunc: function(suggstionList) {
+    console.log("suggestions!");
+    this.setState({suggestions: suggstionList});
   },
   onChange: function(e) {
-    var txt = e.target.value
+    var txt = e.target.value;
     url = "/search/entries/" + txt  + "/no";
     if (url === '/search/entries//no') {
       this.setState({data: {}, text: txt});
@@ -55,6 +77,7 @@ var SuggestionBox = React.createClass({
     console.log(e);
   },
   render: function() {
+    console.log(this.state);
     return (
       <div>
         <div className="col-lg-6" >
@@ -66,9 +89,11 @@ var SuggestionBox = React.createClass({
             </button>
           </form>
           <br></br>
-          <GuessList guessList={this.state.data} />
+          <GuessList guessList={this.state.data} suggest={this.suggestionFunc} />
         </div>
-        <div className="col-lg-6"></div>
+        <div className="col-lg-6">
+          <SuggestionList suggestionList={this.state.suggestions} />
+        </div>
       </div>
     );
   }

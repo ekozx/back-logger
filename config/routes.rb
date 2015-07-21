@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root 'backlog#index'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'backlog/unbuilt'      => 'backlog#unbuilt'
+  get 'backlog/unbuilt'       => 'backlog#unbuilt'
   get '/search'               => 'search#index'
   get 'search/:type/:query/:t'  => 'search#query'
   get 'search/reindex'       => 'search#reindex'
@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   get 'users/follow/:id'     => 'users#follow'
   get 'users/unfollow/:id'   => 'users#unfollow'
   get '/zaps/created'        => 'zaps#created'
+  get '/rt_suggestion/rt/:id' => 'suggestions#rt_suggestion'
+  get '/rt_suggestion/imdb/:id' => 'suggestions#rt_alias_suggestion'
+
   post '/rating/:id/:rating'  => 'users#rating'
 
   resources :suggestions

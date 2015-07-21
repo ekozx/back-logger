@@ -6,6 +6,10 @@ class EntriesController < ApplicationController
     @entry = Entry.new
   end
 
+  def api_key
+    render json: ENV['ROTTEN_TOMATOES_KEY'].to_json
+  end
+
   def create
     @entry = Entry.new(entry_params)
     logger = Logger.new('log/development.log')

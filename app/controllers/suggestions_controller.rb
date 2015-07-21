@@ -1,7 +1,14 @@
 class SuggestionsController < ApplicationController
   # include KMeans
   def index
-    # @suggested_entries = get_suggestions(10)
+  end
+
+  def rt_alias_suggestion
+    render json: "rt_alias_suggestion".to_json
+  end
+
+  def rt_suggestion
+    render json: "rt_suggestion".to_json
   end
 
   ##############################################################################
