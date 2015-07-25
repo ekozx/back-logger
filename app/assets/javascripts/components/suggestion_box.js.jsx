@@ -57,7 +57,6 @@ var SuggestionBox = React.createClass({
     return{text: '', data: {}, suggestions: []};
   },
   suggestionFunc: function(suggstionList) {
-    console.log("suggestions!");
     this.setState({suggestions: suggstionList});
   },
   onChange: function(e) {
@@ -77,7 +76,6 @@ var SuggestionBox = React.createClass({
     console.log(e);
   },
   render: function() {
-    console.log(this.state);
     return (
       <div>
         <div className="col-lg-6" >

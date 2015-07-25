@@ -4,11 +4,22 @@ class SuggestionsController < ApplicationController
   end
 
   def rt_alias_suggestion
+
+
     render json: "rt_alias_suggestion".to_json
   end
 
+  # uses this following endpoint:
+  # http://api.rottentomatoes.com/api/public/v1.0/movies/770672122/similar.json?apikey=[your_api_key]&limit=1
   def rt_suggestion
-    render json: "rt_suggestion".to_json
+    url = "http://api.rottentomatoes.com/api/public/v1.0/movies/"
+    url += params[:id]
+    url += "/similar.json?apikey="
+    url += ENV['ROTTEN_TOMATOES_KEY']
+    url += "&limit=5"
+    uri = URI(url)
+
+    render json: Net::HTTP.get_response(uri).body
   end
 
   ##############################################################################

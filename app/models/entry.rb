@@ -3,7 +3,7 @@ class Entry < ActiveRecord::Base
   has_many :backlogs, through: :associations
   has_many :zaps
   has_many :genres
-  #TODO the 'genre' field refers to the id of a genre mapping. This name should be changed appropriately 
+  #TODO the 'genre' field refers to the id of a genre mapping. This name should be changed appropriately
   searchkick
 
   #should probably change the medium to large some time soon
@@ -20,12 +20,11 @@ class Entry < ActiveRecord::Base
     #update the photo on show
     if self.photo.blank? && !self.imdb_id.blank?
       query = Tmdb::Find.imdb_id("tt" + self.imdb_id)
-      movie_results = query.movie_results
+      movie_results = query["movie_results"]
       unless movie_results.blank?
         movie = movie_results.first
         unless movie.blank?
-          self.photo = movie.poster_path
-          logger.debug("SAVING:")
+          self.photo = movie["poster_path"]
           self.save!(validate: false)
         end
         logger.debug(self)
