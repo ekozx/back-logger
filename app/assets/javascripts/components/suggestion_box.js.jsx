@@ -4,7 +4,7 @@ var SuggestionListItem = React.createClass({
   },
   render: function() {
     return (
-      <li><a href='#' onClick={this.quickAdd}>
+      <li className="new_well"><a href='#' onClick={this.quickAdd} >
       {this.props.suggestionData['title']}
       </a></li>
     );
@@ -40,7 +40,7 @@ var GuessListItem = React.createClass({
   },
   render: function() {
     return (
-      <li><a href='#' onClick={this.quickSuggestion}>
+      <li className="new_well"><a href='#' onClick={this.quickSuggestion}>
       {this.props.movieData['title']}
       </a></li>
     );
@@ -61,6 +61,25 @@ var GuessList = React.createClass({
 });
 
 var SuggestionBox = React.createClass({
+  // Endpoint: search/:type/:query/:t
+  queryRottenTomatoes: function(query) {
+    var url = ('rt_react_search/' + query)
+    
+    $.get(url, function(data) {
+      console.log(data);
+    });
+  },
+  componentDidMount: function () {
+    window.addEventListener('keydown', this.handleKeyDown);
+  },
+  componentWillUnmount: function () {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  },
+  handleKeyDown: function(e) {
+    if(e.keyCode == 13) {
+      this.queryRottenTomatoes(this.state.text);
+    }
+  },
   getInitialState: function() {
     return{text: '', data: {}, suggestions: []};
   },
@@ -83,16 +102,17 @@ var SuggestionBox = React.createClass({
   render: function() {
     return (
       <div>
-        <div className="col-lg-6" >
-          <h3>Suggestions</h3>
-          <form className=''>
+        <div className="col-lg-6">
+          <form className='static_well'>
+            <h3>Suggestions</h3>
             <input onChange={this.onChange} value={this.state.text} />
             <button className="btn-suggest" onClick={this.suggestionClick}>
               {'Suggestions based on ' + (this.state.text)}
             </button>
           </form>
-          <br></br>
-          <GuessList guessList={this.state.data} suggest={this.suggestionFunc} />
+          <div className="" >
+            <GuessList guessList={this.state.data} suggest={this.suggestionFunc} />
+          </div>
         </div>
         <div className="col-lg-6">
           <SuggestionList suggestionList={this.state.suggestions} />

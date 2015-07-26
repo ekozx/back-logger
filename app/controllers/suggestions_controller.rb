@@ -3,9 +3,18 @@ class SuggestionsController < ApplicationController
   def index
   end
 
+  #TODO this is literally a c/p from search_controller without a check, move it over
+  def rt_react_search
+    uri = URI("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" +
+    ENV["ROTTEN_TOMATOES_KEY"] +
+    "&q=" +
+    params[:query].to_s.gsub(" ", "+") +
+    "&page_limit=10&page=1")
+
+    render json: Net::HTTP.get_response(uri).body
+  end
+
   def rt_alias_suggestion
-
-
     render json: "rt_alias_suggestion".to_json
   end
 

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get '/zaps/created'        => 'zaps#created'
   get '/rt_suggestion/rt/:id' => 'suggestions#rt_suggestion'
   get '/rt_suggestion/imdb/:id' => 'suggestions#rt_alias_suggestion'
+  get 'rt_react_search/:query' => 'suggestions#rt_react_search'
 
   post '/rating/:id/:rating'  => 'users#rating'
 
