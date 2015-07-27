@@ -42,7 +42,7 @@ var GuessListItem = React.createClass({
     if (rtId === undefined) {rtId = this.props.movieData['id']}
     if (rtId !== null) {
       $.get('/rt_suggestion/rt/' + rtId, function(data) {
-        this.props.suggest(data["movies"]);
+        this.props.suggest(data["movies"], this.props.movieData['title']);
         this.toggleGif();
       }.bind(this));
     } else if (imdbId !== null) {
@@ -106,10 +106,10 @@ var SuggestionBox = React.createClass({
     }
   },
   getInitialState: function() {
-    return{text: '', data: {}, suggestions: []};
+    return{text: '', data: {}, suggestions: [], query: ""};
   },
-  suggestionFunc: function(suggstionList) {
-    this.setState({suggestions: suggstionList});
+  suggestionFunc: function(suggstionList, query) {
+    this.setState({suggestions: suggstionList, query: query});
   },
   onChange: function(e) {
     var txt = e.target.value;
@@ -138,6 +138,9 @@ var SuggestionBox = React.createClass({
           </div>
         </div>
         <div className="col-lg-6">
+          <div className="static_well">
+            <h3>Suggestions based on... {this.state.query}</h3>
+          </div>
           <SuggestionList suggestionList={this.state.suggestions} />
           <div className='loading-entries-2'>
             <img src={'/assets/loading1.gif'}></img>
