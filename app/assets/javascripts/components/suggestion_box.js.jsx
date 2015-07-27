@@ -3,6 +3,7 @@ var SuggestionListItem = React.createClass({
     console.log(e);
   },
   render: function() {
+    console.log(this.props.suggestionData);
     return (
       <li className="new_well">
         <a href='#'>
@@ -29,16 +30,25 @@ var SuggestionList = React.createClass({
 });
 
 var GuessListItem = React.createClass({
+  toggleGif: function() {
+    $('.loading-entries-2').hide();
+    $('.suggestion-list').show();
+  },
   quickSuggestion: function(e) {
+    $('.loading-entries-2').show();
+    $('.suggestion-list').hide();
     var rtId = this.props.movieData['rotten_tomatoes_id'];
     var imdbId = this.props.movieData['imdb_id'];
+    if (rtId === undefined) {rtId = this.props.movieData['id']}
     if (rtId !== null) {
       $.get('/rt_suggestion/rt/' + rtId, function(data) {
         this.props.suggest(data["movies"]);
+        this.toggleGif();
       }.bind(this));
     } else if (imdbId !== null) {
       $.get('/rt_suggestion/imdb/' + imdbId, function(data) {
         this.props.suggest(data["movies"]);
+        this.toggleGif();
       }.bind(this));
     }
   },
@@ -129,6 +139,9 @@ var SuggestionBox = React.createClass({
         </div>
         <div className="col-lg-6">
           <SuggestionList suggestionList={this.state.suggestions} />
+          <div className='loading-entries-2'>
+            <img src={'/assets/loading1.gif'}></img>
+          </div>
         </div>
       </div>
     );
