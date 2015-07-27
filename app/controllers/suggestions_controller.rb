@@ -9,7 +9,7 @@ class SuggestionsController < ApplicationController
     ENV["ROTTEN_TOMATOES_KEY"] +
     "&q=" +
     params[:query].to_s.gsub(" ", "+") +
-    "&page_limit=10&page=1")
+    "&page_limit=5&page=1")
 
     render json: Net::HTTP.get_response(uri).body
   end

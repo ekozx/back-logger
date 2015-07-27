@@ -4,9 +4,13 @@ var SuggestionListItem = React.createClass({
   },
   render: function() {
     return (
-      <li className="new_well"><a href='#' onClick={this.quickAdd} >
-      {this.props.suggestionData['title']}
-      </a></li>
+      <li className="new_well">
+        <a href='#'>
+          <img src={this.props.suggestionData['posters']['thumbnail']} className='img-circle' />
+        </a>
+        <span>{this.props.suggestionData['title']}</span>
+        <button className="btn btn-success" onClick={this.quickAdd}>Add</button>
+      </li>
     );
   }
 });
@@ -39,10 +43,16 @@ var GuessListItem = React.createClass({
     }
   },
   render: function() {
+    var thumbnailSrc = this.props.movieData['thumbnail_file_name'];
+    if (!thumbnailSrc) {thumbnailSrc = this.props.movieData['posters']['thumbnail']}
+    // thumbnailSrc === undefined ? thumbnailSrc = this.props.movieData['posters']['thumbnail'] : thumbnailSrc = "#";
     return (
-      <li className="new_well"><a href='#' onClick={this.quickSuggestion}>
-      {this.props.movieData['title']}
-      </a></li>
+      <li className="new_well">
+        <a href='#'>
+          <img src={thumbnailSrc} className='img-circle' />
+        </a>
+        <a href='#' onClick={this.quickSuggestion}>{this.props.movieData['title']}</a>
+      </li>
     );
   }
 });
@@ -64,10 +74,12 @@ var SuggestionBox = React.createClass({
   // Endpoint: search/:type/:query/:t
   queryRottenTomatoes: function(query) {
     var url = ('rt_react_search/' + query)
-    
+
     $.get(url, function(data) {
-      console.log(data);
-    });
+      $('.loading-entries').hide();
+      $('.guess-list').show();
+      this.setState({data: data["movies"]});
+    }.bind(this));
   },
   componentDidMount: function () {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -77,6 +89,9 @@ var SuggestionBox = React.createClass({
   },
   handleKeyDown: function(e) {
     if(e.keyCode == 13) {
+      e.preventDefault();
+      $('.guess-list').hide();
+      $('.loading-entries').show();
       this.queryRottenTomatoes(this.state.text);
     }
   },
@@ -88,6 +103,7 @@ var SuggestionBox = React.createClass({
   },
   onChange: function(e) {
     var txt = e.target.value;
+    e.preventDefault();
     url = "/search/entries/" + txt  + "/no";
     if (url === '/search/entries//no') {
       this.setState({data: {}, text: txt});
@@ -96,9 +112,6 @@ var SuggestionBox = React.createClass({
       this.setState({data: data, text: txt});
     }.bind(this));
   },
-  handleSubmit: function(e) {
-    e.preventDefault();
-  },
   render: function() {
     return (
       <div>
@@ -106,12 +119,12 @@ var SuggestionBox = React.createClass({
           <form className='static_well'>
             <h3>Suggestions</h3>
             <input onChange={this.onChange} value={this.state.text} />
-            <button className="btn-suggest" onClick={this.suggestionClick}>
-              {'Suggestions based on ' + (this.state.text)}
-            </button>
           </form>
           <div className="" >
             <GuessList guessList={this.state.data} suggest={this.suggestionFunc} />
+            <div className='loading-entries'>
+              <img src={'/assets/loading1.gif'}></img>
+            </div>
           </div>
         </div>
         <div className="col-lg-6">
